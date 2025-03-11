@@ -80,19 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         );
                     }
                 }
-                
-                // Show/hide the general auto-fill buttons
-                const autoFillButtons = this.closest(
-                    ".billing-card"
-                ).querySelector(".auto-fill-buttons");
-                
-                if (autoFillButtons) {
-                    if (this.checked) {
-                        autoFillButtons.classList.add("hidden");
-                    } else {
-                        autoFillButtons.classList.remove("hidden");
-                    }
-                }
 
                 // Show/hide the general auto-fill buttons
                 if (generalAutoFillButtons) {
