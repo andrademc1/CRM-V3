@@ -1,0 +1,69 @@
+
+/* Bookmaker Modal Specific Styles */
+.bookmaker-modal-content {
+    max-width: 700px;
+}
+
+.geographies-container {
+    margin-top: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.selected-geographies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.geography-tag {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.geography-tag .country-flag {
+    margin-right: 5px;
+}
+
+.geography-tag .remove-geography {
+    margin-left: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.geography-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: none;
+}
+
+.geography-list.active {
+    display: block;
+}
+
+.geography-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.geography-item:hover {
+    background-color: #f8f9fa;
+}
+
+.geography-item .country-flag {
+    margin-right: 8px;
+}

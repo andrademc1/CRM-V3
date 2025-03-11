@@ -432,8 +432,70 @@
         </div>
     </div>
 
+    <!-- Bookmaker Modal -->
+    <div id="bookmakerModal" class="modal">
+        <div class="modal-content bookmaker-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Bookmaker</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab active" data-tab="bookmaker-settings">Bookmaker Settings</div>
+                </div>
+                
+                <!-- Bookmaker Settings Tab -->
+                <div class="tab-content active" id="bookmaker-settings">
+                    <div class="form-group">
+                        <label for="bookmaker-group">Bookmaker Group</label>
+                        <select id="bookmaker-group" class="form-control">
+                            <option value="">Select a group</option>
+                            <!-- Groups will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookmaker-status">Bookmaker Status</label>
+                        <select id="bookmaker-status" class="form-control">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookmaker-name">Bookmaker Name</label>
+                        <input type="text" id="bookmaker-name" class="form-control" placeholder="Enter bookmaker name">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookmaker-logo">Bookmaker Logo</label>
+                        <input type="file" id="bookmaker-logo" class="form-control" accept="image/*">
+                        <div id="bookmaker-logo-preview" class="image-preview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookmaker-affiliate-url">Bookmaker Affiliate URL</label>
+                        <input type="url" id="bookmaker-affiliate-url" class="form-control" placeholder="Enter bookmaker affiliate URL">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookmaker-geographies">Geographies</label>
+                        <div class="country-selector">
+                            <input type="text" id="bookmaker-geography-search" class="country-search" placeholder="Search countries">
+                            <div id="bookmaker-geography-list" class="geography-list"></div>
+                        </div>
+                        <div class="selected-geographies" id="selected-geographies">
+                            <!-- Selected countries will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background-color: #6c757d;">Cancel</button>
+                <button class="btn" id="save-bookmaker">Save Bookmaker</button>
+            </div>
+        </div>
+    </div>
+
     <link rel="stylesheet" href="owner-modal.css">
     <link rel="stylesheet" href="group-modal.css">
+    <link rel="stylesheet" href="bookmaker-modal.css">
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -441,6 +503,12 @@
             let countriesData = [];
             // Array para armazenar owners registrados
             let ownersData = [];
+            // Array para armazenar groups registrados
+            let groupsData = [];
+            // Array para armazenar bookmakers registrados
+            let bookmakersData = [];
+            // Array para armazenar geographies selecionadas
+            let selectedGeographies = [];
             
             // Try to import countries first
             // Load the countries.js file as a regular script
@@ -451,6 +519,7 @@
                 if (window.countriesModule && window.countriesModule.countries) {
                     countriesData = window.countriesModule.countries;
                     initCountrySelectors();
+                    initGeographySelector();
                 } else {
                     console.error("Countries module not properly loaded");
                     fetchCountries();
@@ -477,6 +546,7 @@
                                 const getCountries = new Function('return ' + countriesStr.replace('const countries = ', '').trim().slice(0, -1));
                                 countriesData = getCountries();
                                 initCountrySelectors();
+                                initGeographySelector();
                             }
                         } catch (error) {
                             console.error("Error parsing countries:", error);
@@ -731,7 +801,7 @@
                 resetGroupForm();
             }
             
-            // Tab functionality for both modals
+            // Tab functionality for all modals
             const tabsContainers = document.querySelectorAll('.tabs');
             
             tabsContainers.forEach(container => {
@@ -807,8 +877,9 @@
             
             // Save group
             groupSaveBtn.addEventListener('click', function() {
+                const groupId = Date.now().toString(); // Generate a unique ID
                 const groupData = {
-                    id: Date.now().toString(),
+                    id: groupId,
                     status: document.getElementById('group-status').value,
                     name: document.getElementById('group-name').value,
                     url: document.getElementById('group-url').value,
@@ -846,6 +917,12 @@
                         description: document.getElementById('deal-description').value
                     };
                 }
+                
+                // Add to groups array
+                groupsData.push(groupData);
+                
+                // Update group dropdown in bookmaker modal
+                updateGroupDropdown();
                 
                 console.log('Group data:', groupData);
                 alert('Group added successfully!');
@@ -893,12 +970,276 @@
                 groupModal.querySelector('.tab[data-tab="group-settings"]').click();
             }
             
-            // Bookmaker button
+            // Update the group dropdown in the bookmaker modal
+            function updateGroupDropdown() {
+                const groupDropdown = document.getElementById('bookmaker-group');
+                if (!groupDropdown) return;
+                
+                // Clear current options except the first one
+                while (groupDropdown.options.length > 1) {
+                    groupDropdown.remove(1);
+                }
+                
+                // Add groups to dropdown
+                groupsData.forEach(group => {
+                    const option = document.createElement('option');
+                    option.value = group.id;
+                    option.textContent = group.name;
+                    groupDropdown.appendChild(option);
+                });
+            }
+            
+            // BOOKMAKER MODAL FUNCTIONALITY
+            const bookmakerModal = document.getElementById('bookmakerModal');
+            const bookmakerCloseBtn = bookmakerModal.querySelector('.modal-close');
+            const bookmakerCancelBtn = bookmakerModal.querySelector('.modal-footer .btn:first-child');
+            const bookmakerSaveBtn = document.getElementById('save-bookmaker');
+            
+            // Open bookmaker modal when Add Bookmaker button is clicked
             document.getElementById('addBookmaker').addEventListener('click', function() {
-                alert('Formulário para adicionar novo bookmaker seria exibido aqui.');
+                bookmakerModal.classList.add('active');
+                // Update group dropdown when opening modal
+                updateGroupDropdown();
             });
             
-            // Configurar listeners para botões de edição
+            // Close modal when close button or cancel is clicked
+            bookmakerCloseBtn.addEventListener('click', function() {
+                closeBookmakerModal();
+            });
+            bookmakerCancelBtn.addEventListener('click', function() {
+                closeBookmakerModal();
+            });
+            
+            function closeBookmakerModal() {
+                bookmakerModal.classList.remove('active');
+                resetBookmakerForm();
+            }
+            
+            // Logo preview functionality for bookmaker
+            const bookmakerLogoInput = document.getElementById('bookmaker-logo');
+            const bookmakerLogoPreview = document.getElementById('bookmaker-logo-preview');
+            
+            bookmakerLogoInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        bookmakerLogoPreview.innerHTML = `
+                            <img src="${e.target.result}" style="max-width: 100%; max-height: 150px;">
+                            <button type="button" id="remove-bookmaker-logo" style="display: block; margin-top: 5px;" class="btn btn-sm btn-delete">Remove</button>
+                        `;
+                        
+                        document.getElementById('remove-bookmaker-logo').addEventListener('click', function() {
+                            bookmakerLogoInput.value = '';
+                            bookmakerLogoPreview.innerHTML = '';
+                        });
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Initialize geography selector for multiple country selection
+            function initGeographySelector() {
+                const geographySearch = document.getElementById('bookmaker-geography-search');
+                const geographyList = document.getElementById('bookmaker-geography-list');
+                const selectedGeographiesContainer = document.getElementById('selected-geographies');
+                
+                if (!geographySearch || !geographyList || !selectedGeographiesContainer) {
+                    console.error("Geography selector elements not found");
+                    return;
+                }
+                
+                // Populate country list for multiple selection
+                function renderGeographyList(filter = '') {
+                    geographyList.innerHTML = '';
+                    
+                    const filteredCountries = filter 
+                        ? countriesData.filter(c => c.name.toLowerCase().includes(filter.toLowerCase())) 
+                        : countriesData;
+                    
+                    filteredCountries.forEach(country => {
+                        // Skip if already selected
+                        if (selectedGeographies.some(selected => selected.code === country.code)) {
+                            return;
+                        }
+                        
+                        const item = document.createElement('div');
+                        item.className = 'geography-item';
+                        item.innerHTML = `
+                            <span class="country-flag">${country.flag}</span>
+                            <span>${country.name}</span>
+                        `;
+                        
+                        item.addEventListener('click', function() {
+                            // Add to selected geographies
+                            addGeography(country);
+                            
+                            // Clear search and hide list
+                            geographySearch.value = '';
+                            geographyList.classList.remove('active');
+                            
+                            // Re-render geography list to exclude selected items
+                            renderGeographyList();
+                        });
+                        
+                        geographyList.appendChild(item);
+                    });
+                }
+                
+                // Add a country to selected geographies
+                function addGeography(country) {
+                    // Check if already selected
+                    if (selectedGeographies.some(selected => selected.code === country.code)) {
+                        return;
+                    }
+                    
+                    // Add to selected array
+                    selectedGeographies.push(country);
+                    
+                    // Add to UI
+                    renderSelectedGeographies();
+                }
+                
+                // Remove a country from selected geographies
+                function removeGeography(countryCode) {
+                    selectedGeographies = selectedGeographies.filter(country => country.code !== countryCode);
+                    renderSelectedGeographies();
+                    // Re-render geography list since a country was removed
+                    renderGeographyList(geographySearch.value);
+                }
+                
+                // Render selected geographies in the UI
+                function renderSelectedGeographies() {
+                    selectedGeographiesContainer.innerHTML = '';
+                    
+                    if (selectedGeographies.length === 0) {
+                        selectedGeographiesContainer.innerHTML = '<i>No countries selected</i>';
+                        return;
+                    }
+                    
+                    selectedGeographies.forEach(country => {
+                        const tag = document.createElement('div');
+                        tag.className = 'geography-tag';
+                        tag.dataset.code = country.code;
+                        tag.innerHTML = `
+                            <span class="country-flag">${country.flag}</span>
+                            <span>${country.name}</span>
+                            <span class="remove-geography">×</span>
+                        `;
+                        
+                        tag.querySelector('.remove-geography').addEventListener('click', function() {
+                            removeGeography(country.code);
+                        });
+                        
+                        selectedGeographiesContainer.appendChild(tag);
+                    });
+                }
+                
+                // Show geography list on focus
+                geographySearch.addEventListener('focus', function() {
+                    geographyList.classList.add('active');
+                    renderGeographyList();
+                });
+                
+                // Filter countries on search
+                geographySearch.addEventListener('input', function() {
+                    renderGeographyList(this.value);
+                    geographyList.classList.add('active');
+                });
+                
+                // Close geography list when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.country-selector')) {
+                        geographyList.classList.remove('active');
+                    }
+                });
+                
+                // Initial render
+                renderSelectedGeographies();
+                renderGeographyList();
+            }
+            
+            // Save bookmaker
+            bookmakerSaveBtn.addEventListener('click', function() {
+                const bookmakerId = Date.now().toString(); // Generate a unique ID
+                const bookmakerData = {
+                    id: bookmakerId,
+                    group: document.getElementById('bookmaker-group').value,
+                    status: document.getElementById('bookmaker-status').value,
+                    name: document.getElementById('bookmaker-name').value,
+                    affiliateUrl: document.getElementById('bookmaker-affiliate-url').value,
+                    geographies: selectedGeographies.map(country => ({
+                        code: country.code,
+                        name: country.name,
+                        flag: country.flag
+                    }))
+                };
+                
+                // Add to bookmakers array
+                bookmakersData.push(bookmakerData);
+                
+                console.log('Bookmaker data:', bookmakerData);
+                alert('Bookmaker added successfully!');
+                closeBookmakerModal();
+                
+                // Optionally, add the new bookmaker to the table
+                addBookmakerToTable(bookmakerData);
+            });
+            
+            function resetBookmakerForm() {
+                // Reset Bookmaker Settings fields
+                document.getElementById('bookmaker-group').selectedIndex = 0;
+                document.getElementById('bookmaker-status').value = 'active';
+                document.getElementById('bookmaker-name').value = '';
+                document.getElementById('bookmaker-logo').value = '';
+                document.getElementById('bookmaker-logo-preview').innerHTML = '';
+                document.getElementById('bookmaker-affiliate-url').value = '';
+                
+                // Clear selected geographies
+                selectedGeographies = [];
+                document.getElementById('selected-geographies').innerHTML = '<i>No countries selected</i>';
+                
+                // Clear geography search
+                document.getElementById('bookmaker-geography-search').value = '';
+                document.getElementById('bookmaker-geography-list').classList.remove('active');
+            }
+            
+            // Add a new bookmaker to the table
+            function addBookmakerToTable(bookmaker) {
+                const table = document.querySelector('.bookmaker-table tbody');
+                if (!table) return;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${bookmaker.id}</td>
+                    <td>${bookmaker.name}</td>
+                    <td>${bookmaker.affiliateUrl || '-'}</td>
+                    <td>${bookmaker.status}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-edit">Editar</button>
+                        <button class="btn btn-delete">Excluir</button>
+                    </td>
+                `;
+                
+                // Add event listeners for the new buttons
+                row.querySelector('.btn-edit').addEventListener('click', function() {
+                    alert(`Editando bookmaker com ID: ${bookmaker.id}`);
+                });
+                
+                row.querySelector('.btn-delete').addEventListener('click', function() {
+                    if (confirm(`Tem certeza que deseja excluir o bookmaker "${bookmaker.name}"?`)) {
+                        row.remove();
+                        bookmakersData = bookmakersData.filter(b => b.id !== bookmaker.id);
+                        alert(`Bookmaker "${bookmaker.name}" excluído.`);
+                    }
+                });
+                
+                table.appendChild(row);
+            }
+            
+            // Configurar listeners para botões de edição existentes
             document.querySelectorAll('.btn-edit').forEach(button => {
                 button.addEventListener('click', function() {
                     const row = this.closest('tr');
@@ -907,7 +1248,7 @@
                 });
             });
             
-            // Configurar listeners para botões de exclusão
+            // Configurar listeners para botões de exclusão existentes
             document.querySelectorAll('.btn-delete').forEach(button => {
                 button.addEventListener('click', function() {
                     const row = this.closest('tr');
@@ -915,7 +1256,9 @@
                     const name = row.cells[1].textContent;
                     
                     if (confirm(`Tem certeza que deseja excluir o bookmaker "${name}"?`)) {
-                        alert(`Bookmaker "${name}" seria excluído em uma implementação real.`);
+                        row.remove();
+                        bookmakersData = bookmakersData.filter(b => b.id !== id);
+                        alert(`Bookmaker "${name}" excluído.`);
                     }
                 });
             });
