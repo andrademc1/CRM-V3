@@ -1,4 +1,3 @@
-
 // Lista de países com informações geográficas e bandeiras
 const countries = [
   {
@@ -1112,7 +1111,7 @@ const countries = [
     name: "Níger",
     code: "NE",
     continent: "África",
-    flag: "🇳🇪",
+    flag: "🇳🇪,
     capital: "Niamey",
     languages: ["Francês"],
     currency: "Franco CFA ocidental"
@@ -1752,8 +1751,8 @@ function getCountryByName(name) {
   return countries.find(country => country.name.toLowerCase().includes(name.toLowerCase()));
 }
 
-// Exportar para uso em outros módulos
-module.exports = {
+// Em vez de usar module.exports, disponibilizar as funções globalmente
+window.countriesAPI = {
   countries,
   getCountriesByContinent,
   getAllContinents,
