@@ -1,156 +1,20 @@
 
-// Função para popular a tabela de bookmakers - movida para o escopo global
-function populateBookmakersTable() {
-    const tableBody = document.getElementById('bookmakers-table-body');
-    const noBookmakersMessage = document.getElementById('no-bookmakers-message');
-    
-    if (!tableBody) return;
-    
-    // Limpa a tabela
-    tableBody.innerHTML = '';
-    
-    // Verifica se há bookmakers cadastrados
-    if (!window.bookmakersData || window.bookmakersData.length === 0) {
-        if (noBookmakersMessage) {
-            noBookmakersMessage.style.display = 'block';
-        }
-        return;
-    }
-    
-    // Esconde a mensagem de "sem bookmakers"
-    if (noBookmakersMessage) {
-        noBookmakersMessage.style.display = 'none';
-    }
-    
-    // Adiciona cada bookmaker à tabela
-    window.bookmakersData.forEach(bookmaker => {
-        // Encontra o nome do grupo, se existir
-        let groupName = 'N/A';
-        if (bookmaker.group) {
-            const group = window.groupsData.find(g => g.id === bookmaker.group);
-            if (group) {
-                groupName = group.name;
-            }
-        }
-        
-        // Formata o status para exibição
-        let statusDisplay = bookmaker.status;
-        if (statusDisplay === 'active') statusDisplay = 'Ativo';
-        else if (statusDisplay === 'inactive') statusDisplay = 'Inativo';
-        else if (statusDisplay === 'suspended') statusDisplay = 'Suspenso';
-        
-        // Cria a linha da tabela
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${bookmaker.id}</td>
-            <td>${bookmaker.name}</td>
-            <td>${bookmaker.affiliateUrl || '-'}</td>
-            <td>${statusDisplay}</td>
-            <td>${groupName}</td>
-            <td class="action-buttons">
-                <button class="btn btn-edit" data-id="${bookmaker.id}">Editar</button>
-                <button class="btn btn-delete" data-id="${bookmaker.id}">Excluir</button>
-            </td>
-        `;
-        
-        tableBody.appendChild(row);
-    });
-    
-    // Adiciona event listeners para os botões de editar e excluir
-    addBookmakerTableEventListeners();
-}
-
-// Função para adicionar event listeners aos botões da tabela
-function addBookmakerTableEventListeners() {
-    // Botões de editar
-    document.querySelectorAll('.bookmaker-table .btn-edit').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const bookmakerId = this.getAttribute('data-id');
-            alert(`Edição de bookmaker será implementada em breve (ID: ${bookmakerId})`);
-            // Implementar a lógica de edição no futuro
-        });
-    });
-    
-    // Botões de excluir
-    document.querySelectorAll('.bookmaker-table .btn-delete').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const bookmakerId = this.getAttribute('data-id');
-            const bookmaker = window.bookmakersData.find(b => b.id === bookmakerId);
-            
-            if (!bookmaker) return;
-            
-            if (confirm(`Tem certeza que deseja excluir o bookmaker "${bookmaker.name}"?`)) {
-                // Remove do array
-                window.bookmakersData = window.bookmakersData.filter(b => b.id !== bookmakerId);
-                
-                // Salva no localStorage
-                window.DB.bookmakers.save(window.bookmakersData);
-                
-                // Atualiza a tabela
-                populateBookmakersTable();
-                
-                alert(`Bookmaker "${bookmaker.name}" foi excluído com sucesso!`);
-            }
-        });
-    });
-}
-
-// Função global para carregar e inicializar os dados
-function loadAndInitializeData() {
+document.addEventListener('DOMContentLoaded', function() {
     // Inicializa o banco de dados local
     if(window.DB) {
         window.DB.init();
         
-        // Carrega os dados existentes garantindo as arrays
-        window.ownersData = window.DB.owners.get();
-        if (!Array.isArray(window.ownersData)) {
-            window.ownersData = [];
-            window.DB.owners.save(window.ownersData);
-        }
+        // Carrega os dados existentes
+        window.ownersData = window.DB.owners.get() || [];
+        window.groupsData = window.DB.groups.get() || [];
+        window.bookmakersData = window.DB.bookmakers.get() || [];
         
-        window.groupsData = window.DB.groups.get();
-        if (!Array.isArray(window.groupsData)) {
-            window.groupsData = [];
-            window.DB.groups.save(window.groupsData);
-        }
-        
-        window.bookmakersData = window.DB.bookmakers.get();
-        if (!Array.isArray(window.bookmakersData)) {
-            window.bookmakersData = [];
-            window.DB.bookmakers.save(window.bookmakersData);
-        }
-        
-        console.log("Dados carregados com sucesso:", {
+        console.log("Dados carregados:", {
             owners: window.ownersData.length,
             groups: window.groupsData.length,
             bookmakers: window.bookmakersData.length
         });
-        
-        // Verifica se estamos na página de bookmakers
-        if (document.getElementById('bookmakers-table-body')) {
-            console.log("Populando tabela de bookmakers com", window.bookmakersData.length, "registros");
-            populateBookmakersTable();
-        }
-    } else {
-        console.error("DB não está inicializado corretamente");
     }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Chama a função para carregar e inicializar os dados
-    loadAndInitializeData();
-    
-    // Adiciona evento para salvar dados antes de sair da página
-    window.addEventListener('beforeunload', function() {
-        console.log("Página está sendo fechada, salvando dados...");
-        saveAllData();
-    });
-    
-    // Adiciona evento para salvar a cada 30 segundos
-    setInterval(function() {
-        console.log("Salvamento automático de dados...");
-        saveAllData();
-    }, 30000);
     
     // Get all navigation links
     const navLinks = document.querySelectorAll('.sidebar-nav li a');
@@ -268,10 +132,6 @@ function addDataSaveObserver() {
                 saveAllData();
             }, 100);
         }
-
-// As funções de popular tabela e adicionar event listeners foram movidas
-// para a parte superior do arquivo
-
     });
     
     // Adiciona listener para mudanças em formulários importantes
@@ -291,62 +151,22 @@ function addDataSaveObserver() {
 function saveAllData() {
     console.log("Salvando todos os dados...");
     
-    // Verifica e salva owners
-    if (window.ownersData && Array.isArray(window.ownersData)) {
+    // Salva owners
+    if (window.ownersData) {
         window.DB.owners.save(window.ownersData);
-        console.log("Owners salvos:", window.ownersData.length);
-    } else {
-        console.error("Não foi possível salvar owners - dados inválidos");
     }
     
-    // Verifica e salva groups
-    if (window.groupsData && Array.isArray(window.groupsData)) {
+    // Salva groups
+    if (window.groupsData) {
         window.DB.groups.save(window.groupsData);
-        console.log("Groups salvos:", window.groupsData.length);
-    } else {
-        console.error("Não foi possível salvar groups - dados inválidos");
     }
     
-    // Verifica e salva bookmakers
-    if (window.bookmakersData && Array.isArray(window.bookmakersData)) {
-        console.log("Bookmakers para salvar:", window.bookmakersData.length);
-        
-        // Garantir que não há dados undefined ou null
-        const validBookmakers = window.bookmakersData.filter(b => b && typeof b === 'object');
-        console.log("Bookmakers válidos:", validBookmakers.length);
-        
-        // Forçar salvamento
-        const resultado = window.DB.bookmakers.save(validBookmakers);
-        console.log("Resultado do salvamento de bookmakers:", resultado);
-        
-        // Verificar se os dados foram salvos corretamente
-        const savedData = localStorage.getItem(window.DATABASE_KEYS.BOOKMAKERS);
-        console.log("Dados brutos no localStorage:", savedData ? savedData.substring(0, 100) + "..." : "vazio");
-    } else {
-        console.error("Não foi possível salvar bookmakers - dados inválidos");
+    // Salva bookmakers
+    if (window.bookmakersData) {
+        window.DB.bookmakers.save(window.bookmakersData);
     }
     
-    // Verifica os dados no localStorage após salvar
-    try {
-        const ownersCount = window.DB.owners.get().length;
-        const groupsCount = window.DB.groups.get().length;
-        const bookmakersCount = window.DB.bookmakers.get().length;
-        
-        console.log("Dados verificados no localStorage:", {
-            owners: ownersCount,
-            groups: groupsCount,
-            bookmakers: bookmakersCount
-        });
-        
-        // Se os dados não foram salvos, alertar
-        if (window.bookmakersData && window.bookmakersData.length > 0 && bookmakersCount === 0) {
-            console.error("ATENÇÃO: Os bookmakers não foram salvos corretamente!");
-        } else {
-            console.log("Dados salvos com sucesso!");
-        }
-    } catch (error) {
-        console.error("Erro ao verificar dados salvos:", error);
-    }
+    console.log("Dados salvos com sucesso!");
 }
 
 function saveOwnerData() {
