@@ -3469,17 +3469,29 @@
                     const contactsList = document.getElementById("contacts-list");
                     const noContactsMessage = document.getElementById("no-contacts-message");
                     
+                    if (!contactsList) {
+                        console.error("Element with ID 'contacts-list' not found.");
+                        return;
+                    }
+                    
                     if (bookmakerContacts.length === 0) {
-                        noContactsMessage.style.display = "block";
-                        // Clear any existing contacts except the message
-                        while (contactsList.childElementCount > 1) {
-                            contactsList.removeChild(contactsList.lastChild);
+                        if (noContactsMessage) {
+                            noContactsMessage.style.display = "block";
+                            // Clear any existing contacts except the message
+                            while (contactsList.childElementCount > 1) {
+                                contactsList.removeChild(contactsList.lastChild);
+                            }
+                        } else {
+                            console.error("Element with ID 'no-contacts-message' not found.");
+                            contactsList.innerHTML = "<p><i>No contacts added yet</i></p>";
                         }
                         return;
                     }
                     
                     // Hide the no contacts message
-                    noContactsMessage.style.display = "none";
+                    if (noContactsMessage) {
+                        noContactsMessage.style.display = "none";
+                    }
                     
                     // Clear existing contacts
                     contactsList.innerHTML = "";
