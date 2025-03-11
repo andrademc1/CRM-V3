@@ -3,7 +3,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
   // Handle static files
@@ -49,8 +49,16 @@ const server = http.createServer((req, res) => {
   });
 });
 
+server.on('error', (e) => {
+  if (e.code === 'EADDRINUSE') {
+    console.log(`Port ${PORT} is already in use, trying ${PORT + 1}...`);
+    // Try the next port
+    server.listen(PORT + 1, '0.0.0.0');
+  }
+});
+
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running at http://0.0.0.0:${PORT}/`);
+  console.log(`Server running at http://0.0.0.0:${server.address().port}/`);
 });
 
 // Server-side code only - DOM manipulation code moved to script.js
