@@ -76,6 +76,13 @@ async function loadDatabase() {
 // Save database to file
 async function saveDatabase() {
   try {
+    // Verificar dados antes de salvar
+    console.log("Tentando salvar dados:", {
+      owners: database.owners.length,
+      groups: database.groups.length,
+      bookmakers: database.bookmakers.length
+    });
+    
     // Create a payload that will be sent to the server
     const payload = JSON.stringify(database, null, 2);
     
@@ -89,12 +96,16 @@ async function saveDatabase() {
     });
     
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
     }
     
     const result = await response.json();
     
     console.log("Banco de dados salvo com sucesso:", result);
+    
+    // Verificar se o salvamento realmente funcionou
+    await loadDatabase();
     
     return {
       message: "Banco de dados salvo com sucesso",
@@ -102,6 +113,7 @@ async function saveDatabase() {
     };
   } catch (error) {
     console.error("Erro ao salvar banco de dados no arquivo:", error);
+    alert("Erro ao salvar dados: " + error.message);
     
     return {
       message: "Erro ao salvar banco de dados no arquivo",
@@ -113,17 +125,22 @@ async function saveDatabase() {
 // Owner management
 function addOwner(ownerData) {
   database.owners.push(ownerData);
-  saveDatabase();
+  console.log("Adicionando owner:", ownerData);
+  console.log("Total de owners agora:", database.owners.length);
+  const result = saveDatabase();
   return ownerData;
 }
 
 function updateOwner(ownerId, ownerData) {
+  console.log("Atualizando owner:", ownerId, ownerData);
   const index = database.owners.findIndex(owner => owner.id === ownerId);
   if (index !== -1) {
     database.owners[index] = { ...database.owners[index], ...ownerData };
-    saveDatabase();
+    console.log("Owner atualizado:", database.owners[index]);
+    const result = saveDatabase();
     return database.owners[index];
   }
+  console.error("Owner não encontrado para atualização:", ownerId);
   return null;
 }
 
