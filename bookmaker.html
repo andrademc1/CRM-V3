@@ -267,12 +267,180 @@
         </div>
     </div>
 
+    <!-- Group Modal -->
+    <div id="groupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Group</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab active" data-tab="group-settings">Group Settings</div>
+                    <div class="tab" data-tab="group-account">Group Account Settings</div>
+                    <div class="tab" data-tab="group-billing">Group Billing Settings</div>
+                    <div class="tab" data-tab="group-deal">Group Deal Settings</div>
+                </div>
+                
+                <!-- Group Settings Tab -->
+                <div class="tab-content active" id="group-settings">
+                    <div class="form-group">
+                        <label for="group-status">Group Status</label>
+                        <select id="group-status" class="form-control">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="group-name">Group Name</label>
+                        <input type="text" id="group-name" class="form-control" placeholder="Enter group name">
+                    </div>
+                    <div class="form-group">
+                        <label for="group-logo">Group Logo</label>
+                        <input type="file" id="group-logo" class="form-control" accept="image/*">
+                        <div id="group-logo-preview" class="image-preview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="group-url">Group URL</label>
+                        <input type="url" id="group-url" class="form-control" placeholder="Enter group URL">
+                    </div>
+                    <div class="form-group">
+                        <label for="group-affiliate-url">Group Affiliate URL</label>
+                        <input type="url" id="group-affiliate-url" class="form-control" placeholder="Enter group affiliate URL">
+                    </div>
+                </div>
+                
+                <!-- Group Account Settings Tab -->
+                <div class="tab-content" id="group-account">
+                    <div class="form-check">
+                        <input type="checkbox" id="apply-account" class="form-check-input">
+                        <label for="apply-account">Apply Account Settings by Group?</label>
+                    </div>
+                    
+                    <div id="account-details" style="display: none;">
+                        <div class="form-group">
+                            <label for="account-owner">Owner</label>
+                            <select id="account-owner" class="form-control">
+                                <option value="">Select an owner</option>
+                                <!-- Owners will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="account-status">Account Status</label>
+                            <select id="account-status" class="form-control">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="account-username">Username/Email</label>
+                            <input type="text" id="account-username" class="form-control" placeholder="Enter username or email">
+                        </div>
+                        <div class="form-group">
+                            <label for="account-password">Password</label>
+                            <input type="password" id="account-password" class="form-control" placeholder="Enter password">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Group Billing Settings Tab -->
+                <div class="tab-content" id="group-billing">
+                    <div class="form-check">
+                        <input type="checkbox" id="apply-group-billing" class="form-check-input">
+                        <label for="apply-group-billing">Apply Billing Settings by Group?</label>
+                    </div>
+                    
+                    <div id="group-billing-details" style="display: none;">
+                        <div class="form-group">
+                            <label for="group-billing-name">Name</label>
+                            <input type="text" id="group-billing-name" class="form-control" placeholder="Enter billing name">
+                        </div>
+                        <div class="form-group">
+                            <label for="group-billing-vat">VAT</label>
+                            <input type="text" id="group-billing-vat" class="form-control" placeholder="Enter VAT number">
+                        </div>
+                        <div class="form-group">
+                            <label for="group-billing-address1">Address 1</label>
+                            <input type="text" id="group-billing-address1" class="form-control" placeholder="Enter address line 1">
+                        </div>
+                        <div class="form-group">
+                            <label for="group-billing-address2">Address 2</label>
+                            <input type="text" id="group-billing-address2" class="form-control" placeholder="Enter address line 2">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="group-billing-city">City</label>
+                                <input type="text" id="group-billing-city" class="form-control" placeholder="Enter city">
+                            </div>
+                            <div class="form-col">
+                                <label for="group-billing-state">State/Province/Region</label>
+                                <input type="text" id="group-billing-state" class="form-control" placeholder="Enter state/province">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="group-billing-zipcode">Zip-Code</label>
+                                <input type="text" id="group-billing-zipcode" class="form-control" placeholder="Enter zip code">
+                            </div>
+                            <div class="form-col">
+                                <label for="group-billing-country">Country</label>
+                                <div class="country-selector">
+                                    <input type="text" id="group-country-search" class="country-search" placeholder="Search country">
+                                    <div id="group-country-list" class="country-list"></div>
+                                    <div id="group-selected-country" class="selected-country" style="display: none;">
+                                        <span id="group-selected-flag" class="country-flag"></span>
+                                        <span id="group-selected-name"></span>
+                                        <span class="country-remove">×</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Group Deal Settings Tab -->
+                <div class="tab-content" id="group-deal">
+                    <div class="form-check">
+                        <input type="checkbox" id="apply-deal" class="form-check-input">
+                        <label for="apply-deal">Apply Deal Settings by Group?</label>
+                    </div>
+                    
+                    <div id="deal-details" style="display: none;">
+                        <div class="form-group">
+                            <label for="deal-type">Deal Type</label>
+                            <select id="deal-type" class="form-control">
+                                <option value="revshare">Rev Share</option>
+                                <option value="cpa">CPA</option>
+                                <option value="hybrid">Hybrid</option>
+                                <option value="flatfee">Flat Fee</option>
+                                <option value="other">Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="deal-description">Deal Description</label>
+                            <textarea id="deal-description" class="form-control" rows="4" placeholder="Enter deal description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background-color: #6c757d;">Cancel</button>
+                <button class="btn" id="save-group">Save Group</button>
+            </div>
+        </div>
+    </div>
+
     <link rel="stylesheet" href="owner-modal.css">
+    <link rel="stylesheet" href="group-modal.css">
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Get country data from countries.js
             let countriesData = [];
+            // Array para armazenar owners registrados
+            let ownersData = [];
             
             // Try to import countries first
             // Load the countries.js file as a regular script
@@ -282,7 +450,7 @@
                 // Access the countries through the global variable
                 if (window.countriesModule && window.countriesModule.countries) {
                     countriesData = window.countriesModule.countries;
-                    initCountrySelector();
+                    initCountrySelectors();
                 } else {
                     console.error("Countries module not properly loaded");
                     fetchCountries();
@@ -308,7 +476,7 @@
                                 // Using Function constructor to safely evaluate the array
                                 const getCountries = new Function('return ' + countriesStr.replace('const countries = ', '').trim().slice(0, -1));
                                 countriesData = getCountries();
-                                initCountrySelector();
+                                initCountrySelectors();
                             }
                         } catch (error) {
                             console.error("Error parsing countries:", error);
@@ -317,10 +485,10 @@
                     .catch(error => console.error("Error fetching countries:", error));
             }
             
-            // Modal functionality
+            // OWNER MODAL FUNCTIONALITY
             const ownerModal = document.getElementById('ownerModal');
-            const closeModalBtn = document.querySelector('.modal-close');
-            const cancelBtn = document.querySelector('.modal-footer .btn:first-child');
+            const ownerCloseBtn = ownerModal.querySelector('.modal-close');
+            const ownerCancelBtn = ownerModal.querySelector('.modal-footer .btn:first-child');
             
             // Open owner modal when Add Owner button is clicked
             document.getElementById('addOwner').addEventListener('click', function() {
@@ -328,31 +496,17 @@
             });
             
             // Close modal when close button or cancel is clicked
-            closeModalBtn.addEventListener('click', closeModal);
-            cancelBtn.addEventListener('click', closeModal);
-            
-            function closeModal() {
-                ownerModal.classList.remove('active');
-                resetForm();
-            }
-            
-            // Tab functionality
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const target = this.getAttribute('data-tab');
-                    
-                    // Remove active class from all tabs and contents
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    this.classList.add('active');
-                    document.getElementById(target).classList.add('active');
-                });
+            ownerCloseBtn.addEventListener('click', function() {
+                closeOwnerModal();
             });
+            ownerCancelBtn.addEventListener('click', function() {
+                closeOwnerModal();
+            });
+            
+            function closeOwnerModal() {
+                ownerModal.classList.remove('active');
+                resetOwnerForm();
+            }
             
             // Toggle billing details based on checkbox
             const applyBillingCheckbox = document.getElementById('apply-billing');
@@ -362,7 +516,7 @@
                 billingDetailsSection.style.display = this.checked ? 'block' : 'none';
             });
             
-            // Logo preview functionality
+            // Logo preview functionality for owner
             const ownerLogoInput = document.getElementById('owner-logo');
             const logoPreview = document.getElementById('logo-preview');
             
@@ -387,14 +541,28 @@
                 }
             });
             
-            // Country selector functionality
-            function initCountrySelector() {
-                const countrySearch = document.getElementById('country-search');
-                const countryList = document.getElementById('country-list');
-                const selectedCountry = document.getElementById('selected-country');
-                const selectedFlag = document.getElementById('selected-flag');
-                const selectedName = document.getElementById('selected-name');
-                const countryRemove = document.querySelector('.country-remove');
+            // Function to initialize both country selectors (owner and group)
+            function initCountrySelectors() {
+                // Initialize owner country selector
+                initCountrySelector('country-search', 'country-list', 'selected-country', 'selected-flag', 'selected-name');
+                
+                // Initialize group country selector
+                initCountrySelector('group-country-search', 'group-country-list', 'group-selected-country', 'group-selected-flag', 'group-selected-name');
+            }
+            
+            // Country selector functionality (reusable)
+            function initCountrySelector(searchId, listId, selectedId, flagId, nameId) {
+                const countrySearch = document.getElementById(searchId);
+                const countryList = document.getElementById(listId);
+                const selectedCountry = document.getElementById(selectedId);
+                const selectedFlag = document.getElementById(flagId);
+                const selectedName = document.getElementById(nameId);
+                const countryRemove = selectedCountry.querySelector('.country-remove');
+                
+                if (!countrySearch || !countryList || !selectedCountry) {
+                    console.error(`One of the country selector elements not found: ${searchId}, ${listId}, ${selectedId}`);
+                    return;
+                }
                 
                 // Populate country list
                 function renderCountryList(filter = '') {
@@ -459,10 +627,9 @@
             
             // Save owner
             document.getElementById('save-owner').addEventListener('click', function() {
-                // Here you would collect all the form data and send it to your backend
-                // For now, we'll just log it to the console and close the modal
-                
+                const ownerId = Date.now().toString(); // Generate a unique ID
                 const ownerData = {
+                    id: ownerId,
                     status: document.getElementById('owner-status').value,
                     name: document.getElementById('owner-name').value,
                     // Logo handling would typically involve uploading the file to a server
@@ -482,12 +649,18 @@
                     };
                 }
                 
+                // Add to owners array
+                ownersData.push(ownerData);
+                
+                // Update owner dropdown in group modal
+                updateOwnerDropdown();
+                
                 console.log('Owner data:', ownerData);
-                alert('Owner would be saved in a real implementation.');
-                closeModal();
+                alert('Owner added successfully!');
+                closeOwnerModal();
             });
             
-            function resetForm() {
+            function resetOwnerForm() {
                 // Reset form fields
                 document.getElementById('owner-status').value = 'active';
                 document.getElementById('owner-name').value = '';
@@ -510,14 +683,217 @@
                 delete document.getElementById('selected-country').dataset.code;
                 
                 // Reset to first tab
-                document.querySelector('.tab[data-tab="owner-settings"]').click();
+                ownerModal.querySelector('.tab[data-tab="owner-settings"]').click();
             }
             
-            // Group & Bookmaker buttons (keeping the original functionality)
+            // Update the owner dropdown in the group modal
+            function updateOwnerDropdown() {
+                const ownerDropdown = document.getElementById('account-owner');
+                if (!ownerDropdown) return;
+                
+                // Clear current options except the first one
+                while (ownerDropdown.options.length > 1) {
+                    ownerDropdown.remove(1);
+                }
+                
+                // Add owners to dropdown
+                ownersData.forEach(owner => {
+                    const option = document.createElement('option');
+                    option.value = owner.id;
+                    option.textContent = owner.name;
+                    ownerDropdown.appendChild(option);
+                });
+            }
+            
+            // GROUP MODAL FUNCTIONALITY
+            const groupModal = document.getElementById('groupModal');
+            const groupCloseBtn = groupModal.querySelector('.modal-close');
+            const groupCancelBtn = groupModal.querySelector('.modal-footer .btn:first-child');
+            const groupSaveBtn = document.getElementById('save-group');
+            
+            // Open group modal when Add Group button is clicked
             document.getElementById('addGroup').addEventListener('click', function() {
-                alert('Formulário para adicionar novo grupo seria exibido aqui.');
+                groupModal.classList.add('active');
+                // Update owner dropdown when opening modal
+                updateOwnerDropdown();
             });
             
+            // Close modal when close button or cancel is clicked
+            groupCloseBtn.addEventListener('click', function() {
+                closeGroupModal();
+            });
+            groupCancelBtn.addEventListener('click', function() {
+                closeGroupModal();
+            });
+            
+            function closeGroupModal() {
+                groupModal.classList.remove('active');
+                resetGroupForm();
+            }
+            
+            // Tab functionality for both modals
+            const tabsContainers = document.querySelectorAll('.tabs');
+            
+            tabsContainers.forEach(container => {
+                const tabs = container.querySelectorAll('.tab');
+                // Find the parent modal
+                const modal = container.closest('.modal');
+                // Get all tab contents in this modal
+                const tabContents = modal.querySelectorAll('.tab-content');
+                
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const target = this.getAttribute('data-tab');
+                        
+                        // Remove active class from all tabs and contents within this modal
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        
+                        // Add active class to clicked tab and corresponding content
+                        this.classList.add('active');
+                        modal.querySelector(`#${target}`).classList.add('active');
+                    });
+                });
+            });
+            
+            // Logo preview functionality for group
+            const groupLogoInput = document.getElementById('group-logo');
+            const groupLogoPreview = document.getElementById('group-logo-preview');
+            
+            groupLogoInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        groupLogoPreview.innerHTML = `
+                            <img src="${e.target.result}" style="max-width: 100%; max-height: 150px;">
+                            <button type="button" id="remove-group-logo" style="display: block; margin-top: 5px;" class="btn btn-sm btn-delete">Remove</button>
+                        `;
+                        
+                        document.getElementById('remove-group-logo').addEventListener('click', function() {
+                            groupLogoInput.value = '';
+                            groupLogoPreview.innerHTML = '';
+                        });
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Toggle account details
+            const applyAccountCheckbox = document.getElementById('apply-account');
+            const accountDetailsSection = document.getElementById('account-details');
+            
+            applyAccountCheckbox.addEventListener('change', function() {
+                accountDetailsSection.style.display = this.checked ? 'block' : 'none';
+            });
+            
+            // Toggle group billing details
+            const applyGroupBillingCheckbox = document.getElementById('apply-group-billing');
+            const groupBillingDetailsSection = document.getElementById('group-billing-details');
+            
+            applyGroupBillingCheckbox.addEventListener('change', function() {
+                groupBillingDetailsSection.style.display = this.checked ? 'block' : 'none';
+            });
+            
+            // Toggle deal details
+            const applyDealCheckbox = document.getElementById('apply-deal');
+            const dealDetailsSection = document.getElementById('deal-details');
+            
+            applyDealCheckbox.addEventListener('change', function() {
+                dealDetailsSection.style.display = this.checked ? 'block' : 'none';
+            });
+            
+            // Save group
+            groupSaveBtn.addEventListener('click', function() {
+                const groupData = {
+                    id: Date.now().toString(),
+                    status: document.getElementById('group-status').value,
+                    name: document.getElementById('group-name').value,
+                    url: document.getElementById('group-url').value,
+                    affiliateUrl: document.getElementById('group-affiliate-url').value
+                };
+                
+                // Check if account settings are enabled
+                if (document.getElementById('apply-account').checked) {
+                    groupData.account = {
+                        owner: document.getElementById('account-owner').value,
+                        status: document.getElementById('account-status').value,
+                        username: document.getElementById('account-username').value,
+                        password: document.getElementById('account-password').value
+                    };
+                }
+                
+                // Check if billing settings are enabled
+                if (document.getElementById('apply-group-billing').checked) {
+                    groupData.billing = {
+                        name: document.getElementById('group-billing-name').value,
+                        vat: document.getElementById('group-billing-vat').value,
+                        address1: document.getElementById('group-billing-address1').value,
+                        address2: document.getElementById('group-billing-address2').value,
+                        city: document.getElementById('group-billing-city').value,
+                        state: document.getElementById('group-billing-state').value,
+                        zipCode: document.getElementById('group-billing-zipcode').value,
+                        country: document.getElementById('group-selected-country').dataset.code
+                    };
+                }
+                
+                // Check if deal settings are enabled
+                if (document.getElementById('apply-deal').checked) {
+                    groupData.deal = {
+                        type: document.getElementById('deal-type').value,
+                        description: document.getElementById('deal-description').value
+                    };
+                }
+                
+                console.log('Group data:', groupData);
+                alert('Group added successfully!');
+                closeGroupModal();
+            });
+            
+            function resetGroupForm() {
+                // Reset Group Settings tab
+                document.getElementById('group-status').value = 'active';
+                document.getElementById('group-name').value = '';
+                document.getElementById('group-logo').value = '';
+                document.getElementById('group-logo-preview').innerHTML = '';
+                document.getElementById('group-url').value = '';
+                document.getElementById('group-affiliate-url').value = '';
+                
+                // Reset Group Account Settings tab
+                document.getElementById('apply-account').checked = false;
+                document.getElementById('account-details').style.display = 'none';
+                document.getElementById('account-owner').selectedIndex = 0;
+                document.getElementById('account-status').value = 'active';
+                document.getElementById('account-username').value = '';
+                document.getElementById('account-password').value = '';
+                
+                // Reset Group Billing Settings tab
+                document.getElementById('apply-group-billing').checked = false;
+                document.getElementById('group-billing-details').style.display = 'none';
+                document.getElementById('group-billing-name').value = '';
+                document.getElementById('group-billing-vat').value = '';
+                document.getElementById('group-billing-address1').value = '';
+                document.getElementById('group-billing-address2').value = '';
+                document.getElementById('group-billing-city').value = '';
+                document.getElementById('group-billing-state').value = '';
+                document.getElementById('group-billing-zipcode').value = '';
+                document.getElementById('group-country-search').value = '';
+                document.getElementById('group-selected-country').style.display = 'none';
+                delete document.getElementById('group-selected-country').dataset.code;
+                
+                // Reset Group Deal Settings tab
+                document.getElementById('apply-deal').checked = false;
+                document.getElementById('deal-details').style.display = 'none';
+                document.getElementById('deal-type').value = 'revshare';
+                document.getElementById('deal-description').value = '';
+                
+                // Reset to first tab
+                groupModal.querySelector('.tab[data-tab="group-settings"]').click();
+            }
+            
+            // Bookmaker button
             document.getElementById('addBookmaker').addEventListener('click', function() {
                 alert('Formulário para adicionar novo bookmaker seria exibido aqui.');
             });
