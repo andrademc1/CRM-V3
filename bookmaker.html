@@ -547,11 +547,22 @@
     <script>
         // Atualização do listener para o botão "Add Group"
         document.addEventListener('DOMContentLoaded', function() {
-            // Outros event listeners que já existem...
-            
-            document.getElementById('addGroup').addEventListener('click', function() {
-                openGroupModal();
-            });
+            // Verificando se já não temos eventos duplicados
+            const addGroupBtn = document.getElementById('addGroup');
+            if (addGroupBtn) {
+                // Removendo listeners antigos para evitar duplicações
+                const oldAddGroup = addGroupBtn.cloneNode(true);
+                addGroupBtn.parentNode.replaceChild(oldAddGroup, addGroupBtn);
+                
+                // Adicionando novo listener
+                oldAddGroup.addEventListener('click', function() {
+                    if (typeof openGroupModal === 'function') {
+                        openGroupModal();
+                    } else {
+                        console.error('A função openGroupModal não está definida!');
+                    }
+                });
+            }
         });
     </script>
 </body>

@@ -1801,11 +1801,9 @@ function getCountryByName(name) {
   );
 }
 
-// Exportar para uso em outros módulos
-module.exports = {
-  countries,
-  getCountriesByContinent,
-  getAllContinents,
-  getCountryByCode,
-  getCountryByName,
-};
+// Exportar para uso global no navegador (sem usar module.exports)
+window.countries = countries;
+window.getCountriesByContinent = getCountriesByContinent;
+window.getAllContinents = getAllContinents;
+window.getCountryByCode = getCountryByCode;
+window.getCountryByName = getCountryByName;
