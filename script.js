@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add click event listeners to each link
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Se o link tiver um href diferente de "#", não previna o comportamento padrão
+            if (href && href !== "#") {
+                return; // Permite a navegação para outra página
+            }
+            
             e.preventDefault();
             
             // Remove active class from all links and add to clicked link
