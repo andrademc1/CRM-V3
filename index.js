@@ -32,12 +32,15 @@ app.get('/api/countries', async (req, res) => {
 // Rota para criar a tabela countries (inicialização)
 app.post('/api/setup', async (req, res) => {
   try {
+    // Verificar conexão com o banco de dados
+    await pool.query('SELECT NOW()');
+    
     // Criar tabela de países se não existir
     await query(`
       CREATE TABLE IF NOT EXISTS countries (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
-        code VARCHAR(2) NOT NULL,
+        code VARCHAR(2) NOT NULL UNIQUE,
         continent VARCHAR(50),
         flag VARCHAR(10),
         capital VARCHAR(100),
@@ -45,10 +48,11 @@ app.post('/api/setup', async (req, res) => {
         currency VARCHAR(50)
       )
     `);
+    
     res.json({ message: 'Banco de dados inicializado com sucesso' });
   } catch (err) {
     console.error('Erro ao configurar banco de dados:', err);
-    res.status(500).json({ error: 'Erro ao configurar banco de dados' });
+    res.status(500).json({ error: 'Erro ao configurar banco de dados: ' + err.message });
   }
 });
 
@@ -121,6 +125,20 @@ app.post('/api/import-countries', async (req, res) => {
     // Carrega o arquivo countries.js
     const countriesData = require('./countries.js');
     
+    // Verifica se a tabela existe, se não, cria
+    await query(`
+      CREATE TABLE IF NOT EXISTS countries (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        code VARCHAR(2) NOT NULL UNIQUE,
+        continent VARCHAR(50),
+        flag VARCHAR(10),
+        capital VARCHAR(100),
+        languages TEXT[],
+        currency VARCHAR(50)
+      )
+    `);
+    
     // Insere cada país no banco de dados
     let insertedCount = 0;
     for (const country of countriesData) {
@@ -132,7 +150,7 @@ app.post('/api/import-countries', async (req, res) => {
           country.continent, 
           country.flag, 
           country.capital, 
-          country.languages, 
+          Array.isArray(country.languages) ? country.languages : [country.languages], 
           country.currency
         ]
       );
@@ -142,7 +160,7 @@ app.post('/api/import-countries', async (req, res) => {
     res.json({ message: `${insertedCount} países importados com sucesso` });
   } catch (err) {
     console.error('Erro ao importar países:', err);
-    res.status(500).json({ error: 'Erro ao importar países' });
+    res.status(500).json({ error: 'Erro ao importar países: ' + err.message });
   }
 });
 

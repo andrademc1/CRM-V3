@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Banco de Dados</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+        .btn-danger {
+            background-color: #f44336;
+        }
+        .btn-primary {
+            background-color: #2196F3;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerenciador de Banco de Dados</h1>
+        
+        <div class="card">
+            <h2>Configuração do Banco de Dados</h2>
+            <button id="setupDatabase" class="btn">Inicializar Banco de Dados</button>
+            <button id="importCountries" class="btn btn-primary">Importar Países</button>
+            <div id="setupStatus" class="status"></div>
+        </div>
+        
+        <div class="card">
+            <h2>Países no Banco de Dados</h2>
+            <button id="loadCountries" class="btn">Carregar Países</button>
+            <div id="countriesTable">
+                <table id="countriesData">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Bandeira</th>
+                            <th>Nome</th>
+                            <th>Código</th>
+                            <th>Continente</th>
+                            <th>Capital</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Os dados dos países serão carregados aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Navegação</h2>
+            <a href="/" class="btn">Voltar para o Início</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar banco de dados
+            document.getElementById('setupDatabase').addEventListener('click', function() {
+                const statusElement = document.getElementById('setupStatus');
+                statusElement.textContent = 'Configurando banco de dados...';
+                statusElement.className = 'status';
+                
+                fetch('/api/setup', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        statusElement.textContent = 'Erro: ' + data.error;
+                        statusElement.className = 'status error';
+                    } else {
+                        statusElement.textContent = data.message;
+                        statusElement.className = 'status success';
+                    }
+                })
+                .catch(error => {
+                    statusElement.textContent = 'Erro: ' + error;
+                    statusElement.className = 'status error';
+                });
+            });
+            
+            // Importar países
+            document.getElementById('importCountries').addEventListener('click', function() {
+                const statusElement = document.getElementById('setupStatus');
+                statusElement.textContent = 'Importando países...';
+                statusElement.className = 'status';
+                
+                fetch('/api/import-countries', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        statusElement.textContent = 'Erro: ' + data.error;
+                        statusElement.className = 'status error';
+                    } else {
+                        statusElement.textContent = data.message;
+                        statusElement.className = 'status success';
+                        // Carregar a lista atualizada de países
+                        loadCountries();
+                    }
+                })
+                .catch(error => {
+                    statusElement.textContent = 'Erro: ' + error;
+                    statusElement.className = 'status error';
+                });
+            });
+            
+            // Carregar países
+            function loadCountries() {
+                const tableBody = document.querySelector('#countriesData tbody');
+                tableBody.innerHTML = '<tr><td colspan="6">Carregando...</td></tr>';
+                
+                fetch('/api/countries')
+                .then(response => response.json())
+                .then(data => {
+                    tableBody.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="6">Nenhum país encontrado no banco de dados.</td></tr>';
+                        return;
+                    }
+                    
+                    data.forEach(country => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${country.id}</td>
+                            <td>${country.flag}</td>
+                            <td>${country.name}</td>
+                            <td>${country.code}</td>
+                            <td>${country.continent}</td>
+                            <td>${country.capital}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    tableBody.innerHTML = `<tr><td colspan="6">Erro ao carregar países: ${error}</td></tr>`;
+                });
+            }
+            
+            document.getElementById('loadCountries').addEventListener('click', loadCountries);
+        });
+    </script>
+</body>
+</html>
