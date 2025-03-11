@@ -67,3 +67,40 @@
 .geography-item .country-flag {
     margin-right: 8px;
 }
+
+/* Account Management Styles */
+.account-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.account-form-buttons {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 15px;
+}
+
+#account-selected-geographies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.accounts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.account-form-container {
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+}
