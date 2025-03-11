@@ -3028,28 +3028,7 @@
                         addContactBtn.parentNode.replaceChild(newAddContactBtn, addContactBtn);
                         
                         // Add event listener to the new button
-                        newAddContactBtn.addEventListener("click", function() {
-                            // Reset the form when adding a new contact
-                            document.getElementById("contact-form").dataset.editId = "";
-                            document.getElementById("contact-name").value = "";
-                            document.getElementById("contact-selected-departments").innerHTML = "";
-                            document.getElementById("contact-selected-geographies").innerHTML = "";
-                            document.getElementById("contact-methods-list").innerHTML = "";
-                            
-                            // Set save button to "Save Contact"
-                            const saveBtn = document.getElementById("save-contact");
-                            saveBtn.textContent = "Save Contact";
-                            
-                            // Remove existing event listener
-                            const newSaveBtn = saveBtn.cloneNode(true);
-                            saveBtn.parentNode.replaceChild(newSaveBtn, saveBtn);
-                            
-                            // Add event listener for saving a new contact
-                            newSaveBtn.addEventListener("click", saveContact);
-                            
-                            // Show the form
-                            document.getElementById("contact-form").style.display = "block";
-                        });
+                        newAddContactBtn.addEventListener("click", showContactForm);
                     }
                     
                     // Add event listener for Save Contact button
@@ -3553,108 +3532,6 @@
                     // Fill the form with contact data
                     document.getElementById("contact-name").value = contact.name;
                     
-                    // Clear existing departments and add the contact's departments
-                    const selectedDepartmentsContainer = document.getElementById("contact-selected-departments");
-                    selectedDepartmentsContainer.innerHTML = "";
-                    
-                    contact.departments.forEach(department => {
-                        const departmentItem = document.createElement("div");
-                        departmentItem.className = "selected-item";
-                        departmentItem.dataset.value = department;
-                        departmentItem.innerHTML = `
-                            <span>${department}</span>
-                            <span class="remove-item">×</span>
-                        `;
-                        selectedDepartmentsContainer.appendChild(departmentItem);
-                        
-                        // Add event listener to remove button
-                        departmentItem.querySelector(".remove-item").addEventListener("click", function() {
-                            departmentItem.remove();
-                        });
-                    });
-                    
-                    // Clear existing geographies and add the contact's geographies
-                    const selectedGeographiesContainer = document.getElementById("contact-selected-geographies");
-                    selectedGeographiesContainer.innerHTML = "";
-                    
-                    contact.geographies.forEach(geography => {
-                        const geographyItem = document.createElement("div");
-                        geographyItem.className = "selected-item";
-                        geographyItem.dataset.code = geography.code;
-                        geographyItem.innerHTML = `
-                            <span class="country-flag">${geography.flag}</span>
-                            <span>${geography.name}</span>
-                            <span class="remove-item">×</span>
-                        `;
-                        selectedGeographiesContainer.appendChild(geographyItem);
-                        
-                        // Add event listener to remove button
-                        geographyItem.querySelector(".remove-item").addEventListener("click", function() {
-                            geographyItem.remove();
-                        });
-                    });
-                    
-                    // Clear existing contact methods
-                    const contactMethodsList = document.getElementById("contact-methods-list");
-                    contactMethodsList.innerHTML = "";
-                    
-                    // Add the contact's contact methods
-                    contact.contactMethods.forEach(method => {
-                        addContactMethodWithValues(method.type, method.value);
-                    });
-                    
-                    // Set the form to edit mode
-                    document.getElementById("contact-form").dataset.editId = contactId;
-                    
-                    // Update the save button text and event
-                    const saveContactBtn = document.getElementById("save-contact");
-                    saveContactBtn.textContent = "Update Contact";
-                    
-                    // Remove existing event listener
-                    const newSaveContactBtn = saveContactBtn.cloneNode(true);
-                    saveContactBtn.parentNode.replaceChild(newSaveContactBtn, saveContactBtn);
-                    
-                    // Add new event listener for updating
-                    newSaveContactBtn.addEventListener("click", function() {
-                        updateContact(contactId);
-                    });
-                }
-                
-                // Helper function to add a contact method with predefined values
-                function addContactMethodWithValues(type, value) {
-                    // Clone the template
-                    const template = document.getElementById("contact-method-template");
-                    const contactMethod = template.querySelector(".contact-method").cloneNode(true);
-                    
-                    // Set values
-                    const typeInput = contactMethod.querySelector(".contact-type-value");
-                    const valueInput = contactMethod.querySelector(".contact-value");
-                    
-                    typeInput.value = type;
-                    valueInput.value = value;
-                    
-                    // Show the selected type
-                    const selectedValueDisplay = contactMethod.querySelector(".selected-value");
-                    if (selectedValueDisplay) {
-                        selectedValueDisplay.textContent = type;
-                        selectedValueDisplay.style.display = "inline-block";
-                    }
-                    
-                    // Add remove button event
-                    const removeBtn = contactMethod.querySelector(".remove-contact-method");
-                    if (removeBtn) {
-                        removeBtn.addEventListener("click", function() {
-                            contactMethod.remove();
-                        });
-                    }
-                    
-                    // Add to the list
-                    document.getElementById("contact-methods-list").appendChild(contactMethod);
-                    
-                    // Setup contact type selector
-                    setupContactTypeSelector(contactMethod);
-                }
-                    
                     // Clear existing departments
                     document.getElementById("contact-selected-departments").innerHTML = "";
                     
@@ -3747,8 +3624,6 @@
                         alert("Please select at least one department");
                         return;
                     }
-                        return;
-                    }
                     
                     // Get selected geographies
                     const selectedGeographyElements = document.getElementById("contact-selected-geographies").querySelectorAll(".selected-item");
@@ -3804,23 +3679,9 @@
                     
                     // Hide the form
                     hideContactForm();
-                }
-                
-                // Function to hide contact form and reset it
-                function hideContactForm() {
-                    document.getElementById("contact-form").style.display = "none";
-                    document.getElementById("contact-form").dataset.editId = "";
-                    
-                    // Clear form fields
-                    document.getElementById("contact-name").value = "";
-                    document.getElementById("contact-selected-departments").innerHTML = "";
-                    document.getElementById("contact-selected-geographies").innerHTML = "";
-                    document.getElementById("contact-methods-list").innerHTML = "";
                     
                     // Reset the form save button
                     const saveContactBtn = document.getElementById("save-contact");
-                    saveContactBtn.textContent = "Save Contact";
-                    
                     const newSaveContactBtn = saveContactBtn.cloneNode(true);
                     saveContactBtn.parentNode.replaceChild(newSaveContactBtn, saveContactBtn);
                     
