@@ -74,10 +74,12 @@ server.listen(PORT, '0.0.0.0', () => {
                                 const generalBillingSection = this.closest(
                                     ".billing-card",
                                 ).querySelector(".general-billing-section");
-                                const autoFillButtons = this.closest(
+                                
+                                // Find all auto-fill buttons in the card - both general and geography-specific
+                                const generalAutoFillButtons = this.closest(
                                     ".billing-card",
                                 ).querySelector(".auto-fill-buttons");
-
+                                
                                 // Show/hide the appropriate sections
                                 if (geographyBillingSection) {
                                     geographyBillingSection.style.display = this
@@ -98,12 +100,12 @@ server.listen(PORT, '0.0.0.0', () => {
                                     }
                                 }
 
-                                // Show/hide the auto-fill buttons
-                                if (autoFillButtons) {
+                                // Show/hide the general auto-fill buttons
+                                if (generalAutoFillButtons) {
                                     if (this.checked) {
-                                        autoFillButtons.classList.add("hidden");
+                                        generalAutoFillButtons.classList.add("hidden");
                                     } else {
-                                        autoFillButtons.classList.remove("hidden");
+                                        generalAutoFillButtons.classList.remove("hidden");
                                     }
                                 }
                             });
