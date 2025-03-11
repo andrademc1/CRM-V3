@@ -3071,6 +3071,16 @@
                     initContactGeographyDropdown();
                 }
                 
+                // Function to safely set value on form elements
+                function safeSetValue(elementId, value) {
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        element.value = value;
+                    } else {
+                        console.error(`Element with ID '${elementId}' not found.`);
+                    }
+                }
+                
                 // Function to show the contact form
                 function showContactForm() {
                     const contactForm = document.getElementById("contact-form");
@@ -3081,27 +3091,15 @@
                         return; // Exit the function if the form doesn't exist
                     }
                     
-                    // Function to safely set value on form elements
-                    function safeSetValue(elementId, value) {
-                        const element = document.getElementById(elementId);
-                        if (element) {
-                            element.value = value;
-                        } else {
-                            console.error(`Element with ID '${elementId}' not found.`);
-                        }
-                    }
-                    
                     // Safely clear form fields
                     safeSetValue("contact-name", "");
                     safeSetValue("department-search", "");
-                    safeSetValue("contact-department", "");
                     
-                    const selectedDepartment = document.getElementById("selected-department");
-                    if (selectedDepartment) {
-                        selectedDepartment.style.display = "none";
-                        selectedDepartment.textContent = "";
+                    const selectedDepartments = document.getElementById("contact-selected-departments");
+                    if (selectedDepartments) {
+                        selectedDepartments.innerHTML = "";
                     } else {
-                        console.error("Element with ID 'selected-department' not found.");
+                        console.error("Element with ID 'contact-selected-departments' not found.");
                     }
                     
                     safeSetValue("contact-geography-search", "");
