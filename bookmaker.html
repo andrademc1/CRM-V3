@@ -703,6 +703,9 @@
                         <div class="tab" data-tab="bookmaker-affiliate-urls">
                             Bookmaker Affiliate URL
                         </div>
+                        <div class="tab" data-tab="bookmaker-games">
+                            Games
+                        </div>
                         <div class="tab" data-tab="bookmaker-account">
                             Bookmaker Account Settings
                         </div>
@@ -810,6 +813,17 @@
 
                         <div id="affiliate-url-geographies-container">
                             <!-- Geography Affiliate URL fields will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <!-- Bookmaker Games Tab -->
+                    <div class="tab-content" id="bookmaker-games">
+                        <div id="games-no-geographies-message" class="no-geographies-message">
+                            <p>Please select geographies in the "Bookmaker Settings" tab first before configuring games.</p>
+                        </div>
+
+                        <div id="games-geographies-container">
+                            <!-- Geography Games selection fields will be added here dynamically -->
                         </div>
                     </div>
 
@@ -2617,10 +2631,213 @@
                     });
                 }
                 
+                // Function to render game selection for each geography
+                function renderGeographyGames() {
+                    const gamesContainer = document.getElementById("games-geographies-container");
+                    const noGeographiesMessage = document.getElementById("games-no-geographies-message");
+                    
+                    if (!gamesContainer) return;
+                    
+                    // Show or hide the no geographies message
+                    if (selectedGeographies.length === 0) {
+                        noGeographiesMessage.style.display = "block";
+                        gamesContainer.innerHTML = "";
+                        return;
+                    } else {
+                        noGeographiesMessage.style.display = "none";
+                    }
+                    
+                    gamesContainer.innerHTML = "";
+                    
+                    // Create game selection for each geography
+                    selectedGeographies.forEach((geography) => {
+                        // Find existing games for this geography or create empty array
+                        const geographyGames = bookmakerGames.find(g => g.geographyCode === geography.code)?.games || [];
+                        
+                        const gameSelectionContainer = document.createElement("div");
+                        gameSelectionContainer.className = "geography-games-field";
+                        gameSelectionContainer.innerHTML = `
+                            <div class="geography-name" style="margin-top: 15px; margin-bottom: 5px;">
+                                <span class="country-flag">${geography.flag}</span>
+                                <strong>${geography.name}</strong>
+                            </div>
+                            <div class="form-group">
+                                <label for="geography-games-${geography.code}">Games for ${geography.name}</label>
+                                <div class="multi-select-container" style="position: relative;">
+                                    <div class="selected-games-display" id="selected-games-display-${geography.code}" style="
+                                        border: 1px solid #ced4da;
+                                        border-radius: 4px;
+                                        padding: 6px 12px;
+                                        min-height: 38px;
+                                        cursor: pointer;
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        gap: 5px;
+                                        align-items: center;
+                                    ">
+                                        ${geographyGames.length === 0 ? '<span class="placeholder" style="color: #6c757d;">Select games...</span>' : ''}
+                                        ${geographyGames.map(game => `
+                                            <span class="selected-game-tag" data-game="${game}" style="
+                                                background-color: #f0f0f0;
+                                                border-radius: 3px;
+                                                padding: 2px 8px;
+                                                display: flex;
+                                                align-items: center;
+                                            ">
+                                                ${game}
+                                                <span class="remove-game" style="margin-left: 5px; cursor: pointer;">×</span>
+                                            </span>
+                                        `).join('')}
+                                    </div>
+                                    <div class="games-dropdown" id="games-dropdown-${geography.code}" style="
+                                        display: none;
+                                        position: absolute;
+                                        width: 100%;
+                                        max-height: 200px;
+                                        overflow-y: auto;
+                                        z-index: 100;
+                                        background-color: white;
+                                        border: 1px solid #ced4da;
+                                        border-radius: 4px;
+                                        margin-top: 5px;
+                                    ">
+                                        <div class="games-search-container" style="padding: 8px; border-bottom: 1px solid #e0e0e0;">
+                                            <input type="text" class="games-search form-control" id="games-search-${geography.code}" placeholder="Search games..." style="width: 100%;">
+                                        </div>
+                                        <div class="games-options" id="games-options-${geography.code}">
+                                            ${availableGames.map(game => `
+                                                <div class="game-option${geographyGames.includes(game) ? ' selected' : ''}" data-game="${game}" style="
+                                                    padding: 8px 12px;
+                                                    cursor: pointer;
+                                                    display: flex;
+                                                    align-items: center;
+                                                ">
+                                                    <input type="checkbox" style="margin-right: 8px;" ${geographyGames.includes(game) ? 'checked' : ''}>
+                                                    <span>${game}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        gamesContainer.appendChild(gameSelectionContainer);
+                    });
+                    
+                    // Add event listeners for game selection
+                    addGameSelectionEventListeners();
+                }
+                
+                // Function to add event listeners for game selection
+                function addGameSelectionEventListeners() {
+                    // Toggle dropdown when clicking on selected games display
+                    document.querySelectorAll(".selected-games-display").forEach(display => {
+                        const geographyCode = display.id.replace('selected-games-display-', '');
+                        const dropdown = document.getElementById(`games-dropdown-${geographyCode}`);
+                        
+                        display.addEventListener("click", function() {
+                            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+                        });
+                    });
+                    
+                    // Handle option selection
+                    document.querySelectorAll(".game-option").forEach(option => {
+                        const gameValue = option.dataset.game;
+                        const checkbox = option.querySelector('input[type="checkbox"]');
+                        const geographyCode = option.closest('.games-dropdown').id.replace('games-dropdown-', '');
+                        
+                        option.addEventListener("click", function() {
+                            checkbox.checked = !checkbox.checked;
+                            option.classList.toggle('selected');
+                            
+                            updateSelectedGames(geographyCode, gameValue, checkbox.checked);
+                        });
+                    });
+                    
+                    // Handle search in dropdown
+                    document.querySelectorAll(".games-search").forEach(searchInput => {
+                        const geographyCode = searchInput.id.replace('games-search-', '');
+                        const optionsContainer = document.getElementById(`games-options-${geographyCode}`);
+                        
+                        searchInput.addEventListener("input", function() {
+                            const searchValue = this.value.toLowerCase();
+                            
+                            optionsContainer.querySelectorAll('.game-option').forEach(option => {
+                                const gameName = option.dataset.game.toLowerCase();
+                                if (gameName.includes(searchValue)) {
+                                    option.style.display = 'flex';
+                                } else {
+                                    option.style.display = 'none';
+                                }
+                            });
+                        });
+                        
+                        // Prevent dropdown from closing when clicking on search input
+                        searchInput.addEventListener("click", function(e) {
+                            e.stopPropagation();
+                        });
+                    });
+                    
+                    // Close dropdown when clicking outside
+                    document.addEventListener("click", function(e) {
+                        if (!e.target.closest('.multi-select-container')) {
+                            document.querySelectorAll('.games-dropdown').forEach(dropdown => {
+                                dropdown.style.display = 'none';
+                            });
+                        }
+                    });
+                    
+                    // Handle removing a game tag
+                    document.querySelectorAll(".remove-game").forEach(removeBtn => {
+                        const gameTag = removeBtn.closest('.selected-game-tag');
+                        const gameValue = gameTag.dataset.game;
+                        const geographyCode = gameTag.closest('.selected-games-display').id.replace('selected-games-display-', '');
+                        
+                        removeBtn.addEventListener("click", function(e) {
+                            e.stopPropagation();
+                            updateSelectedGames(geographyCode, gameValue, false);
+                        });
+                    });
+                }
+                
+                // Function to update selected games
+                function updateSelectedGames(geographyCode, gameValue, isSelected) {
+                    // Find existing games for this geography or create a new entry
+                    let geographyGamesIndex = bookmakerGames.findIndex(g => g.geographyCode === geographyCode);
+                    
+                    if (geographyGamesIndex === -1) {
+                        // Create new entry if it doesn't exist
+                        bookmakerGames.push({
+                            geographyCode: geographyCode,
+                            games: isSelected ? [gameValue] : []
+                        });
+                        geographyGamesIndex = bookmakerGames.length - 1;
+                    } else {
+                        // Update existing entry
+                        if (isSelected) {
+                            // Add game if not already present
+                            if (!bookmakerGames[geographyGamesIndex].games.includes(gameValue)) {
+                                bookmakerGames[geographyGamesIndex].games.push(gameValue);
+                            }
+                        } else {
+                            // Remove game
+                            bookmakerGames[geographyGamesIndex].games = bookmakerGames[geographyGamesIndex].games.filter(game => game !== gameValue);
+                        }
+                    }
+                    
+                    // Update UI
+                    renderGeographyGames();
+                }
+                
                 // Array to store geography URLs
                 let bookmakerURLs = [];
                 // Array to store geography affiliate URLs
                 let bookmakerAffiliateURLs = [];
+                // Array to store geography games
+                let bookmakerGames = [];
+                // Available games options
+                const availableGames = ["Sports Betting", "Casino", "Poker", "Bingo", "Lottery", "Horse Racing"];
                 
                 // Add event listener to the Bookmaker URL tab to render URLs when tab is clicked
                 const bookmakerURLTab = document.querySelector('.tab[data-tab="bookmaker-url"]');
@@ -2629,6 +2846,10 @@
                 // Add event listener to the Bookmaker Affiliate URL tab to render affiliate URLs when tab is clicked
                 const bookmakerAffiliateURLTab = document.querySelector('.tab[data-tab="bookmaker-affiliate-urls"]');
                 bookmakerAffiliateURLTab.addEventListener("click", renderGeographyAffiliateURLs);
+                
+                // Add event listener to the Bookmaker Games tab to render games when tab is clicked
+                const bookmakerGamesTab = document.querySelector('.tab[data-tab="bookmaker-games"]');
+                bookmakerGamesTab.addEventListener("click", renderGeographyGames);
                 
                 // Add event listener to render URL tab content when geographies change
                 const geographiesObserver = new MutationObserver(function(mutations) {
@@ -2671,6 +2892,7 @@
                         })),
                         geographyURLs: bookmakerURLs,
                         geographyAffiliateURLs: bookmakerAffiliateURLs,
+                        geographyGames: bookmakerGames,
                         accounts: bookmakerAccounts,
                     };
 
@@ -2724,6 +2946,17 @@
                     const noAffiliateGeographiesMessage = document.getElementById("affiliate-url-no-geographies-message");
                     if (noAffiliateGeographiesMessage) {
                         noAffiliateGeographiesMessage.style.display = "block";
+                    }
+                    
+                    // Reset geography games
+                    bookmakerGames = [];
+                    const gamesGeographiesContainer = document.getElementById("games-geographies-container");
+                    if (gamesGeographiesContainer) {
+                        gamesGeographiesContainer.innerHTML = "";
+                    }
+                    const noGamesGeographiesMessage = document.getElementById("games-no-geographies-message");
+                    if (noGamesGeographiesMessage) {
+                        noGamesGeographiesMessage.style.display = "block";
                     }
 
                     // Clear geography search

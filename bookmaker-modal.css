@@ -85,6 +85,48 @@
     background-color: #f9f9f9;
 }
 
+/* Games multi-select dropdown styles */
+.multi-select-container {
+    margin-bottom: 15px;
+}
+
+.selected-games-display {
+    background-color: #fff;
+}
+
+.selected-games-display:hover {
+    background-color: #f8f9fa;
+}
+
+.games-dropdown {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.game-option {
+    transition: background-color 0.2s;
+}
+
+.game-option:hover {
+    background-color: #f8f9fa;
+}
+
+.game-option.selected {
+    background-color: #e9ecef;
+}
+
+.selected-game-tag .remove-game:hover {
+    color: #dc3545;
+}
+
+.no-geographies-message {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
 /* Bookmaker URL Tab Styles */
 .geography-url-field {
     margin-bottom: 15px;
