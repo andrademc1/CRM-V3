@@ -1093,7 +1093,49 @@
         <link rel="stylesheet" href="bookmaker-modal.css" />
 
         <script src="database.js"></script>
-        <script src="script.js"></script>
+        <script src="database.js"></script>
+<script src="script.js"></script>
+<script>
+  // Código para garantir que os dados sejam carregados corretamente
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("Página de bookmaker carregada");
+    
+    // Inicializa o banco de dados se ainda não estiver inicializado
+    if (window.DB && typeof window.DB.init === 'function') {
+      window.DB.init();
+      console.log("Banco de dados inicializado com sucesso na página bookmaker.html");
+      
+      // Certifica-se de que os dados estão carregados
+      if (!window.bookmakersData) {
+        window.bookmakersData = window.DB.bookmakers.get() || [];
+      }
+      
+      if (!window.groupsData) {
+        window.groupsData = window.DB.groups.get() || [];
+      }
+      
+      if (!window.ownersData) {
+        window.ownersData = window.DB.owners.get() || [];
+      }
+      
+      console.log("Dados carregados diretamente em bookmaker.html:", {
+        owners: window.ownersData.length,
+        groups: window.groupsData.length,
+        bookmakers: window.bookmakersData.length
+      });
+      
+      console.log("Populando tabela de bookmakers:", window.bookmakersData.length);
+      console.log("Populando tabela de grupos:", window.groupsData.length);
+      
+      // Chama a função para popular a tabela
+      if (typeof populateBookmakersTable === 'function') {
+        populateBookmakersTable();
+      } else {
+        console.error("A função populateBookmakersTable não está definida");
+      }
+    }
+  });
+</script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Inicialize o banco de dados

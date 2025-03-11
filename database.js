@@ -99,7 +99,9 @@ function saveBookmakers(bookmakersData) {
 function getBookmakers() {
   try {
     const bookmakers = localStorage.getItem(DATABASE_KEYS.BOOKMAKERS);
-    return bookmakers ? JSON.parse(bookmakers) : [];
+    const parsedData = bookmakers ? JSON.parse(bookmakers) : [];
+    console.log("Bookmakers recuperados do localStorage:", parsedData.length);
+    return parsedData;
   } catch (error) {
     console.error("Erro ao recuperar bookmakers:", error);
     return [];

@@ -95,7 +95,8 @@ function addBookmakerTableEventListeners() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+// Função global para carregar e inicializar os dados
+function loadAndInitializeData() {
     // Inicializa o banco de dados local
     if(window.DB) {
         window.DB.init();
@@ -111,11 +112,19 @@ document.addEventListener('DOMContentLoaded', function() {
             bookmakers: window.bookmakersData.length
         });
         
-        // Popula a tabela de bookmakers quando estiver na página bookmaker.html
+        // Verifica se estamos na página de bookmakers
         if (document.getElementById('bookmakers-table-body')) {
+            console.log("Populando tabela de bookmakers com", window.bookmakersData.length, "registros");
             populateBookmakersTable();
         }
+    } else {
+        console.error("DB não está inicializado corretamente");
     }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Chama a função para carregar e inicializar os dados
+    loadAndInitializeData();
     
     // Get all navigation links
     const navLinks = document.querySelectorAll('.sidebar-nav li a');
@@ -259,17 +268,28 @@ function saveAllData() {
     // Salva owners
     if (window.ownersData) {
         window.DB.owners.save(window.ownersData);
+        console.log("Owners salvos:", window.ownersData.length);
     }
     
     // Salva groups
     if (window.groupsData) {
         window.DB.groups.save(window.groupsData);
+        console.log("Groups salvos:", window.groupsData.length);
     }
     
     // Salva bookmakers
     if (window.bookmakersData) {
+        console.log("Bookmakers salvos verificados:", window.bookmakersData.length);
         window.DB.bookmakers.save(window.bookmakersData);
+        console.log("Bookmakers salvos:", window.bookmakersData.length);
     }
+    
+    // Verifica os dados no localStorage após salvar
+    console.log("Dados no localStorage:", {
+        owners: window.DB.owners.get().length,
+        groups: window.DB.groups.get().length,
+        bookmakers: window.DB.bookmakers.get().length
+    });
     
     console.log("Dados salvos com sucesso!");
 }
