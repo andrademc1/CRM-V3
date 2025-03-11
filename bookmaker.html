@@ -700,6 +700,9 @@
                         <div class="tab" data-tab="bookmaker-url">
                             Bookmaker URL
                         </div>
+                        <div class="tab" data-tab="bookmaker-affiliate-urls">
+                            Bookmaker Affiliate URL
+                        </div>
                         <div class="tab" data-tab="bookmaker-account">
                             Bookmaker Account Settings
                         </div>
@@ -796,6 +799,26 @@
 
                         <div id="url-geographies-container">
                             <!-- Geography URL fields will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Bookmaker Affiliate URL Tab -->
+                    <div class="tab-content" id="bookmaker-affiliate-urls">
+                        <div id="affiliate-url-no-geographies-message" class="no-geographies-message">
+                            <p>Please select geographies in the "Bookmaker Settings" tab first before configuring affiliate URLs.</p>
+                        </div>
+
+                        <div class="affiliate-url-actions" style="margin-bottom: 15px;">
+                            <button type="button" id="auto-fill-affiliate-from-bookmaker" class="btn" style="margin-right: 10px; background-color: #28a745;">
+                                Auto-fill from Bookmaker
+                            </button>
+                            <button type="button" id="auto-fill-affiliate-from-group" class="btn" style="background-color: #17a2b8;">
+                                Auto-fill from Group
+                            </button>
+                        </div>
+
+                        <div id="affiliate-url-geographies-container">
+                            <!-- Geography Affiliate URL fields will be added here dynamically -->
                         </div>
                     </div>
 
