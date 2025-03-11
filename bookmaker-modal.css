@@ -106,19 +106,11 @@
     padding-top: 10px;
 }
 
-.geography-deal-item,
-.geography-url-item {
+.geography-deal-item {
     background-color: #f0f0f0;
     border-radius: 4px;
     padding: 10px;
     margin-bottom: 8px;
-}
-
-.url-section {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 4px;
 }
 
 .per-geography-toggle {
