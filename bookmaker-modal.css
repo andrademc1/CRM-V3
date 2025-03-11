@@ -96,6 +96,11 @@
     border-bottom: none;
 }
 
+.geography-url-field .auto-fill-buttons {
+    display: flex;
+    margin-bottom: 10px;
+}
+
 .no-geographies-message {
     padding: 20px;
     background-color: #f8f9fa;

@@ -700,6 +700,9 @@
                         <div class="tab" data-tab="bookmaker-url">
                             Bookmaker URL
                         </div>
+                        <div class="tab" data-tab="bookmaker-affiliate-urls">
+                            Bookmaker Affiliate URL
+                        </div>
                         <div class="tab" data-tab="bookmaker-account">
                             Bookmaker Account Settings
                         </div>
@@ -796,6 +799,17 @@
 
                         <div id="url-geographies-container">
                             <!-- Geography URL fields will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Bookmaker Affiliate URL Tab -->
+                    <div class="tab-content" id="bookmaker-affiliate-urls">
+                        <div id="affiliate-url-no-geographies-message" class="no-geographies-message">
+                            <p>Please select geographies in the "Bookmaker Settings" tab first before configuring affiliate URLs.</p>
+                        </div>
+
+                        <div id="affiliate-url-geographies-container">
+                            <!-- Geography Affiliate URL fields will be added here dynamically -->
                         </div>
                     </div>
 
@@ -2438,12 +2452,183 @@
                     });
                 }
                 
+                // Function to render geography affiliate URL fields
+                function renderGeographyAffiliateURLs() {
+                    const urlContainer = document.getElementById("affiliate-url-geographies-container");
+                    const noGeographiesMessage = document.getElementById("affiliate-url-no-geographies-message");
+                    
+                    if (!urlContainer) return;
+                    
+                    // Show or hide the no geographies message
+                    if (selectedGeographies.length === 0) {
+                        noGeographiesMessage.style.display = "block";
+                        urlContainer.innerHTML = "";
+                        return;
+                    } else {
+                        noGeographiesMessage.style.display = "none";
+                    }
+                    
+                    urlContainer.innerHTML = "";
+                    
+                    // Create affiliate URL field for each geography
+                    selectedGeographies.forEach((geography) => {
+                        // Find existing affiliate URL or create empty one
+                        const geographyAffiliateURL = bookmakerAffiliateURLs.find(u => u.geographyCode === geography.code)?.url || "";
+                        
+                        const urlFieldContainer = document.createElement("div");
+                        urlFieldContainer.className = "geography-url-field";
+                        urlFieldContainer.innerHTML = `
+                            <div class="geography-name" style="margin-top: 15px; margin-bottom: 5px;">
+                                <span class="country-flag">${geography.flag}</span>
+                                <strong>${geography.name}</strong>
+                            </div>
+                            <div class="auto-fill-buttons" style="margin-bottom: 10px;">
+                                <button type="button" class="btn auto-fill-affiliate-bookmaker" 
+                                    data-geography-code="${geography.code}" 
+                                    style="margin-right: 10px; background-color: #28a745; font-size: 12px; padding: 4px 8px;">
+                                    Auto-fill from Bookmaker
+                                </button>
+                                <button type="button" class="btn auto-fill-affiliate-group" 
+                                    data-geography-code="${geography.code}" 
+                                    style="background-color: #17a2b8; font-size: 12px; padding: 4px 8px;">
+                                    Auto-fill from Group
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label for="geography-affiliate-url-${geography.code}">Affiliate URL for ${geography.name}</label>
+                                <input 
+                                    type="url" 
+                                    id="geography-affiliate-url-${geography.code}" 
+                                    class="form-control geography-affiliate-url" 
+                                    data-geography-code="${geography.code}" 
+                                    placeholder="Enter affiliate URL for ${geography.name}"
+                                    value="${geographyAffiliateURL}"
+                                />
+                            </div>
+                        `;
+                        
+                        urlContainer.appendChild(urlFieldContainer);
+                    });
+                    
+                    // Add event listeners for affiliate URL changes
+                    document.querySelectorAll(".geography-affiliate-url").forEach(input => {
+                        input.addEventListener("input", function() {
+                            const geographyCode = this.dataset.geographyCode;
+                            const urlValue = this.value;
+                            
+                            // Find if affiliate URL already exists for this geography
+                            const existingURLIndex = bookmakerAffiliateURLs.findIndex(u => u.geographyCode === geographyCode);
+                            
+                            if (existingURLIndex !== -1) {
+                                bookmakerAffiliateURLs[existingURLIndex].url = urlValue;
+                            } else {
+                                bookmakerAffiliateURLs.push({
+                                    geographyCode: geographyCode,
+                                    url: urlValue
+                                });
+                            }
+                        });
+                    });
+                    
+                    // Add event listeners for auto-fill buttons
+                    addAffiliateAutoFillEventListeners();
+                }
+                
+                // Function to add event listeners for affiliate URL auto-fill buttons
+                function addAffiliateAutoFillEventListeners() {
+                    // Auto-fill from Bookmaker
+                    document.querySelectorAll(".auto-fill-affiliate-bookmaker").forEach(button => {
+                        button.addEventListener("click", function() {
+                            const geographyCode = this.dataset.geographyCode;
+                            
+                            // Get bookmaker general affiliate URL from settings
+                            const bookmakerAffiliateURL = document.getElementById("bookmaker-affiliate-url").value;
+                            
+                            if (!bookmakerAffiliateURL) {
+                                alert("No affiliate URL is set in the Bookmaker Settings tab. Please set it first.");
+                                return;
+                            }
+                            
+                            // Set the affiliate URL for this geography
+                            const affiliateUrlInput = document.getElementById(`geography-affiliate-url-${geographyCode}`);
+                            if (affiliateUrlInput) {
+                                affiliateUrlInput.value = bookmakerAffiliateURL;
+                                
+                                // Update the stored data
+                                const existingURLIndex = bookmakerAffiliateURLs.findIndex(u => u.geographyCode === geographyCode);
+                                if (existingURLIndex !== -1) {
+                                    bookmakerAffiliateURLs[existingURLIndex].url = bookmakerAffiliateURL;
+                                } else {
+                                    bookmakerAffiliateURLs.push({
+                                        geographyCode: geographyCode,
+                                        url: bookmakerAffiliateURL
+                                    });
+                                }
+                                
+                                alert(`Affiliate URL for ${geographyCode} has been set from Bookmaker Settings.`);
+                            }
+                        });
+                    });
+                    
+                    // Auto-fill from Group
+                    document.querySelectorAll(".auto-fill-affiliate-group").forEach(button => {
+                        button.addEventListener("click", function() {
+                            const geographyCode = this.dataset.geographyCode;
+                            
+                            // Get selected group 
+                            const selectedGroupId = document.getElementById("bookmaker-group").value;
+                            if (!selectedGroupId) {
+                                alert("Please select a group in the Bookmaker Settings tab first.");
+                                return;
+                            }
+                            
+                            // Find the group
+                            const group = groupsData.find(g => g.id === selectedGroupId);
+                            if (!group) {
+                                alert("Selected group not found.");
+                                return;
+                            }
+                            
+                            // Check if group has affiliate URL
+                            if (!group.affiliateUrl) {
+                                alert("The selected group does not have an affiliate URL configured.");
+                                return;
+                            }
+                            
+                            // Set the affiliate URL for this geography
+                            const affiliateUrlInput = document.getElementById(`geography-affiliate-url-${geographyCode}`);
+                            if (affiliateUrlInput) {
+                                affiliateUrlInput.value = group.affiliateUrl;
+                                
+                                // Update the stored data
+                                const existingURLIndex = bookmakerAffiliateURLs.findIndex(u => u.geographyCode === geographyCode);
+                                if (existingURLIndex !== -1) {
+                                    bookmakerAffiliateURLs[existingURLIndex].url = group.affiliateUrl;
+                                } else {
+                                    bookmakerAffiliateURLs.push({
+                                        geographyCode: geographyCode,
+                                        url: group.affiliateUrl
+                                    });
+                                }
+                                
+                                alert(`Affiliate URL for ${geographyCode} has been set from Group Settings.`);
+                            }
+                        });
+                    });
+                }
+                
                 // Array to store geography URLs
                 let bookmakerURLs = [];
+                // Array to store geography affiliate URLs
+                let bookmakerAffiliateURLs = [];
                 
                 // Add event listener to the Bookmaker URL tab to render URLs when tab is clicked
                 const bookmakerURLTab = document.querySelector('.tab[data-tab="bookmaker-url"]');
                 bookmakerURLTab.addEventListener("click", renderGeographyURLs);
+                
+                // Add event listener to the Bookmaker Affiliate URL tab to render affiliate URLs when tab is clicked
+                const bookmakerAffiliateURLTab = document.querySelector('.tab[data-tab="bookmaker-affiliate-urls"]');
+                bookmakerAffiliateURLTab.addEventListener("click", renderGeographyAffiliateURLs);
                 
                 // Add event listener to render URL tab content when geographies change
                 const geographiesObserver = new MutationObserver(function(mutations) {
@@ -2452,6 +2637,10 @@
                             // If the current active tab is bookmaker-url, render the URLs
                             if (document.querySelector('.tab[data-tab="bookmaker-url"]').classList.contains('active')) {
                                 renderGeographyURLs();
+                            }
+                            // If the current active tab is bookmaker-affiliate-urls, render the affiliate URLs
+                            if (document.querySelector('.tab[data-tab="bookmaker-affiliate-urls"]').classList.contains('active')) {
+                                renderGeographyAffiliateURLs();
                             }
                         }
                     }
@@ -2481,6 +2670,7 @@
                             flag: country.flag,
                         })),
                         geographyURLs: bookmakerURLs,
+                        geographyAffiliateURLs: bookmakerAffiliateURLs,
                         accounts: bookmakerAccounts,
                     };
 
@@ -2523,6 +2713,17 @@
                     const noGeographiesMessage = document.getElementById("url-no-geographies-message");
                     if (noGeographiesMessage) {
                         noGeographiesMessage.style.display = "block";
+                    }
+                    
+                    // Reset geography affiliate URLs
+                    bookmakerAffiliateURLs = [];
+                    const affiliateUrlGeographiesContainer = document.getElementById("affiliate-url-geographies-container");
+                    if (affiliateUrlGeographiesContainer) {
+                        affiliateUrlGeographiesContainer.innerHTML = "";
+                    }
+                    const noAffiliateGeographiesMessage = document.getElementById("affiliate-url-no-geographies-message");
+                    if (noAffiliateGeographiesMessage) {
+                        noAffiliateGeographiesMessage.style.display = "block";
                     }
 
                     // Clear geography search
