@@ -1100,16 +1100,27 @@
                 // Inicialize o banco de dados
                 if (window.DB && window.DB.init()) {
                     console.log("Banco de dados inicializado com sucesso na página bookmaker.html");
+                    
+                    // Carrega os dados existentes do localStorage
+                    window.ownersData = window.DB.owners.get() || [];
+                    window.groupsData = window.DB.groups.get() || [];
+                    window.bookmakersData = window.DB.bookmakers.get() || [];
+                    
+                    console.log("Dados carregados com sucesso:", {
+                        owners: window.ownersData.length,
+                        groups: window.groupsData.length,
+                        bookmakers: window.bookmakersData.length
+                    });
                 }
                 
                 // Get country data from countries.js
                 let countriesData = [];
                 // Array para armazenar owners registrados - carregar do localStorage
-                let ownersData = window.DB.owners.get();
+                let ownersData = window.ownersData || [];
                 // Array para armazenar groups registrados - carregar do localStorage
-                let groupsData = window.DB.groups.get();
+                let groupsData = window.groupsData || [];
                 // Array para armazenar bookmakers registrados - carregar do localStorage
-                let bookmakersData = window.DB.bookmakers.get();
+                let bookmakersData = window.bookmakersData || [];
                 // Array para armazenar geographies selecionadas
                 let selectedGeographies = [];
 
@@ -5535,7 +5546,12 @@ window.addEventListener('beforeunload', function() {
                 }
                 
                 // Renderizar a tabela ao carregar a página
-                renderBookmakersTable();
+                // Aguarde um momento para garantir que todos os dados foram carregados
+                setTimeout(function() {
+                    console.log("Inicializando tabela de bookmakers...");
+                    console.log("Bookmakers disponíveis:", bookmakersData ? bookmakersData.length : 0);
+                    renderBookmakersTable();
+                }, 300);
                 
                 // Renderizar a tabela novamente quando um novo bookmaker for adicionado
                 bookmakerSaveBtn.addEventListener("click", function() {

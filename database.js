@@ -88,7 +88,23 @@ function getGroups() {
 // Funções para manipular os bookmakers
 function saveBookmakers(bookmakersData) {
   try {
+    // Verifica se os dados são válidos
+    if (!bookmakersData || !Array.isArray(bookmakersData)) {
+      console.error("Dados de bookmakers inválidos:", bookmakersData);
+      return false;
+    }
+    
+    console.log("Bookmakers para salvar:", bookmakersData.length);
+    console.log("Bookmakers válidos:", bookmakersData.filter(b => b && b.id).length);
+    
+    // Salva no localStorage
     localStorage.setItem(DATABASE_KEYS.BOOKMAKERS, JSON.stringify(bookmakersData));
+    
+    // Verifica se o salvamento foi bem-sucedido
+    const savedData = localStorage.getItem(DATABASE_KEYS.BOOKMAKERS);
+    console.log("Bookmakers salvos com sucesso:", savedData ? JSON.parse(savedData).length : 0);
+    console.log("Dados no localStorage após salvar:", savedData ? `${savedData.substring(0, 5)}...` : "nenhum");
+    
     return true;
   } catch (error) {
     console.error("Erro ao salvar bookmakers:", error);
@@ -99,6 +115,7 @@ function saveBookmakers(bookmakersData) {
 function getBookmakers() {
   try {
     const bookmakers = localStorage.getItem(DATABASE_KEYS.BOOKMAKERS);
+    console.log("Bookmakers recuperados do localStorage:", bookmakers ? JSON.parse(bookmakers).length : 0);
     return bookmakers ? JSON.parse(bookmakers) : [];
   } catch (error) {
     console.error("Erro ao recuperar bookmakers:", error);

@@ -153,21 +153,50 @@ function saveAllData() {
     
     // Salva owners
     if (window.ownersData) {
-        window.DB.owners.save(window.ownersData);
+        const ownerResult = window.DB.owners.save(window.ownersData);
+        console.log("Owners salvos com sucesso:", window.ownersData.length);
+        console.log("Owners salvos:", window.DB.owners.get().length);
     }
     
     // Salva groups
     if (window.groupsData) {
-        window.DB.groups.save(window.groupsData);
+        const groupResult = window.DB.groups.save(window.groupsData);
+        console.log("Groups salvos com sucesso:", window.groupsData.length);
+        console.log("Groups salvos:", window.DB.groups.get().length);
     }
     
     // Salva bookmakers
     if (window.bookmakersData) {
-        window.DB.bookmakers.save(window.bookmakersData);
+        const bookmakerResult = window.DB.bookmakers.save(window.bookmakersData);
+        console.log("Resultado do salvamento de bookmakers:", bookmakerResult);
+        const savedData = localStorage.getItem('crm_bookmakers');
+        console.log("Dados brutos no localStorage:", savedData ? `${savedData.substring(0, 5)}...` : "nenhum");
     }
+    
+    // Verifica se os dados foram salvos corretamente
+    const owners = window.DB.owners.get();
+    const groups = window.DB.groups.get();
+    const bookmakers = window.DB.bookmakers.get();
+    
+    console.log("Owners recuperados do localStorage:", owners.length);
+    console.log("Groups recuperados do localStorage:", groups.length);
+    console.log("Bookmakers recuperados do localStorage:", bookmakers.length);
+    console.log("Dados verificados no localStorage:", {owners: owners.length, groups: groups.length, bookmakers: bookmakers.length});
     
     console.log("Dados salvos com sucesso!");
 }
+
+// Adiciona função para salvar dados ao fechar a página ou recarregar
+window.addEventListener('beforeunload', function() {
+    console.log("Página está sendo fechada, salvando dados...");
+    saveAllData();
+});
+
+// Adiciona salvamento automático a cada 30 segundos
+setInterval(function() {
+    console.log("Salvamento automático de dados...");
+    saveAllData();
+}, 30000);
 
 function saveOwnerData() {
     if (window.ownersData && window.DB) {
