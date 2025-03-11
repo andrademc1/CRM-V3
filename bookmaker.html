@@ -1128,41 +1128,17 @@
         <link rel="stylesheet" href="owner-modal.css" />
         <link rel="stylesheet" href="group-modal.css" />
         <link rel="stylesheet" href="bookmaker-modal.css" />
-        <script src="database.js"></script>
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                console.log("Banco de dados inicializado com sucesso na página bookmaker.html");
-                
-                // Inicializar o banco de dados
-                if (window.database) {
-                    window.database.init();
-                    
-                    // Carregar dados do localStorage
-                    const savedData = window.database.loadAllData();
-                    console.log("Dados carregados diretamente em bookmaker.html:", {
-                        owners: savedData.owners.length,
-                        groups: savedData.groups.length,
-                        bookmakers: savedData.bookmakers.length
-                    });
-                    
-                    // Configurar salvamento automático a cada 2 minutos
-                    setInterval(function() {
-                        console.log("Salvando todos os dados...");
-                        window.database.saveAllData(ownersData, groupsData, bookmakersData);
-                    }, 2 * 60 * 1000); // 2 minutos
-                }
-                
                 // Get country data from countries.js
                 let countriesData = [];
                 // Array para armazenar owners registrados
-                let ownersData = window.database ? window.database.loadOwners() : [];
+                let ownersData = [];
                 // Array para armazenar groups registrados
-                let groupsData = window.database ? window.database.loadGroups() : [];
+                let groupsData = [];
                 // Array para armazenar bookmakers registrados
-                let bookmakersData = window.database ? window.database.loadBookmakers() : [];
-                console.log("Populando tabela de bookmakers:", bookmakersData.length);
-                
+                let bookmakersData = [];
                 // Array para armazenar geographies selecionadas
                 let selectedGeographies = [];
 
@@ -1454,11 +1430,6 @@
 
                         // Update owner dropdown in group modal
                         updateOwnerDropdown();
-                        
-                        // Salvar no localStorage
-                        if (window.database) {
-                            window.database.saveOwners(ownersData);
-                        }
 
                         console.log("Owner data:", ownerData);
                         alert("Owner added successfully!");
@@ -1725,11 +1696,6 @@
 
                     // Update group dropdown in bookmaker modal
                     updateGroupDropdown();
-                    
-                    // Salvar no localStorage
-                    if (window.database) {
-                        window.database.saveGroups(groupsData);
-                    }
 
                     console.log("Group data:", groupData);
                     alert("Group added successfully!");
@@ -3800,11 +3766,6 @@
 
                     // Add to bookmakers array
                     bookmakersData.push(bookmakerData);
-                    
-                    // Salvar no localStorage
-                    if (window.database) {
-                        window.database.saveBookmakers(bookmakersData);
-                    }
 
                     console.log("Bookmaker data:", bookmakerData);
                     alert("Bookmaker added successfully!");
@@ -5469,12 +5430,6 @@
                                 bookmakersData = bookmakersData.filter(
                                     (b) => b.id !== bookmaker.id,
                                 );
-                                
-                                // Salvar alterações no localStorage
-                                if (window.database) {
-                                    window.database.saveBookmakers(bookmakersData);
-                                }
-                                
                                 alert(
                                     `Bookmaker "${bookmaker.name}" excluído.`,
                                 );
@@ -5484,48 +5439,6 @@
 
                     table.appendChild(row);
                 }
-                
-                // Carregar dados iniciais e preencher tabelas
-                function loadInitialData() {
-                    console.log("Atualizando tabelas com dados carregados:", {
-                        owners: ownersData.length,
-                        groups: groupsData.length,
-                        bookmakers: bookmakersData.length
-                    });
-                    
-                    // Preencher dropdowns com owners e groups
-                    updateOwnerDropdown();
-                    updateGroupDropdown();
-                    
-                    // Preencher tabela de bookmakers
-                    const table = document.querySelector(".bookmaker-table tbody");
-                    if (table) {
-                        // Limpar tabela atual
-                        table.innerHTML = "";
-                        
-                        // Adicionar bookmakers carregados
-                        bookmakersData.forEach(bookmaker => {
-                            addBookmakerToTable(bookmaker);
-                        });
-                    }
-                }
-                
-                // Chamar após carregar countriesData
-                countriesScript.onload = function () {
-                    // Access the countries through the global variable
-                    if (
-                        window.countriesModule &&
-                        window.countriesModule.countries
-                    ) {
-                        countriesData = window.countriesModule.countries;
-                        initCountrySelectors();
-                        initGeographySelector();
-                        loadInitialData(); // Carregar dados iniciais após inicializar seletores
-                    } else {
-                        console.error("Countries module not properly loaded");
-                        fetchCountries();
-                    }
-                };
 
                 // Configurar listeners para botões de edição existentes
                 document.querySelectorAll(".btn-edit").forEach((button) => {
