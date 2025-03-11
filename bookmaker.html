@@ -162,6 +162,31 @@
                             <p><i>Nenhum bookmaker cadastrado. Utilize o botão "Add Bookmaker" para adicionar.</i></p>
                         </div>
                     </div>
+
+                    <div class="bookmaker-panel" style="margin-top: 25px;">
+                        <div class="bookmaker-header">
+                            <h3>Gerenciar Grupos</h3>
+                            <p>Lista de grupos de bookmakers cadastrados no sistema.</p>
+                        </div>
+
+                        <table class="bookmaker-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>URL</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="groups-table-body">
+                                <!-- Os grupos serão inseridos aqui dinamicamente -->
+                            </tbody>
+                        </table>
+                        <div id="no-groups-message" style="text-align: center; padding: 20px; display: none;">
+                            <p><i>Nenhum grupo cadastrado. Utilize o botão "Add Group" para adicionar.</i></p>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>

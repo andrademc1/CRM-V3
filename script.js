@@ -60,10 +60,61 @@ function populateBookmakersTable() {
     addBookmakerTableEventListeners();
 }
 
-// Função para adicionar event listeners aos botões da tabela
+// Função para popular a tabela de grupos
+function populateGroupsTable() {
+    const tableBody = document.getElementById('groups-table-body');
+    const noGroupsMessage = document.getElementById('no-groups-message');
+    
+    if (!tableBody) return;
+    
+    // Limpa a tabela
+    tableBody.innerHTML = '';
+    
+    // Verifica se há grupos cadastrados
+    if (!window.groupsData || window.groupsData.length === 0) {
+        if (noGroupsMessage) {
+            noGroupsMessage.style.display = 'block';
+        }
+        return;
+    }
+    
+    // Esconde a mensagem de "sem grupos"
+    if (noGroupsMessage) {
+        noGroupsMessage.style.display = 'none';
+    }
+    
+    // Adiciona cada grupo à tabela
+    window.groupsData.forEach(group => {
+        // Formata o status para exibição
+        let statusDisplay = group.status;
+        if (statusDisplay === 'active') statusDisplay = 'Ativo';
+        else if (statusDisplay === 'inactive') statusDisplay = 'Inativo';
+        else if (statusDisplay === 'suspended') statusDisplay = 'Suspenso';
+        
+        // Cria a linha da tabela
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${group.id}</td>
+            <td>${group.name}</td>
+            <td>${group.url || '-'}</td>
+            <td>${statusDisplay}</td>
+            <td class="action-buttons">
+                <button class="btn btn-edit" data-id="${group.id}">Editar</button>
+                <button class="btn btn-delete" data-id="${group.id}">Excluir</button>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    // Adiciona event listeners para os botões de editar e excluir
+    addGroupTableEventListeners();
+}
+
+// Função para adicionar event listeners aos botões da tabela de bookmakers
 function addBookmakerTableEventListeners() {
     // Botões de editar
-    document.querySelectorAll('.bookmaker-table .btn-edit').forEach(btn => {
+    document.querySelectorAll('#bookmakers-table-body .btn-edit').forEach(btn => {
         btn.addEventListener('click', function() {
             const bookmakerId = this.getAttribute('data-id');
             alert(`Edição de bookmaker será implementada em breve (ID: ${bookmakerId})`);
@@ -72,7 +123,7 @@ function addBookmakerTableEventListeners() {
     });
     
     // Botões de excluir
-    document.querySelectorAll('.bookmaker-table .btn-delete').forEach(btn => {
+    document.querySelectorAll('#bookmakers-table-body .btn-delete').forEach(btn => {
         btn.addEventListener('click', function() {
             const bookmakerId = this.getAttribute('data-id');
             const bookmaker = window.bookmakersData.find(b => b.id === bookmakerId);
@@ -95,6 +146,49 @@ function addBookmakerTableEventListeners() {
     });
 }
 
+// Função para adicionar event listeners aos botões da tabela de grupos
+function addGroupTableEventListeners() {
+    // Botões de editar
+    document.querySelectorAll('#groups-table-body .btn-edit').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const groupId = this.getAttribute('data-id');
+            alert(`Edição de grupo será implementada em breve (ID: ${groupId})`);
+            // Implementar a lógica de edição no futuro
+        });
+    });
+    
+    // Botões de excluir
+    document.querySelectorAll('#groups-table-body .btn-delete').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const groupId = this.getAttribute('data-id');
+            const group = window.groupsData.find(g => g.id === groupId);
+            
+            if (!group) return;
+            
+            // Verificar se o grupo está sendo usado por algum bookmaker
+            const isGroupInUse = window.bookmakersData && window.bookmakersData.some(b => b.group === groupId);
+            
+            if (isGroupInUse) {
+                alert(`O grupo "${group.name}" não pode ser excluído porque está sendo usado por um ou mais bookmakers.`);
+                return;
+            }
+            
+            if (confirm(`Tem certeza que deseja excluir o grupo "${group.name}"?`)) {
+                // Remove do array
+                window.groupsData = window.groupsData.filter(g => g.id !== groupId);
+                
+                // Salva no localStorage
+                window.DB.groups.save(window.groupsData);
+                
+                // Atualiza a tabela
+                populateGroupsTable();
+                
+                alert(`Grupo "${group.name}" foi excluído com sucesso!`);
+            }
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa o banco de dados local
     if(window.DB) {
@@ -111,9 +205,13 @@ document.addEventListener('DOMContentLoaded', function() {
             bookmakers: window.bookmakersData.length
         });
         
-        // Popula a tabela de bookmakers quando estiver na página bookmaker.html
+        // Popula as tabelas quando estiver na página bookmaker.html
         if (document.getElementById('bookmakers-table-body')) {
             populateBookmakersTable();
+        }
+        
+        if (document.getElementById('groups-table-body')) {
+            populateGroupsTable();
         }
     }
     
@@ -285,6 +383,11 @@ function saveGroupData() {
     if (window.groupsData && window.DB) {
         window.DB.groups.save(window.groupsData);
         console.log("Dados de groups salvos com sucesso!", window.groupsData.length);
+        
+        // Atualiza a tabela de grupos se estiver na página de bookmakers
+        if (document.getElementById('groups-table-body')) {
+            populateGroupsTable();
+        }
     }
 }
 
