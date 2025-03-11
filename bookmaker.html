@@ -119,7 +119,11 @@
                         <p>Adicione, edite ou remova bookmakers no sistema.</p>
                     </div>
                     
-                    <button class="btn" id="addBookmaker">Adicionar Novo Bookmaker</button>
+                    <div class="bookmaker-actions" style="margin-bottom: 20px;">
+                        <button class="btn" id="addOwner" style="margin-right: 10px;">Add Owner</button>
+                        <button class="btn" id="addGroup" style="margin-right: 10px;">Add Group</button>
+                        <button class="btn" id="addBookmaker">Add Bookmaker</button>
+                    </div>
                     
                     <table class="bookmaker-table">
                         <thead>
@@ -171,7 +175,17 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Funções para o gerenciamento de bookmakers
+            // Funções para o gerenciamento de bookmakers, owners e grupos
+            document.getElementById('addOwner').addEventListener('click', function() {
+                alert('Formulário para adicionar novo proprietário seria exibido aqui.');
+                // Em uma implementação real, abriria um modal com um formulário
+            });
+            
+            document.getElementById('addGroup').addEventListener('click', function() {
+                alert('Formulário para adicionar novo grupo seria exibido aqui.');
+                // Em uma implementação real, abriria um modal com um formulário
+            });
+            
             document.getElementById('addBookmaker').addEventListener('click', function() {
                 alert('Formulário para adicionar novo bookmaker seria exibido aqui.');
                 // Em uma implementação real, abriria um modal com um formulário
