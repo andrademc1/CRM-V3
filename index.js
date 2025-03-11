@@ -6,12 +6,27 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 // Serve static files
 app.use(express.static('./'));
 
 // Route handler for the root path
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Endpoint to save database
+app.post('/save-database', (req, res) => {
+  try {
+    const data = req.body;
+    fs.writeFileSync('database.json', JSON.stringify(data, null, 2));
+    res.json({ success: true, message: 'Database saved successfully' });
+  } catch (error) {
+    console.error('Error saving database:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 // Fallback route handler for any other routes
