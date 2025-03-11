@@ -1746,6 +1746,11 @@
                         geographyDealsSection.id = `geography-deals-${account.id}`;
                         geographyDealsSection.style.display = account.deal.perGeography ? 'block' : 'none';
                         
+                        // Ocultar a seção geral se per-geography estiver ativado
+                        if (account.deal.perGeography) {
+                            generalDealSection.classList.add('hidden');
+                        }
+                        
                         // Add forms for each geography
                         account.geographies.forEach(geography => {
                             // Find existing geography deal or create a new one
@@ -1814,9 +1819,21 @@
                         const account = bookmakerAccounts.find(a => a.id === accountId);
                         if (account) {
                             account.deal.perGeography = this.checked;
+                            // Encontrar as seções que precisam ser mostradas/escondidas
                             const geographyDealsSection = document.getElementById(`geography-deals-${accountId}`);
+                            const generalDealSection = this.closest('.deal-card').querySelector('.general-deal-section');
+                            
+                            // Mostrar/esconder as seções adequadas
                             if (geographyDealsSection) {
                                 geographyDealsSection.style.display = this.checked ? 'block' : 'none';
+                            }
+                            
+                            if (generalDealSection) {
+                                if (this.checked) {
+                                    generalDealSection.classList.add('hidden');
+                                } else {
+                                    generalDealSection.classList.remove('hidden');
+                                }
                             }
                             
                             // Initialize geography deals if they don't exist

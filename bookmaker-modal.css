@@ -123,3 +123,7 @@
     padding: 15px;
     text-align: center;
 }
+
+.general-deal-section.hidden {
+    display: none;
+}
