@@ -234,19 +234,12 @@
                 <div id="settingsTab" class="tab-content active">
                     <div class="form-section">
                         <div class="form-group">
-                            <label>Owner Status</label>
-                            <div class="status-toggle">
-                                <div class="status-option status-active active" onclick="this.classList.add('active'); document.querySelectorAll('.status-option:not(.status-active)').forEach(el => el.classList.remove('active')); document.getElementById('ownerStatus').value = 'active';">
-                                    Active
-                                </div>
-                                <div class="status-option status-inactive" onclick="this.classList.add('active'); document.querySelectorAll('.status-option:not(.status-inactive)').forEach(el => el.classList.remove('active')); document.getElementById('ownerStatus').value = 'inactive';">
-                                    Inactive
-                                </div>
-                                <div class="status-option status-suspended" onclick="this.classList.add('active'); document.querySelectorAll('.status-option:not(.status-suspended)').forEach(el => el.classList.remove('active')); document.getElementById('ownerStatus').value = 'suspended';">
-                                    Suspended
-                                </div>
-                            </div>
-                            <input type="hidden" id="ownerStatus" name="ownerStatus" value="active">
+                            <label for="ownerStatus">Owner Status</label>
+                            <select id="ownerStatus" name="ownerStatus" class="form-control">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
                         </div>
                         
                         <div class="form-group">

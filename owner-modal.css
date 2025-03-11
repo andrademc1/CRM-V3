@@ -186,36 +186,29 @@
   background-color: #0069d9;
 }
 
-.status-toggle {
-  display: flex;
-  gap: 10px;
-}
-
-.status-option {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
+/* Estilo para o dropdown de status */
+select#ownerStatus {
+  padding: 10px;
   border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  font-size: 14px;
+  width: 100%;
 }
 
-.status-option.active {
+select#ownerStatus option[value="active"] {
+  background-color: #28a745;
   color: white;
 }
 
-.status-active.active {
-  background-color: #28a745;
-  border-color: #28a745;
-}
-
-.status-inactive.active {
+select#ownerStatus option[value="inactive"] {
   background-color: #6c757d;
-  border-color: #6c757d;
+  color: white;
 }
 
-.status-suspended.active {
+select#ownerStatus option[value="suspended"] {
   background-color: #dc3545;
-  border-color: #dc3545;
+  color: white;
 }
 
 .file-upload {
