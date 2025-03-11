@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar a variável selectedGeographies, caso não esteja definida
+    if (typeof selectedGeographies === 'undefined') {
+        window.selectedGeographies = [];
+    }
+    
     // Get all navigation links
     const navLinks = document.querySelectorAll('.sidebar-nav li a');
     const sectionTitle = document.getElementById('section-title');
@@ -217,9 +222,11 @@ function renderBookmakerURLs() {
     const noGeographiesMessage = document.getElementById("url-no-geographies-message");
 
     if (!urlsContainer) return;
-
+    
+    console.log("Geografias selecionadas:", selectedGeographies); // Para debug
+    
     // Se não houver geografias selecionadas, mostrar mensagem
-    if (selectedGeographies.length === 0) {
+    if (!selectedGeographies || selectedGeographies.length === 0) {
         noGeographiesMessage.style.display = "block";
         urlsContainer.innerHTML = "";
         return;
@@ -320,10 +327,41 @@ function renderBookmakerURLs() {
     });
 }
 
-// Placeholder functions -  These need to be defined elsewhere in your actual application
+// Placeholder functions com implementações mínimas
 function renderDealAccounts() {}
 function renderBillingAccounts() {}
-function renderSelectedGeographies() {}
+
+// Implementação da função renderSelectedGeographies para garantir que a UI seja atualizada
+function renderSelectedGeographies() {
+    const selectedGeographiesContainer = document.getElementById("selected-geographies");
+    
+    if (!selectedGeographiesContainer) return;
+    
+    selectedGeographiesContainer.innerHTML = "";
+    
+    if (!selectedGeographies || selectedGeographies.length === 0) {
+        selectedGeographiesContainer.innerHTML = "<i>No countries selected</i>";
+        return;
+    }
+    
+    selectedGeographies.forEach((country) => {
+        const tag = document.createElement("div");
+        tag.className = "geography-tag";
+        tag.dataset.code = country.code;
+        tag.innerHTML = `
+            <span class="country-flag">${country.flag}</span>
+            <span>${country.name}</span>
+            <span class="remove-geography">×</span>
+        `;
+        
+        tag.querySelector(".remove-geography").addEventListener("click", function () {
+            removeGeography(country.code);
+        });
+        
+        selectedGeographiesContainer.appendChild(tag);
+    });
+}
+
 function renderGeographyList(searchValue) {}
 
 
@@ -352,6 +390,20 @@ tabsContainers.forEach((container) => {
             modal
                 .querySelector(`#${target}`)
                 .classList.add("active");
+
+            // Verificar se há geografias selecionadas
+            const geographyTags = document.querySelectorAll("#selected-geographies .geography-tag");
+            if (geographyTags.length > 0 && (!selectedGeographies || selectedGeographies.length === 0)) {
+                // Reconstruir o array selectedGeographies a partir dos elementos HTML
+                selectedGeographies = [];
+                geographyTags.forEach(tag => {
+                    const code = tag.dataset.code;
+                    const name = tag.querySelector("span:nth-child(2)").textContent;
+                    const flag = tag.querySelector(".country-flag").textContent;
+                    selectedGeographies.push({ code, name, flag });
+                });
+                console.log("Geografias recuperadas da UI:", selectedGeographies);
+            }
 
             // If this is one of the special tabs that needs data rendering
             if (target === "bookmaker-deal") {
