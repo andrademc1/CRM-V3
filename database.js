@@ -46,7 +46,12 @@ function initDatabase() {
 // Funções para manipular os owners
 function saveOwners(ownersData) {
   try {
+    if (!Array.isArray(ownersData)) {
+      console.error("Dados de owners inválidos:", ownersData);
+      return false;
+    }
     localStorage.setItem(DATABASE_KEYS.OWNERS, JSON.stringify(ownersData));
+    console.log("Owners salvos com sucesso:", ownersData.length);
     return true;
   } catch (error) {
     console.error("Erro ao salvar owners:", error);
@@ -57,7 +62,9 @@ function saveOwners(ownersData) {
 function getOwners() {
   try {
     const owners = localStorage.getItem(DATABASE_KEYS.OWNERS);
-    return owners ? JSON.parse(owners) : [];
+    const parsedData = owners ? JSON.parse(owners) : [];
+    console.log("Owners recuperados do localStorage:", parsedData.length);
+    return parsedData;
   } catch (error) {
     console.error("Erro ao recuperar owners:", error);
     return [];
@@ -67,7 +74,12 @@ function getOwners() {
 // Funções para manipular os groups
 function saveGroups(groupsData) {
   try {
+    if (!Array.isArray(groupsData)) {
+      console.error("Dados de groups inválidos:", groupsData);
+      return false;
+    }
     localStorage.setItem(DATABASE_KEYS.GROUPS, JSON.stringify(groupsData));
+    console.log("Groups salvos com sucesso:", groupsData.length);
     return true;
   } catch (error) {
     console.error("Erro ao salvar groups:", error);
@@ -78,7 +90,9 @@ function saveGroups(groupsData) {
 function getGroups() {
   try {
     const groups = localStorage.getItem(DATABASE_KEYS.GROUPS);
-    return groups ? JSON.parse(groups) : [];
+    const parsedData = groups ? JSON.parse(groups) : [];
+    console.log("Groups recuperados do localStorage:", parsedData.length);
+    return parsedData;
   } catch (error) {
     console.error("Erro ao recuperar groups:", error);
     return [];
@@ -88,7 +102,12 @@ function getGroups() {
 // Funções para manipular os bookmakers
 function saveBookmakers(bookmakersData) {
   try {
+    if (!Array.isArray(bookmakersData)) {
+      console.error("Dados de bookmakers inválidos:", bookmakersData);
+      return false;
+    }
     localStorage.setItem(DATABASE_KEYS.BOOKMAKERS, JSON.stringify(bookmakersData));
+    console.log("Bookmakers salvos com sucesso:", bookmakersData.length);
     return true;
   } catch (error) {
     console.error("Erro ao salvar bookmakers:", error);

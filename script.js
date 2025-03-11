@@ -101,12 +101,26 @@ function loadAndInitializeData() {
     if(window.DB) {
         window.DB.init();
         
-        // Carrega os dados existentes
-        window.ownersData = window.DB.owners.get() || [];
-        window.groupsData = window.DB.groups.get() || [];
-        window.bookmakersData = window.DB.bookmakers.get() || [];
+        // Carrega os dados existentes garantindo as arrays
+        window.ownersData = window.DB.owners.get();
+        if (!Array.isArray(window.ownersData)) {
+            window.ownersData = [];
+            window.DB.owners.save(window.ownersData);
+        }
         
-        console.log("Dados carregados:", {
+        window.groupsData = window.DB.groups.get();
+        if (!Array.isArray(window.groupsData)) {
+            window.groupsData = [];
+            window.DB.groups.save(window.groupsData);
+        }
+        
+        window.bookmakersData = window.DB.bookmakers.get();
+        if (!Array.isArray(window.bookmakersData)) {
+            window.bookmakersData = [];
+            window.DB.bookmakers.save(window.bookmakersData);
+        }
+        
+        console.log("Dados carregados com sucesso:", {
             owners: window.ownersData.length,
             groups: window.groupsData.length,
             bookmakers: window.bookmakersData.length
@@ -265,33 +279,42 @@ function addDataSaveObserver() {
 function saveAllData() {
     console.log("Salvando todos os dados...");
     
-    // Salva owners
-    if (window.ownersData) {
+    // Verifica e salva owners
+    if (window.ownersData && Array.isArray(window.ownersData)) {
         window.DB.owners.save(window.ownersData);
         console.log("Owners salvos:", window.ownersData.length);
+    } else {
+        console.error("Não foi possível salvar owners - dados inválidos");
     }
     
-    // Salva groups
-    if (window.groupsData) {
+    // Verifica e salva groups
+    if (window.groupsData && Array.isArray(window.groupsData)) {
         window.DB.groups.save(window.groupsData);
         console.log("Groups salvos:", window.groupsData.length);
+    } else {
+        console.error("Não foi possível salvar groups - dados inválidos");
     }
     
-    // Salva bookmakers
-    if (window.bookmakersData) {
+    // Verifica e salva bookmakers
+    if (window.bookmakersData && Array.isArray(window.bookmakersData)) {
         console.log("Bookmakers salvos verificados:", window.bookmakersData.length);
         window.DB.bookmakers.save(window.bookmakersData);
         console.log("Bookmakers salvos:", window.bookmakersData.length);
+    } else {
+        console.error("Não foi possível salvar bookmakers - dados inválidos");
     }
     
     // Verifica os dados no localStorage após salvar
-    console.log("Dados no localStorage:", {
-        owners: window.DB.owners.get().length,
-        groups: window.DB.groups.get().length,
-        bookmakers: window.DB.bookmakers.get().length
-    });
-    
-    console.log("Dados salvos com sucesso!");
+    try {
+        console.log("Dados no localStorage:", {
+            owners: window.DB.owners.get().length,
+            groups: window.DB.groups.get().length,
+            bookmakers: window.DB.bookmakers.get().length
+        });
+        console.log("Dados salvos com sucesso!");
+    } catch (error) {
+        console.error("Erro ao verificar dados salvos:", error);
+    }
 }
 
 function saveOwnerData() {
