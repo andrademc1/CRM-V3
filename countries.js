@@ -1,3 +1,4 @@
+
 // Lista de países com informações geográficas e bandeiras
 const countries = [
   {
@@ -1751,8 +1752,8 @@ function getCountryByName(name) {
   return countries.find(country => country.name.toLowerCase().includes(name.toLowerCase()));
 }
 
-// Em vez de usar module.exports, disponibilizar as funções globalmente
-window.countriesAPI = {
+// Exportar para uso em outros módulos
+module.exports = {
   countries,
   getCountriesByContinent,
   getAllContinents,
