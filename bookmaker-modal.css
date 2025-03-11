@@ -67,3 +67,20 @@
 .geography-item .country-flag {
     margin-right: 8px;
 }
+
+.account-item {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s;
+}
+
+.account-item:hover {
+    background-color: #f0f0f0;
+}
+
+#accounts-container {
+    margin-bottom: 15px;
+}
+
+#account-form {
+    background-color: #f9f9f9;
+}
