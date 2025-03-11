@@ -3076,9 +3076,6 @@
                     const contactForm = document.getElementById("contact-form");
                     contactForm.style.display = "block";
                     
-                    // Reset form title to "Add New Contact"
-                    document.querySelector("#contact-form h4").textContent = "Add New Contact";
-                    
                     // Clear form fields
                     document.getElementById("contact-name").value = "";
                     document.getElementById("department-search").value = "";
@@ -3099,13 +3096,6 @@
                 // Function to hide the contact form
                 function hideContactForm() {
                     document.getElementById("contact-form").style.display = "none";
-                    // Clear any editing state
-                    document.getElementById("save-contact").dataset.editingContactId = "";
-                    
-                    // Reset the save button to default behavior
-                    const saveContactBtn = document.getElementById("save-contact");
-                    saveContactBtn.removeEventListener("click", updateContact);
-                    saveContactBtn.addEventListener("click", saveContact);
                 }
                 
                 // Function to initialize department dropdown
@@ -3371,13 +3361,6 @@
                 
                 // Function to save a contact
                 function saveContact() {
-                    // Check if we're currently editing a contact
-                    const editingContactId = document.getElementById("save-contact").dataset.editingContactId;
-                    if (editingContactId) {
-                        updateContact(editingContactId);
-                        return;
-                    }
-                    
                     const name = document.getElementById("contact-name").value;
                     
                     // Validate required fields
@@ -3546,9 +3529,6 @@
                     // Show the contact form
                     showContactForm();
                     
-                    // Change form title to "Edit Contact"
-                    document.querySelector("#contact-form h4").textContent = "Edit Contact";
-                    
                     // Fill the form with contact data
                     document.getElementById("contact-name").value = contact.name;
                     
@@ -3615,13 +3595,14 @@
                     // Store the contact ID for update
                     document.getElementById("contact-form").dataset.editId = contactId;
                     
-                    // Change the save button behavior directly
+                    // Update the save button event listener
                     const saveContactBtn = document.getElementById("save-contact");
-                    saveContactBtn.removeEventListener("click", saveContact);
-                    saveContactBtn.setAttribute("onclick", `updateContact('${contactId}')`);
+                    const newSaveContactBtn = saveContactBtn.cloneNode(true);
+                    saveContactBtn.parentNode.replaceChild(newSaveContactBtn, saveContactBtn);
                     
-                    // Store the contact ID for update
-                    document.getElementById("save-contact").dataset.editingContactId = contactId;
+                    newSaveContactBtn.addEventListener("click", function() {
+                        updateContact(contactId);
+                    });
                 }
                 
                 // Function to update a contact
@@ -3699,14 +3680,12 @@
                     // Hide the form
                     hideContactForm();
                     
-                    // Reset the save button back to normal
+                    // Reset the form save button
                     const saveContactBtn = document.getElementById("save-contact");
-                    saveContactBtn.removeAttribute("onclick");
-                    saveContactBtn.addEventListener("click", saveContact);
-                    saveContactBtn.dataset.editingContactId = "";
+                    const newSaveContactBtn = saveContactBtn.cloneNode(true);
+                    saveContactBtn.parentNode.replaceChild(newSaveContactBtn, saveContactBtn);
                     
-                    // Mostrar mensagem de sucesso
-                    alert("Contact updated successfully!");
+                    newSaveContactBtn.addEventListener("click", saveContact);
                 }
                 
                 // Function to delete a contact
