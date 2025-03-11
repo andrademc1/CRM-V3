@@ -1753,7 +1753,8 @@ function getCountryByName(name) {
 }
 
 // Exportar para uso em outros módulos
-module.exports = {
+// Browser-friendly exports
+window.countriesModule = {
   countries,
   getCountriesByContinent,
   getAllContinents,

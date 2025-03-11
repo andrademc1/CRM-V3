@@ -275,23 +275,24 @@
             let countriesData = [];
             
             // Try to import countries first
-            try {
-                // Dynamic import
-                import('./countries.js')
-                    .then(module => {
-                        countriesData = module.countries;
-                        initCountrySelector();
-                    })
-                    .catch(error => {
-                        console.error("Error importing countries module:", error);
-                        // Fallback to fetch
-                        fetchCountries();
-                    });
-            } catch (e) {
-                console.error("Import error:", e);
-                // Fallback to fetch
+            // Load the countries.js file as a regular script
+            const countriesScript = document.createElement('script');
+            countriesScript.src = './countries.js';
+            countriesScript.onload = function() {
+                // Access the countries through the global variable
+                if (window.countriesModule && window.countriesModule.countries) {
+                    countriesData = window.countriesModule.countries;
+                    initCountrySelector();
+                } else {
+                    console.error("Countries module not properly loaded");
+                    fetchCountries();
+                }
+            };
+            countriesScript.onerror = function() {
+                console.error("Error loading countries script");
                 fetchCountries();
-            }
+            };
+            document.head.appendChild(countriesScript);
             
             function fetchCountries() {
                 // Fallback method to get countries
