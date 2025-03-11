@@ -680,7 +680,7 @@
                     <button class="btn" style="background-color: #6c757d">
                         Cancel
                     </button>
-                    <button class="btn" id="save-group">Save Group</button>
+                    <button class="btn" id="save-group" onclick="saveGroup()">Save Group</button>
                 </div>
             </div>
         </div>
@@ -1118,15 +1118,29 @@
                     <button class="btn" style="background-color: #6c757d">
                         Cancel
                     </button>
-                    <button class="btn" id="save-bookmaker">
+                    <button class="btn" id="save-bookmaker" onclick="saveBookmaker()">
                         Save Bookmaker
                     </button>
                 </div>
             </div>
         </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Inicializar o CRM
+                initializeCRM();
+                
+                // Conectar botões de salvar
+                document.getElementById('save-owner')?.addEventListener('click', saveOwner);
+                document.getElementById('save-group')?.addEventListener('click', saveGroup);
+                document.getElementById('save-bookmaker')?.addEventListener('click', saveBookmaker);
+            });
+        </script>
 
         <link rel="stylesheet" href="owner-modal.css" />
         <link rel="stylesheet" href="group-modal.css" />
+        <link rel="stylesheet" href="bookmaker-modal.css" />
+        <script src="crm-functions.js"></script>p-modal.css" />
         <link rel="stylesheet" href="bookmaker-modal.css" />
 
         <script>

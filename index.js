@@ -29,7 +29,7 @@ app.get('/api/countries', async (req, res) => {
   }
 });
 
-// Rota para criar a tabela countries (inicialização)
+// Rota para criar as tabelas (inicialização)
 app.post('/api/setup', async (req, res) => {
   try {
     // Verificar conexão com o banco de dados
@@ -46,6 +46,45 @@ app.post('/api/setup', async (req, res) => {
         capital VARCHAR(100),
         languages TEXT[],
         currency VARCHAR(50)
+      )
+    `);
+    
+    // Criar tabela de owners
+    await query(`
+      CREATE TABLE IF NOT EXISTS owners (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(100),
+        phone VARCHAR(50),
+        logo_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // Criar tabela de groups
+    await query(`
+      CREATE TABLE IF NOT EXISTS groups (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        website VARCHAR(255),
+        logo_url TEXT,
+        owner_id INTEGER REFERENCES owners(id),
+        description TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // Criar tabela de bookmakers
+    await query(`
+      CREATE TABLE IF NOT EXISTS bookmakers (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        website VARCHAR(255),
+        logo_url TEXT,
+        group_id INTEGER REFERENCES groups(id),
+        status VARCHAR(20) DEFAULT 'active',
+        description TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
     
@@ -69,6 +108,97 @@ app.post('/api/countries', async (req, res) => {
   } catch (err) {
     console.error('Erro ao adicionar país:', err);
     res.status(500).json({ error: 'Erro ao adicionar país' });
+  }
+});
+
+// Rota para salvar owner
+app.post('/api/owners', async (req, res) => {
+  const { name, email, phone, logo_url } = req.body;
+  
+  try {
+    const result = await query(
+      'INSERT INTO owners (name, email, phone, logo_url) VALUES ($1, $2, $3, $4) RETURNING *',
+      [name, email, phone, logo_url]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Erro ao adicionar owner:', err);
+    res.status(500).json({ error: 'Erro ao adicionar owner: ' + err.message });
+  }
+});
+
+// Rota para obter todos os owners
+app.get('/api/owners', async (req, res) => {
+  try {
+    const result = await query('SELECT * FROM owners ORDER BY name');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro ao buscar owners:', err);
+    res.status(500).json({ error: 'Erro ao buscar owners: ' + err.message });
+  }
+});
+
+// Rota para salvar group
+app.post('/api/groups', async (req, res) => {
+  const { name, website, logo_url, owner_id, description } = req.body;
+  
+  try {
+    const result = await query(
+      'INSERT INTO groups (name, website, logo_url, owner_id, description) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [name, website, logo_url, owner_id, description]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Erro ao adicionar grupo:', err);
+    res.status(500).json({ error: 'Erro ao adicionar grupo: ' + err.message });
+  }
+});
+
+// Rota para obter todos os grupos
+app.get('/api/groups', async (req, res) => {
+  try {
+    const result = await query(`
+      SELECT g.*, o.name as owner_name 
+      FROM groups g 
+      LEFT JOIN owners o ON g.owner_id = o.id 
+      ORDER BY g.name
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro ao buscar grupos:', err);
+    res.status(500).json({ error: 'Erro ao buscar grupos: ' + err.message });
+  }
+});
+
+// Rota para salvar bookmaker
+app.post('/api/bookmakers', async (req, res) => {
+  const { name, website, logo_url, group_id, status, description } = req.body;
+  
+  try {
+    const result = await query(
+      'INSERT INTO bookmakers (name, website, logo_url, group_id, status, description) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [name, website, logo_url, group_id, status || 'active', description]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Erro ao adicionar bookmaker:', err);
+    res.status(500).json({ error: 'Erro ao adicionar bookmaker: ' + err.message });
+  }
+});
+
+// Rota para obter todos os bookmakers
+app.get('/api/bookmakers', async (req, res) => {
+  try {
+    const result = await query(`
+      SELECT b.*, g.name as group_name 
+      FROM bookmakers b 
+      LEFT JOIN groups g ON b.group_id = g.id 
+      ORDER BY b.name
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro ao buscar bookmakers:', err);
+    res.status(500).json({ error: 'Erro ao buscar bookmakers: ' + err.message });
   }
 });
 
