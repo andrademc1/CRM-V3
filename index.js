@@ -6,9 +6,6 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies
-app.use(express.json());
-
 // Serve static files
 app.use(express.static('./'));
 
@@ -16,40 +13,6 @@ app.use(express.static('./'));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
-// Endpoint to save database
-app.post('/save-database', (req, res) => {
-  try {
-    const data = req.body;
-    console.log('Recebendo dados para salvar:', JSON.stringify(data));
-    
-    // Verificar se os dados são válidos
-    if (!data || typeof data !== 'object') {
-      throw new Error('Dados inválidos recebidos');
-    }
-    
-    // Salvar no arquivo
-    fs.writeFileSync('database.json', JSON.stringify(data, null, 2));
-    
-    // Verificar se o arquivo foi salvo corretamente
-    const savedData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
-    console.log('Dados salvos com sucesso:', JSON.stringify(savedData));
-    
-    res.json({ 
-      success: true, 
-      message: 'Database saved successfully',
-      dataSize: {
-        owners: data.owners ? data.owners.length : 0,
-        groups: data.groups ? data.groups.length : 0,
-        bookmakers: data.bookmakers ? data.bookmakers.length : 0
-      }
-    });
-  } catch (error) {
-    console.error('Error saving database:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-});
-</old_str>
 
 // Fallback route handler for any other routes
 app.use((req, res) => {
