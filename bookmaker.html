@@ -148,53 +148,17 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nome</th>
+                                    <th>Grupo</th>
                                     <th>URL</th>
                                     <th>Status</th>
+                                    <th>Geographies</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Bookmaker A</td>
-                                    <td>https://bookmakera.com</td>
-                                    <td>Ativo</td>
-                                    <td class="action-buttons">
-                                        <button class="btn btn-edit">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            Excluir
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Bookmaker B</td>
-                                    <td>https://bookmakerb.com</td>
-                                    <td>Ativo</td>
-                                    <td class="action-buttons">
-                                        <button class="btn btn-edit">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            Excluir
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Bookmaker C</td>
-                                    <td>https://bookmaker.com</td>
-                                    <td>Inativo</td>
-                                    <td class="action-buttons">
-                                        <button class="btn btn-edit">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            Excluir
-                                        </button>
-                                    </td>
+                            <tbody id="bookmakers-table-body">
+                                <!-- Bookmakers will be listed here dynamically -->
+                                <tr id="no-bookmakers-row">
+                                    <td colspan="7" style="text-align: center; font-style: italic;">Nenhum bookmaker cadastrado.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -3787,8 +3751,8 @@
                     alert("Bookmaker added successfully!");
                     closeBookmakerModal();
 
-                    // Optionally, add the new bookmaker to the table
-                    addBookmakerToTable(bookmakerData);
+                    // Atualizar a tabela de bookmakers
+                    renderBookmakersTable();
                 });
 
                 function resetBookmakerForm() {
@@ -5450,85 +5414,136 @@ window.addEventListener('beforeunload', function() {
                         });
                 }
 
-                // Add a new bookmaker to the table
-                function addBookmakerToTable(bookmaker) {
-                    const table = document.querySelector(
-                        ".bookmaker-table tbody",
-                    );
-                    if (!table) return;
-
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                    <td>${bookmaker.id}</td>
-                    <td>${bookmaker.name}</td>
-                    <td>${bookmaker.affiliateUrl || "-"}</td>
-                    <td>${bookmaker.status}</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-edit">Editar</button>
-                        <button class="btn btn-delete">Excluir</button>
-                    </td>
-                `;
-
-                    // Add event listeners for the new buttons
-                    row.querySelector(".btn-edit").addEventListener(
-                        "click",
-                        function () {
-                            alert(`Editando bookmaker com ID: ${bookmaker.id}`);
-                        },
-                    );
-
-                    row.querySelector(".btn-delete").addEventListener(
-                        "click",
-                        function () {
-                            if (
-                                confirm(
-                                    `Tem certeza que deseja excluir o bookmaker "${bookmaker.name}"?`,
-                                )
-                            ) {
-                                row.remove();
-                                bookmakersData = bookmakersData.filter(
-                                    (b) => b.id !== bookmaker.id,
-                                );
-                                alert(
-                                    `Bookmaker "${bookmaker.name}" excluído.`,
-                                );
-                            }
-                        },
-                    );
-
-                    table.appendChild(row);
-                }
-
-                // Configurar listeners para botões de edição existentes
-                document.querySelectorAll(".btn-edit").forEach((button) => {
-                    button.addEventListener("click", function () {
-                        const row = this.closest("tr");
-                        const id = row.cells[0].textContent;
-                        alert(`Editando bookmaker com ID: ${id}`);
-                    });
+                // Função para inicializar a tabela de bookmakers quando a página carregar
+                document.addEventListener("DOMContentLoaded", function() {
+                    console.log("Inicializando tabela de bookmakers...");
+                    console.log("Bookmakers disponíveis:", bookmakersData ? bookmakersData.length : 0);
+                    renderBookmakersTable();
                 });
 
-                // Configurar listeners para botões de exclusão existentes
-                document.querySelectorAll(".btn-delete").forEach((button) => {
-                    button.addEventListener("click", function () {
-                        const row = this.closest("tr");
-                        const id = row.cells[0].textContent;
-                        const name = row.cells[1].textContent;
-
-                        if (
-                            confirm(
-                                `Tem certeza que deseja excluir o bookmaker "${name}"?`,
-                            )
-                        ) {
-                            row.remove();
-                            bookmakersData = bookmakersData.filter(
-                                (b) => b.id !== id,
-                            );
-                            // Atualizar o localStorage
-                            window.DB.bookmakers.save(bookmakersData);
-                            alert(`Bookmaker "${name}" excluído.`);
+                // Função para renderizar a tabela de bookmakers
+                function renderBookmakersTable() {
+                    const tableBody = document.getElementById("bookmakers-table-body");
+                    const noBookmakersRow = document.getElementById("no-bookmakers-row");
+                    
+                    // Limpar a tabela
+                    while (tableBody.children.length > 1) {
+                        tableBody.removeChild(tableBody.lastChild);
+                    }
+                    
+                    // Verificar se existem bookmakers
+                    if (!bookmakersData || bookmakersData.length === 0) {
+                        noBookmakersRow.style.display = "table-row";
+                        return;
+                    }
+                    
+                    // Esconder a linha de "nenhum bookmaker"
+                    noBookmakersRow.style.display = "none";
+                    
+                    // Adicionar cada bookmaker à tabela
+                    bookmakersData.forEach(bookmaker => {
+                        const row = document.createElement("tr");
+                        
+                        // Encontrar o nome do grupo
+                        let groupName = "N/A";
+                        if (bookmaker.group) {
+                            const group = groupsData.find(g => g.id === bookmaker.group);
+                            if (group) {
+                                groupName = group.name;
+                            }
                         }
+                        
+                        // Obter a primeira URL (se houver)
+                        let mainUrl = "N/A";
+                        if (bookmaker.geographyURLs && bookmaker.geographyURLs.length > 0) {
+                            mainUrl = bookmaker.geographyURLs[0].url || "N/A";
+                        }
+                        
+                        // Formatar geographies
+                        let geographiesDisplay = "Nenhuma";
+                        if (bookmaker.geographies && bookmaker.geographies.length > 0) {
+                            if (bookmaker.geographies.length <= 3) {
+                                geographiesDisplay = bookmaker.geographies.map(geo => 
+                                    `<span title="${geo.name}">${geo.flag}</span>`
+                                ).join(" ");
+                            } else {
+                                geographiesDisplay = `<span title="${bookmaker.geographies.length} geographies">${bookmaker.geographies.length} países</span>`;
+                            }
+                        }
+                        
+                        // Formatar status
+                        let statusDisplay = bookmaker.status || "N/A";
+                        // Capitalizar primeira letra
+                        statusDisplay = statusDisplay.charAt(0).toUpperCase() + statusDisplay.slice(1);
+                        
+                        row.innerHTML = `
+                            <td>${bookmaker.id}</td>
+                            <td>${bookmaker.name}</td>
+                            <td>${groupName}</td>
+                            <td>${mainUrl}</td>
+                            <td>${statusDisplay}</td>
+                            <td>${geographiesDisplay}</td>
+                            <td class="action-buttons">
+                                <button class="btn btn-edit" data-id="${bookmaker.id}">Editar</button>
+                                <button class="btn btn-delete" data-id="${bookmaker.id}">Excluir</button>
+                            </td>
+                        `;
+                        
+                        tableBody.appendChild(row);
                     });
+                    
+                    // Adicionar event listeners para os botões
+                    addBookmakerButtonListeners();
+                }
+                
+                // Função para adicionar listeners aos botões de edição e exclusão
+                function addBookmakerButtonListeners() {
+                    // Event listeners para botões de edição
+                    document.querySelectorAll(".btn-edit").forEach(button => {
+                        button.addEventListener("click", function() {
+                            const bookmakerId = this.getAttribute("data-id");
+                            const bookmaker = bookmakersData.find(b => b.id === bookmakerId);
+                            
+                            if (bookmaker) {
+                                alert(`Editando bookmaker: ${bookmaker.name}`);
+                                // Aqui você pode implementar a lógica para editar o bookmaker
+                                // Por exemplo, abrir o modal de bookmaker e preencher com os dados
+                            }
+                        });
+                    });
+                    
+                    // Event listeners para botões de exclusão
+                    document.querySelectorAll(".btn-delete").forEach(button => {
+                        button.addEventListener("click", function() {
+                            const bookmakerId = this.getAttribute("data-id");
+                            const bookmaker = bookmakersData.find(b => b.id === bookmakerId);
+                            
+                            if (bookmaker && confirm(`Tem certeza que deseja excluir o bookmaker "${bookmaker.name}"?`)) {
+                                // Remover o bookmaker do array
+                                bookmakersData = bookmakersData.filter(b => b.id !== bookmakerId);
+                                
+                                // Salvar no banco de dados local
+                                window.DB.bookmakers.save(bookmakersData);
+                                
+                                // Atualizar a tabela
+                                renderBookmakersTable();
+                                
+                                alert(`Bookmaker "${bookmaker.name}" excluído com sucesso!`);
+                            }
+                        });
+                    });
+                }
+                
+                // Renderizar a tabela ao carregar a página
+                renderBookmakersTable();
+                
+                // Renderizar a tabela novamente quando um novo bookmaker for adicionado
+                bookmakerSaveBtn.addEventListener("click", function() {
+                    // A lógica existente para salvar o bookmaker
+                    // ...
+                    
+                    // Após salvar, renderizar a tabela novamente
+                    setTimeout(renderBookmakersTable, 100);
                 });
             });
         </script>
