@@ -3096,6 +3096,13 @@
                 // Function to hide the contact form
                 function hideContactForm() {
                     document.getElementById("contact-form").style.display = "none";
+                    // Clear any editing state
+                    document.getElementById("save-contact").dataset.editingContactId = "";
+                    
+                    // Reset the save button to default behavior
+                    const saveContactBtn = document.getElementById("save-contact");
+                    saveContactBtn.removeEventListener("click", updateContact);
+                    saveContactBtn.addEventListener("click", saveContact);
                 }
                 
                 // Function to initialize department dropdown
@@ -3361,6 +3368,13 @@
                 
                 // Function to save a contact
                 function saveContact() {
+                    // Check if we're currently editing a contact
+                    const editingContactId = document.getElementById("save-contact").dataset.editingContactId;
+                    if (editingContactId) {
+                        updateContact(editingContactId);
+                        return;
+                    }
+                    
                     const name = document.getElementById("contact-name").value;
                     
                     // Validate required fields
@@ -3596,13 +3610,13 @@
                     document.getElementById("contact-form").dataset.editId = contactId;
                     
                     // Update the save button event listener
-                    const saveContactBtn = document.getElementById("save-contact");
-                    const newSaveContactBtn = saveContactBtn.cloneNode(true);
-                    saveContactBtn.parentNode.replaceChild(newSaveContactBtn, saveContactBtn);
-                    
-                    newSaveContactBtn.addEventListener("click", function() {
+                    document.getElementById("save-contact").removeEventListener("click", saveContact);
+                    document.getElementById("save-contact").addEventListener("click", function() {
                         updateContact(contactId);
                     });
+                    
+                    // Store the contact ID for update
+                    document.getElementById("save-contact").dataset.editingContactId = contactId;
                 }
                 
                 // Function to update a contact
