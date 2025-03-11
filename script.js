@@ -32,6 +32,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 section.classList.remove('active');
             });
 
+            document.getElementById(sectionId).classList.add('active');
+        });
+    });
+});
+
 // Per geography toggle listeners
 document.addEventListener('DOMContentLoaded', function() {
     const checkboxes = document.querySelectorAll(".per-geography-billing-checkbox");
@@ -91,9 +96,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-});
-
-            document.getElementById(sectionId).classList.add('active');
-        });
-    });
 });
