@@ -150,54 +150,17 @@
                                     <th>Nome</th>
                                     <th>URL</th>
                                     <th>Status</th>
+                                    <th>Grupo</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Bookmaker A</td>
-                                    <td>https://bookmakera.com</td>
-                                    <td>Ativo</td>
-                                    <td class="action-buttons">
-                                        <button class="btn btn-edit">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            Excluir
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Bookmaker B</td>
-                                    <td>https://bookmakerb.com</td>
-                                    <td>Ativo</td>
-                                    <td class="action-buttons">
-                                        <button class="btn btn-edit">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            Excluir
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Bookmaker C</td>
-                                    <td>https://bookmaker.com</td>
-                                    <td>Inativo</td>
-                                    <td class="action-buttons">
-                                        <button class="btn btn-edit">
-                                            Editar
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            Excluir
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="bookmakers-table-body">
+                                <!-- Os bookmakers serão inseridos aqui dinamicamente -->
                             </tbody>
                         </table>
+                        <div id="no-bookmakers-message" style="text-align: center; padding: 20px; display: none;">
+                            <p><i>Nenhum bookmaker cadastrado. Utilize o botão "Add Bookmaker" para adicionar.</i></p>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -3777,6 +3740,12 @@
                         accounts: bookmakerAccounts,
                     };
 
+                    // Validar dados essenciais
+                    if (!bookmakerData.name) {
+                        alert("Por favor, insira um nome para o bookmaker.");
+                        return;
+                    }
+
                     // Add to bookmakers array
                     bookmakersData.push(bookmakerData);
                     
@@ -3784,10 +3753,10 @@
                     window.DB.bookmakers.save(bookmakersData);
 
                     console.log("Bookmaker data:", bookmakerData);
-                    alert("Bookmaker added successfully!");
+                    alert("Bookmaker adicionado com sucesso!");
                     closeBookmakerModal();
 
-                    // Optionally, add the new bookmaker to the table
+                    // Atualiza a tabela com o novo bookmaker
                     addBookmakerToTable(bookmakerData);
                 });
 
@@ -5452,84 +5421,14 @@ window.addEventListener('beforeunload', function() {
 
                 // Add a new bookmaker to the table
                 function addBookmakerToTable(bookmaker) {
-                    const table = document.querySelector(
-                        ".bookmaker-table tbody",
-                    );
-                    if (!table) return;
-
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                    <td>${bookmaker.id}</td>
-                    <td>${bookmaker.name}</td>
-                    <td>${bookmaker.affiliateUrl || "-"}</td>
-                    <td>${bookmaker.status}</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-edit">Editar</button>
-                        <button class="btn btn-delete">Excluir</button>
-                    </td>
-                `;
-
-                    // Add event listeners for the new buttons
-                    row.querySelector(".btn-edit").addEventListener(
-                        "click",
-                        function () {
-                            alert(`Editando bookmaker com ID: ${bookmaker.id}`);
-                        },
-                    );
-
-                    row.querySelector(".btn-delete").addEventListener(
-                        "click",
-                        function () {
-                            if (
-                                confirm(
-                                    `Tem certeza que deseja excluir o bookmaker "${bookmaker.name}"?`,
-                                )
-                            ) {
-                                row.remove();
-                                bookmakersData = bookmakersData.filter(
-                                    (b) => b.id !== bookmaker.id,
-                                );
-                                alert(
-                                    `Bookmaker "${bookmaker.name}" excluído.`,
-                                );
-                            }
-                        },
-                    );
-
-                    table.appendChild(row);
+                    // Atualiza a tabela completa após adicionar um novo bookmaker
+                    if (typeof populateBookmakersTable === 'function') {
+                        populateBookmakersTable();
+                    } else {
+                        // Fallback se a função não estiver disponível
+                        console.log("Função populateBookmakersTable não encontrada. Recarregue a página para ver o novo bookmaker.");
+                    }
                 }
-
-                // Configurar listeners para botões de edição existentes
-                document.querySelectorAll(".btn-edit").forEach((button) => {
-                    button.addEventListener("click", function () {
-                        const row = this.closest("tr");
-                        const id = row.cells[0].textContent;
-                        alert(`Editando bookmaker com ID: ${id}`);
-                    });
-                });
-
-                // Configurar listeners para botões de exclusão existentes
-                document.querySelectorAll(".btn-delete").forEach((button) => {
-                    button.addEventListener("click", function () {
-                        const row = this.closest("tr");
-                        const id = row.cells[0].textContent;
-                        const name = row.cells[1].textContent;
-
-                        if (
-                            confirm(
-                                `Tem certeza que deseja excluir o bookmaker "${name}"?`,
-                            )
-                        ) {
-                            row.remove();
-                            bookmakersData = bookmakersData.filter(
-                                (b) => b.id !== id,
-                            );
-                            // Atualizar o localStorage
-                            window.DB.bookmakers.save(bookmakersData);
-                            alert(`Bookmaker "${name}" excluído.`);
-                        }
-                    });
-                });
             });
         </script>
     </body>
