@@ -442,6 +442,7 @@
                 <div class="tabs">
                     <div class="tab active" data-tab="bookmaker-settings">Bookmaker Settings</div>
                     <div class="tab" data-tab="bookmaker-account">Bookmaker Account Settings</div>
+                    <div class="tab" data-tab="bookmaker-billing">Bookmaker Billing Settings</div>
                     <div class="tab" data-tab="bookmaker-deal">Bookmaker Deal Settings</div>
                 </div>
 
@@ -535,6 +536,17 @@
                             <button type="button" id="save-account" class="btn">Save Account</button>
                             <button type="button" id="cancel-account" class="btn" style="background-color: #6c757d; margin-left: 10px;">Cancel</button>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Bookmaker Billing Settings Tab -->
+                <div class="tab-content" id="bookmaker-billing">
+                    <div id="billing-no-accounts-message" class="no-accounts-message">
+                        <p>Please add accounts in the "Bookmaker Account Settings" tab first before configuring billing details.</p>
+                    </div>
+                    
+                    <div id="billing-accounts-container">
+                        <!-- Account billing cards will be added here dynamically -->
                     </div>
                 </div>
 
@@ -886,9 +898,13 @@
                         this.classList.add('active');
                         modal.querySelector(`#${target}`).classList.add('active');
                         
-                        // If this is the bookmaker deal tab, render the deal accounts
+                        // If this is the bookmaker deal or billing tab, render the accounts
                         if (target === 'bookmaker-deal') {
                             renderDealAccounts();
+                        }
+                        
+                        if (target === 'bookmaker-billing') {
+                            renderBillingAccounts();
                         }
                     });
                 });
@@ -1320,6 +1336,7 @@
                 // Update UI
                 renderBookmakerAccounts();
                 renderDealAccounts(); // Update the deal settings tab
+                renderBillingAccounts(); // Update the billing settings tab
                 hideAccountForm();
                 resetAccountForm();
             });
@@ -1471,6 +1488,7 @@
                     bookmakerAccounts.splice(index, 1);
                     renderBookmakerAccounts();
                     renderDealAccounts(); // Update the deal settings tab
+                    renderBillingAccounts(); // Update the billing settings tab
                 }
             }
 
@@ -1661,14 +1679,499 @@
                     dealAccountsContainer.innerHTML = '';
                 }
                 
+                // Reset billing accounts container
+                const billingAccountsContainer = document.getElementById('billing-accounts-container');
+                if (billingAccountsContainer) {
+                    billingAccountsContainer.innerHTML = '';
+                }
+                
                 // Show no accounts message in deal tab
                 const noAccountsMessage = document.getElementById('no-accounts-message');
                 if (noAccountsMessage) {
                     noAccountsMessage.style.display = 'block';
                 }
+                
+                // Show no accounts message in billing tab
+                const noBillingAccountsMessage = document.getElementById('billing-no-accounts-message');
+                if (noBillingAccountsMessage) {
+                    noBillingAccountsMessage.style.display = 'block';
+                }
 
                 // Reset to first tab
                 bookmakerModal.querySelector('.tab[data-tab="bookmaker-settings"]').click();
+            }
+
+            // Render billing accounts in the Billing Settings tab
+            function renderBillingAccounts() {
+                const billingAccountsContainer = document.getElementById('billing-accounts-container');
+                const noBillingAccountsMessage = document.getElementById('billing-no-accounts-message');
+                
+                if (!billingAccountsContainer) return;
+                
+                // Show or hide the no accounts message
+                if (bookmakerAccounts.length === 0) {
+                    noBillingAccountsMessage.style.display = 'block';
+                    billingAccountsContainer.innerHTML = '';
+                    return;
+                } else {
+                    noBillingAccountsMessage.style.display = 'none';
+                }
+                
+                billingAccountsContainer.innerHTML = '';
+                
+                // Create a card for each account
+                bookmakerAccounts.forEach((account, index) => {
+                    // Initialize billing data if it doesn't exist
+                    if (!account.billing) {
+                        account.billing = {
+                            name: '',
+                            vat: '',
+                            address1: '',
+                            address2: '',
+                            city: '',
+                            state: '',
+                            zipCode: '',
+                            country: '',
+                            perGeography: false,
+                            geographyBilling: []
+                        };
+                    }
+
+                    const billingCard = document.createElement('div');
+                    billingCard.className = 'billing-card';
+                    billingCard.dataset.accountId = account.id;
+                    
+                    // Create the card header with account info
+                    const cardHeader = document.createElement('div');
+                    cardHeader.className = 'billing-account-header';
+                    cardHeader.innerHTML = `
+                        <strong>${account.username}</strong> (${account.owner.name})
+                    `;
+                    
+                    billingCard.appendChild(cardHeader);
+                    
+                    // If the account has geographies, show the per-geography toggle
+                    const hasMultipleGeographies = account.geographies.length > 1;
+                    
+                    // General billing settings section
+                    const generalBillingSection = document.createElement('div');
+                    generalBillingSection.className = 'general-billing-section';
+                    generalBillingSection.innerHTML = `
+                        <div class="form-group">
+                            <label for="billing-name-${account.id}">Name</label>
+                            <input type="text" id="billing-name-${account.id}" class="form-control billing-name" data-account-id="${account.id}" value="${account.billing.name || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-vat-${account.id}">VAT</label>
+                            <input type="text" id="billing-vat-${account.id}" class="form-control billing-vat" data-account-id="${account.id}" value="${account.billing.vat || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-address1-${account.id}">Address 1</label>
+                            <input type="text" id="billing-address1-${account.id}" class="form-control billing-address1" data-account-id="${account.id}" value="${account.billing.address1 || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-address2-${account.id}">Address 2</label>
+                            <input type="text" id="billing-address2-${account.id}" class="form-control billing-address2" data-account-id="${account.id}" value="${account.billing.address2 || ''}">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="billing-city-${account.id}">City</label>
+                                <input type="text" id="billing-city-${account.id}" class="form-control billing-city" data-account-id="${account.id}" value="${account.billing.city || ''}">
+                            </div>
+                            <div class="form-col">
+                                <label for="billing-state-${account.id}">State/Province/Region</label>
+                                <input type="text" id="billing-state-${account.id}" class="form-control billing-state" data-account-id="${account.id}" value="${account.billing.state || ''}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="billing-zipcode-${account.id}">Zip-Code</label>
+                                <input type="text" id="billing-zipcode-${account.id}" class="form-control billing-zipcode" data-account-id="${account.id}" value="${account.billing.zipCode || ''}">
+                            </div>
+                            <div class="form-col">
+                                <label for="billing-country-${account.id}">Country</label>
+                                <div class="country-selector" id="billing-country-selector-${account.id}">
+                                    <input type="text" id="billing-country-search-${account.id}" class="country-search" placeholder="Search country">
+                                    <div id="billing-country-list-${account.id}" class="country-list"></div>
+                                    <div id="billing-selected-country-${account.id}" class="selected-country" style="${account.billing.country ? 'display: flex;' : 'display: none;'}">
+                                        <span id="billing-selected-flag-${account.id}" class="country-flag">${account.billing.countryFlag || ''}</span>
+                                        <span id="billing-selected-name-${account.id}">${account.billing.countryName || ''}</span>
+                                        <span class="country-remove">×</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    billingCard.appendChild(generalBillingSection);
+                    
+                    // If multiple geographies, add the option to set per-geography billing
+                    if (hasMultipleGeographies) {
+                        const perGeographyToggle = document.createElement('div');
+                        perGeographyToggle.className = 'per-geography-billing-toggle form-check';
+                        perGeographyToggle.innerHTML = `
+                            <input type="checkbox" id="per-geography-billing-${account.id}" class="form-check-input per-geography-billing-checkbox" data-account-id="${account.id}" ${account.billing.perGeography ? 'checked' : ''}>
+                            <label for="per-geography-billing-${account.id}">Set different billing details for each geography</label>
+                        `;
+                        
+                        billingCard.appendChild(perGeographyToggle);
+                        
+                        // Geography-specific billing section
+                        const geographyBillingSection = document.createElement('div');
+                        geographyBillingSection.className = 'geography-billing';
+                        geographyBillingSection.id = `geography-billing-${account.id}`;
+                        geographyBillingSection.style.display = account.billing.perGeography ? 'block' : 'none';
+                        
+                        // Hide the general billing section if per-geography is enabled
+                        if (account.billing.perGeography) {
+                            generalBillingSection.classList.add('hidden');
+                        }
+                        
+                        // Add forms for each geography
+                        account.geographies.forEach(geography => {
+                            // Find existing geography billing or create a new one
+                            let geographyBilling = account.billing.geographyBilling.find(billing => billing.geographyCode === geography.code) || {
+                                geographyCode: geography.code,
+                                name: '',
+                                vat: '',
+                                address1: '',
+                                address2: '',
+                                city: '',
+                                state: '',
+                                zipCode: '',
+                                country: '',
+                                countryName: '',
+                                countryFlag: ''
+                            };
+                            
+                            const geographyBillingItem = document.createElement('div');
+                            geographyBillingItem.className = 'geography-billing-item';
+                            geographyBillingItem.innerHTML = `
+                                <div class="geography-name">
+                                    <span class="country-flag">${geography.flag}</span>
+                                    <strong>${geography.name}</strong>
+                                </div>
+                                <div class="form-group">
+                                    <label for="geo-billing-name-${account.id}-${geography.code}">Name</label>
+                                    <input type="text" id="geo-billing-name-${account.id}-${geography.code}" class="form-control geo-billing-name" data-account-id="${account.id}" data-geography-code="${geography.code}" value="${geographyBilling.name || ''}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="geo-billing-vat-${account.id}-${geography.code}">VAT</label>
+                                    <input type="text" id="geo-billing-vat-${account.id}-${geography.code}" class="form-control geo-billing-vat" data-account-id="${account.id}" data-geography-code="${geography.code}" value="${geographyBilling.vat || ''}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="geo-billing-address1-${account.id}-${geography.code}">Address 1</label>
+                                    <input type="text" id="geo-billing-address1-${account.id}-${geography.code}" class="form-control geo-billing-address1" data-account-id="${account.id}" data-geography-code="${geography.code}" value="${geographyBilling.address1 || ''}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="geo-billing-address2-${account.id}-${geography.code}">Address 2</label>
+                                    <input type="text" id="geo-billing-address2-${account.id}-${geography.code}" class="form-control geo-billing-address2" data-account-id="${account.id}" data-geography-code="${geography.code}" value="${geographyBilling.address2 || ''}">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-col">
+                                        <label for="geo-billing-city-${account.id}-${geography.code}">City</label>
+                                        <input type="text" id="geo-billing-city-${account.id}-${geography.code}" class="form-control geo-billing-city" data-account-id="${account.id}" data-geography-code="${geography.code}" value="${geographyBilling.city || ''}">
+                                    </div>
+                                    <div class="form-col">
+                                        <label for="geo-billing-state-${account.id}-${geography.code}">State/Province/Region</label>
+                                        <input type="text" id="geo-billing-state-${account.id}-${geography.code}" class="form-control geo-billing-state" data-account-id="${account.id}" data-geography-code="${geography.code}" value="${geographyBilling.state || ''}">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-col">
+                                        <label for="geo-billing-zipcode-${account.id}-${geography.code}">Zip-Code</label>
+                                        <input type="text" id="geo-billing-zipcode-${account.id}-${geography.code}" class="form-control geo-billing-zipcode" data-account-id="${account.id}" data-geography-code="${geography.code}" value="${geographyBilling.zipCode || ''}">
+                                    </div>
+                                    <div class="form-col">
+                                        <label for="geo-billing-country-${account.id}-${geography.code}">Country</label>
+                                        <div class="country-selector" id="geo-billing-country-selector-${account.id}-${geography.code}">
+                                            <input type="text" id="geo-billing-country-search-${account.id}-${geography.code}" class="country-search" placeholder="Search country">
+                                            <div id="geo-billing-country-list-${account.id}-${geography.code}" class="country-list"></div>
+                                            <div id="geo-billing-selected-country-${account.id}-${geography.code}" class="selected-country" style="${geographyBilling.country ? 'display: flex;' : 'display: none;'}">
+                                                <span id="geo-billing-selected-flag-${account.id}-${geography.code}" class="country-flag">${geographyBilling.countryFlag || ''}</span>
+                                                <span id="geo-billing-selected-name-${account.id}-${geography.code}">${geographyBilling.countryName || ''}</span>
+                                                <span class="country-remove">×</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            geographyBillingSection.appendChild(geographyBillingItem);
+                        });
+                        
+                        billingCard.appendChild(geographyBillingSection);
+                    }
+                    
+                    billingAccountsContainer.appendChild(billingCard);
+                });
+                
+                // Initialize country selectors for each account
+                bookmakerAccounts.forEach(account => {
+                    initBillingCountrySelector(account.id, "billing-country-search-", "billing-country-list-", "billing-selected-country-", "billing-selected-flag-", "billing-selected-name-");
+                    
+                    if (account.geographies.length > 1 && account.billing.perGeography) {
+                        account.geographies.forEach(geography => {
+                            initBillingCountrySelector(account.id, "geo-billing-country-search-", "geo-billing-country-list-", "geo-billing-selected-country-", "geo-billing-selected-flag-", "geo-billing-selected-name-", geography.code);
+                        });
+                    }
+                });
+                
+                // Add event listeners for billing form fields
+                addBillingEventListeners();
+            }
+
+            // Initialize country selector for billing
+            function initBillingCountrySelector(accountId, searchIdPrefix, listIdPrefix, selectedIdPrefix, flagIdPrefix, nameIdPrefix, geographyCode = '') {
+                const idSuffix = geographyCode ? `-${accountId}-${geographyCode}` : `-${accountId}`;
+                const countrySearch = document.getElementById(`${searchIdPrefix}${accountId}${geographyCode ? `-${geographyCode}` : ''}`);
+                const countryList = document.getElementById(`${listIdPrefix}${accountId}${geographyCode ? `-${geographyCode}` : ''}`);
+                const selectedCountry = document.getElementById(`${selectedIdPrefix}${accountId}${geographyCode ? `-${geographyCode}` : ''}`);
+                const selectedFlag = document.getElementById(`${flagIdPrefix}${accountId}${geographyCode ? `-${geographyCode}` : ''}`);
+                const selectedName = document.getElementById(`${nameIdPrefix}${accountId}${geographyCode ? `-${geographyCode}` : ''}`);
+                const countryRemove = selectedCountry.querySelector('.country-remove');
+
+                if (!countrySearch || !countryList || !selectedCountry) {
+                    console.error(`One of the country selector elements not found for account: ${accountId}`);
+                    return;
+                }
+
+                // Populate country list
+                function renderCountryList(filter = '') {
+                    countryList.innerHTML = '';
+
+                    const filteredCountries = filter 
+                        ? countriesData.filter(c => c.name.toLowerCase().includes(filter.toLowerCase())) 
+                        : countriesData;
+
+                    filteredCountries.forEach(country => {
+                        const item = document.createElement('div');
+                        item.className = 'country-item';
+                        item.innerHTML = `
+                            <span class="country-flag">${country.flag}</span>
+                            <span>${country.name}</span>
+                        `;
+
+                        item.addEventListener('click', function() {
+                            // Set selected country
+                            selectedFlag.textContent = country.flag;
+                            selectedName.textContent = country.name;
+                            selectedCountry.style.display = 'flex';
+                            countrySearch.value = '';
+                            countryList.classList.remove('active');
+
+                            // Store the country data in the dataset
+                            selectedCountry.dataset.code = country.code;
+                            
+                            // Update the account billing data
+                            updateBillingCountry(accountId, country, geographyCode);
+                        });
+
+                        countryList.appendChild(item);
+                    });
+                }
+
+                // Show country list on focus
+                countrySearch.addEventListener('focus', function() {
+                    countryList.classList.add('active');
+                    renderCountryList();
+                });
+
+                // Filter countries on search
+                countrySearch.addEventListener('input', function() {
+                    renderCountryList(this.value);
+                    countryList.classList.add('active');
+                });
+
+                // Remove selected country
+                countryRemove.addEventListener('click', function() {
+                    selectedCountry.style.display = 'none';
+                    delete selectedCountry.dataset.code;
+                    
+                    // Update the account billing data
+                    updateBillingCountry(accountId, null, geographyCode);
+                });
+
+                // Close country list when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest(`#billing-country-selector-${accountId}${geographyCode ? `-${geographyCode}` : ''}`) && 
+                        !e.target.closest(`#geo-billing-country-selector-${accountId}${geographyCode ? `-${geographyCode}` : ''}`)) {
+                        countryList.classList.remove('active');
+                    }
+                });
+
+                // Initial render
+                renderCountryList();
+            }
+
+            // Update billing country data
+            function updateBillingCountry(accountId, country, geographyCode = '') {
+                const account = bookmakerAccounts.find(a => a.id === accountId);
+                if (!account) return;
+
+                if (geographyCode) {
+                    // Update geography billing
+                    let geographyBilling = account.billing.geographyBilling.find(billing => billing.geographyCode === geographyCode);
+                    
+                    if (!geographyBilling) {
+                        geographyBilling = {
+                            geographyCode: geographyCode,
+                            name: '',
+                            vat: '',
+                            address1: '',
+                            address2: '',
+                            city: '',
+                            state: '',
+                            zipCode: '',
+                            country: '',
+                            countryName: '',
+                            countryFlag: ''
+                        };
+                        account.billing.geographyBilling.push(geographyBilling);
+                    }
+
+                    if (country) {
+                        geographyBilling.country = country.code;
+                        geographyBilling.countryName = country.name;
+                        geographyBilling.countryFlag = country.flag;
+                    } else {
+                        geographyBilling.country = '';
+                        geographyBilling.countryName = '';
+                        geographyBilling.countryFlag = '';
+                    }
+                } else {
+                    // Update general billing
+                    if (country) {
+                        account.billing.country = country.code;
+                        account.billing.countryName = country.name;
+                        account.billing.countryFlag = country.flag;
+                    } else {
+                        account.billing.country = '';
+                        account.billing.countryName = '';
+                        account.billing.countryFlag = '';
+                    }
+                }
+            }
+
+            // Add event listeners for billing form fields
+            function addBillingEventListeners() {
+                // General billing field listeners
+                document.querySelectorAll('.billing-name, .billing-vat, .billing-address1, .billing-address2, .billing-city, .billing-state, .billing-zipcode').forEach(input => {
+                    input.addEventListener('input', function() {
+                        const accountId = this.dataset.accountId;
+                        const account = bookmakerAccounts.find(a => a.id === accountId);
+                        if (!account) return;
+
+                        const fieldName = this.className.split(' ')[1].replace('billing-', '');
+                        let billingField;
+                        
+                        switch(fieldName) {
+                            case 'name': billingField = 'name'; break;
+                            case 'vat': billingField = 'vat'; break;
+                            case 'address1': billingField = 'address1'; break;
+                            case 'address2': billingField = 'address2'; break;
+                            case 'city': billingField = 'city'; break;
+                            case 'state': billingField = 'state'; break;
+                            case 'zipcode': billingField = 'zipCode'; break;
+                        }
+
+                        account.billing[billingField] = this.value;
+                    });
+                });
+
+                // Geography billing field listeners
+                document.querySelectorAll('.geo-billing-name, .geo-billing-vat, .geo-billing-address1, .geo-billing-address2, .geo-billing-city, .geo-billing-state, .geo-billing-zipcode').forEach(input => {
+                    input.addEventListener('input', function() {
+                        const accountId = this.dataset.accountId;
+                        const geographyCode = this.dataset.geographyCode;
+                        const account = bookmakerAccounts.find(a => a.id === accountId);
+                        if (!account || !geographyCode) return;
+
+                        let geographyBilling = account.billing.geographyBilling.find(billing => billing.geographyCode === geographyCode);
+                        
+                        if (!geographyBilling) {
+                            geographyBilling = {
+                                geographyCode: geographyCode,
+                                name: '',
+                                vat: '',
+                                address1: '',
+                                address2: '',
+                                city: '',
+                                state: '',
+                                zipCode: '',
+                                country: '',
+                                countryName: '',
+                                countryFlag: ''
+                            };
+                            account.billing.geographyBilling.push(geographyBilling);
+                        }
+
+                        const fieldName = this.className.split(' ')[1].replace('geo-billing-', '');
+                        let billingField;
+                        
+                        switch(fieldName) {
+                            case 'name': billingField = 'name'; break;
+                            case 'vat': billingField = 'vat'; break;
+                            case 'address1': billingField = 'address1'; break;
+                            case 'address2': billingField = 'address2'; break;
+                            case 'city': billingField = 'city'; break;
+                            case 'state': billingField = 'state'; break;
+                            case 'zipcode': billingField = 'zipCode'; break;
+                        }
+
+                        geographyBilling[billingField] = this.value;
+                    });
+                });
+
+                // Per geography toggle listeners
+                document.querySelectorAll('.per-geography-billing-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        const accountId = this.dataset.accountId;
+                        const account = bookmakerAccounts.find(a => a.id === accountId);
+                        if (!account) return;
+
+                        account.billing.perGeography = this.checked;
+                        
+                        // Find the sections that need to be shown/hidden
+                        const geographyBillingSection = document.getElementById(`geography-billing-${accountId}`);
+                        const generalBillingSection = this.closest('.billing-card').querySelector('.general-billing-section');
+                        
+                        // Show/hide the appropriate sections
+                        if (geographyBillingSection) {
+                            geographyBillingSection.style.display = this.checked ? 'block' : 'none';
+                        }
+                        
+                        if (generalBillingSection) {
+                            if (this.checked) {
+                                generalBillingSection.classList.add('hidden');
+                            } else {
+                                generalBillingSection.classList.remove('hidden');
+                            }
+                        }
+                        
+                        // Initialize geography billing if it doesn't exist
+                        if (this.checked && (!account.billing.geographyBilling || account.billing.geographyBilling.length === 0)) {
+                            account.billing.geographyBilling = account.geographies.map(geography => ({
+                                geographyCode: geography.code,
+                                name: account.billing.name || '',
+                                vat: account.billing.vat || '',
+                                address1: account.billing.address1 || '',
+                                address2: account.billing.address2 || '',
+                                city: account.billing.city || '',
+                                state: account.billing.state || '',
+                                zipCode: account.billing.zipCode || '',
+                                country: account.billing.country || '',
+                                countryName: account.billing.countryName || '',
+                                countryFlag: account.billing.countryFlag || ''
+                            }));
+                            
+                            // Initialize the country selectors for each geography
+                            account.geographies.forEach(geography => {
+                                initBillingCountrySelector(account.id, "geo-billing-country-search-", "geo-billing-country-list-", "geo-billing-selected-country-", "geo-billing-selected-flag-", "geo-billing-selected-name-", geography.code);
+                            });
+                        }
+                    });
+                });
             }
 
             // Render deal accounts in the Deal Settings tab
