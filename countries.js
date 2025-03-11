@@ -1111,7 +1111,7 @@ const countries = [
     name: "Níger",
     code: "NE",
     continent: "África",
-    flag: "🇳🇪,
+    flag: "🇳🇪",
     capital: "Niamey",
     languages: ["Francês"],
     currency: "Franco CFA ocidental"
