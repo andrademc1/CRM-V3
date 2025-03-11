@@ -1,100 +1,4 @@
 
-// Função para popular a tabela de bookmakers - movida para o escopo global
-function populateBookmakersTable() {
-    const tableBody = document.getElementById('bookmakers-table-body');
-    const noBookmakersMessage = document.getElementById('no-bookmakers-message');
-    
-    if (!tableBody) return;
-    
-    // Limpa a tabela
-    tableBody.innerHTML = '';
-    
-    // Verifica se há bookmakers cadastrados
-    if (!window.bookmakersData || window.bookmakersData.length === 0) {
-        if (noBookmakersMessage) {
-            noBookmakersMessage.style.display = 'block';
-        }
-        return;
-    }
-    
-    // Esconde a mensagem de "sem bookmakers"
-    if (noBookmakersMessage) {
-        noBookmakersMessage.style.display = 'none';
-    }
-    
-    // Adiciona cada bookmaker à tabela
-    window.bookmakersData.forEach(bookmaker => {
-        // Encontra o nome do grupo, se existir
-        let groupName = 'N/A';
-        if (bookmaker.group) {
-            const group = window.groupsData.find(g => g.id === bookmaker.group);
-            if (group) {
-                groupName = group.name;
-            }
-        }
-        
-        // Formata o status para exibição
-        let statusDisplay = bookmaker.status;
-        if (statusDisplay === 'active') statusDisplay = 'Ativo';
-        else if (statusDisplay === 'inactive') statusDisplay = 'Inativo';
-        else if (statusDisplay === 'suspended') statusDisplay = 'Suspenso';
-        
-        // Cria a linha da tabela
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${bookmaker.id}</td>
-            <td>${bookmaker.name}</td>
-            <td>${bookmaker.affiliateUrl || '-'}</td>
-            <td>${statusDisplay}</td>
-            <td>${groupName}</td>
-            <td class="action-buttons">
-                <button class="btn btn-edit" data-id="${bookmaker.id}">Editar</button>
-                <button class="btn btn-delete" data-id="${bookmaker.id}">Excluir</button>
-            </td>
-        `;
-        
-        tableBody.appendChild(row);
-    });
-    
-    // Adiciona event listeners para os botões de editar e excluir
-    addBookmakerTableEventListeners();
-}
-
-// Função para adicionar event listeners aos botões da tabela
-function addBookmakerTableEventListeners() {
-    // Botões de editar
-    document.querySelectorAll('.bookmaker-table .btn-edit').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const bookmakerId = this.getAttribute('data-id');
-            alert(`Edição de bookmaker será implementada em breve (ID: ${bookmakerId})`);
-            // Implementar a lógica de edição no futuro
-        });
-    });
-    
-    // Botões de excluir
-    document.querySelectorAll('.bookmaker-table .btn-delete').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const bookmakerId = this.getAttribute('data-id');
-            const bookmaker = window.bookmakersData.find(b => b.id === bookmakerId);
-            
-            if (!bookmaker) return;
-            
-            if (confirm(`Tem certeza que deseja excluir o bookmaker "${bookmaker.name}"?`)) {
-                // Remove do array
-                window.bookmakersData = window.bookmakersData.filter(b => b.id !== bookmakerId);
-                
-                // Salva no localStorage
-                window.DB.bookmakers.save(window.bookmakersData);
-                
-                // Atualiza a tabela
-                populateBookmakersTable();
-                
-                alert(`Bookmaker "${bookmaker.name}" foi excluído com sucesso!`);
-            }
-        });
-    });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa o banco de dados local
     if(window.DB) {
@@ -234,8 +138,101 @@ function addDataSaveObserver() {
             }, 100);
         }
 
-// As funções de popular tabela e adicionar event listeners foram movidas
-// para a parte superior do arquivo
+// Função para popular a tabela de bookmakers
+function populateBookmakersTable() {
+    const tableBody = document.getElementById('bookmakers-table-body');
+    const noBookmakersMessage = document.getElementById('no-bookmakers-message');
+    
+    if (!tableBody) return;
+    
+    // Limpa a tabela
+    tableBody.innerHTML = '';
+    
+    // Verifica se há bookmakers cadastrados
+    if (!window.bookmakersData || window.bookmakersData.length === 0) {
+        if (noBookmakersMessage) {
+            noBookmakersMessage.style.display = 'block';
+        }
+        return;
+    }
+    
+    // Esconde a mensagem de "sem bookmakers"
+    if (noBookmakersMessage) {
+        noBookmakersMessage.style.display = 'none';
+    }
+    
+    // Adiciona cada bookmaker à tabela
+    window.bookmakersData.forEach(bookmaker => {
+        // Encontra o nome do grupo, se existir
+        let groupName = 'N/A';
+        if (bookmaker.group) {
+            const group = window.groupsData.find(g => g.id === bookmaker.group);
+            if (group) {
+                groupName = group.name;
+            }
+        }
+        
+        // Formata o status para exibição
+        let statusDisplay = bookmaker.status;
+        if (statusDisplay === 'active') statusDisplay = 'Ativo';
+        else if (statusDisplay === 'inactive') statusDisplay = 'Inativo';
+        else if (statusDisplay === 'suspended') statusDisplay = 'Suspenso';
+        
+        // Cria a linha da tabela
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${bookmaker.id}</td>
+            <td>${bookmaker.name}</td>
+            <td>${bookmaker.affiliateUrl || '-'}</td>
+            <td>${statusDisplay}</td>
+            <td>${groupName}</td>
+            <td class="action-buttons">
+                <button class="btn btn-edit" data-id="${bookmaker.id}">Editar</button>
+                <button class="btn btn-delete" data-id="${bookmaker.id}">Excluir</button>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    // Adiciona event listeners para os botões de editar e excluir
+    addBookmakerTableEventListeners();
+}
+
+// Função para adicionar event listeners aos botões da tabela
+function addBookmakerTableEventListeners() {
+    // Botões de editar
+    document.querySelectorAll('.bookmaker-table .btn-edit').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const bookmakerId = this.getAttribute('data-id');
+            alert(`Edição de bookmaker será implementada em breve (ID: ${bookmakerId})`);
+            // Implementar a lógica de edição no futuro
+        });
+    });
+    
+    // Botões de excluir
+    document.querySelectorAll('.bookmaker-table .btn-delete').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const bookmakerId = this.getAttribute('data-id');
+            const bookmaker = window.bookmakersData.find(b => b.id === bookmakerId);
+            
+            if (!bookmaker) return;
+            
+            if (confirm(`Tem certeza que deseja excluir o bookmaker "${bookmaker.name}"?`)) {
+                // Remove do array
+                window.bookmakersData = window.bookmakersData.filter(b => b.id !== bookmakerId);
+                
+                // Salva no localStorage
+                window.DB.bookmakers.save(window.bookmakersData);
+                
+                // Atualiza a tabela
+                populateBookmakersTable();
+                
+                alert(`Bookmaker "${bookmaker.name}" foi excluído com sucesso!`);
+            }
+        });
+    });
+}
 
     });
     
