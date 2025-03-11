@@ -205,14 +205,19 @@ document.addEventListener('DOMContentLoaded', function() {
             bookmakers: window.bookmakersData.length
         });
         
-        // Popula as tabelas quando estiver na página bookmaker.html
-        if (document.getElementById('bookmakers-table-body')) {
-            populateBookmakersTable();
-        }
-        
-        if (document.getElementById('groups-table-body')) {
-            populateGroupsTable();
-        }
+        // Garante que as tabelas sejam populadas após os dados serem carregados
+        setTimeout(function() {
+            // Popula as tabelas quando estiver na página bookmaker.html
+            if (document.getElementById('bookmakers-table-body')) {
+                populateBookmakersTable();
+                console.log("Populando tabela de bookmakers:", bookmakersData.length);
+            }
+            
+            if (document.getElementById('groups-table-body')) {
+                populateGroupsTable();
+                console.log("Populando tabela de grupos:", groupsData.length);
+            }
+        }, 100);
     }
     
     // Get all navigation links

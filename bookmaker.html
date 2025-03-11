@@ -1124,6 +1124,34 @@
                 // Inicialize o banco de dados
                 if (window.DB && window.DB.init()) {
                     console.log("Banco de dados inicializado com sucesso na página bookmaker.html");
+                    
+                    // Garantir que os dados globais existem
+                    if (!window.ownersData) {
+                        window.ownersData = window.DB.owners.get() || [];
+                    }
+                    if (!window.groupsData) {
+                        window.groupsData = window.DB.groups.get() || [];
+                    }
+                    if (!window.bookmakersData) {
+                        window.bookmakersData = window.DB.bookmakers.get() || [];
+                    }
+                    
+                    // Forçar a atualização das tabelas
+                    setTimeout(function() {
+                        console.log("Atualizando tabelas com dados carregados:", {
+                            owners: window.ownersData.length,
+                            groups: window.groupsData.length,
+                            bookmakers: window.bookmakersData.length
+                        });
+                        
+                        if (typeof populateBookmakersTable === 'function') {
+                            populateBookmakersTable();
+                        }
+                        
+                        if (typeof populateGroupsTable === 'function') {
+                            populateGroupsTable();
+                        }
+                    }, 300);
                 }
                 
                 // Get country data from countries.js
