@@ -1,5 +1,20 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar o banco de dados
+    if (window.database) {
+        window.database.init();
+        
+        // Configurar salvamento automático a cada 2 minutos
+        setInterval(function() {
+            console.log("Salvamento automático de dados...");
+            if (window.ownersData && window.groupsData && window.bookmakersData) {
+                window.database.saveAllData(window.ownersData, window.groupsData, window.bookmakersData);
+            }
+        }, 2 * 60 * 1000); // 2 minutos
+    } else {
+        console.error("Módulo de banco de dados não encontrado!");
+    }
+
     // Get all navigation links
     const navLinks = document.querySelectorAll('.sidebar-nav li a');
     const sectionTitle = document.getElementById('section-title');
