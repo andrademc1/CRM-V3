@@ -85,6 +85,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 
+                // Fix duplicate IDs by ensuring that all form field labels have matching IDs
+                // This adds unique suffixes to the geography-specific fields 
+                // For account-specific elements that have duplicates
+                let formFields = this.closest(".billing-card").querySelectorAll("[id]");
+                formFields.forEach(field => {
+                    // Skip if field is already properly formed with account ID
+                    if (field.id.includes(accountId)) return;
+                    
+                    // Make sure label for attributes match field IDs
+                    let associatedLabel = this.closest(".billing-card").querySelector(`label[for="${field.id}"]`);
+                    if (associatedLabel) {
+                        const newId = `${field.id}-${accountId}`;
+                        field.id = newId;
+                        associatedLabel.setAttribute('for', newId);
+                    }
+                });
+
                 // Show/hide the general auto-fill buttons
                 if (generalAutoFillButtons) {
                     if (this.checked) {
@@ -96,4 +113,43 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+});
+
+// Helper function to ensure form field IDs are unique
+function ensureUniqueFormFieldIds(containerSelector) {
+    const containers = document.querySelectorAll(containerSelector);
+    const processedIds = new Set();
+    
+    containers.forEach(container => {
+        const formFields = container.querySelectorAll('[id]');
+        formFields.forEach(field => {
+            // If this ID has already been processed, make it unique
+            if (processedIds.has(field.id)) {
+                const uniqueId = `${field.id}-${Math.random().toString(36).substr(2, 5)}`;
+                
+                // Find and update any label that references this field
+                const associatedLabel = document.querySelector(`label[for="${field.id}"]`);
+                if (associatedLabel) {
+                    associatedLabel.setAttribute('for', uniqueId);
+                }
+                
+                // Update the field ID
+                field.id = uniqueId;
+            }
+            
+            processedIds.add(field.id);
+        });
+    });
+}
+
+// Call this function when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Add a small delay to ensure all dynamic content is rendered
+    setTimeout(() => {
+        ensureUniqueFormFieldIds('.modal-content');
+        ensureUniqueFormFieldIds('.billing-card');
+        ensureUniqueFormFieldIds('.deal-card');
+        ensureUniqueFormFieldIds('.geography-billing-item');
+        ensureUniqueFormFieldIds('.geography-deal-item');
+    }, 500);
 });
