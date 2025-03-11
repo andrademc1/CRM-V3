@@ -13,35 +13,27 @@ let database = {
 
 // Initialize the database
 function initDatabase() {
-  console.log("Initializing database...");
+  console.log("Inicializando banco de dados...");
   try {
-    // Try to load data from localStorage first (for backward compatibility)
-    const ownersData = localStorage.getItem('owners') ? JSON.parse(localStorage.getItem('owners')) : [];
-    const groupsData = localStorage.getItem('groups') ? JSON.parse(localStorage.getItem('groups')) : [];
-    const bookmakersData = localStorage.getItem('bookmakers') ? JSON.parse(localStorage.getItem('bookmakers')) : [];
+    // Começar com um banco de dados vazio e então carregar do arquivo
+    database = {
+      owners: [],
+      groups: [],
+      bookmakers: []
+    };
     
-    // Update the database with any existing data
-    database.owners = ownersData;
-    database.groups = groupsData;
-    database.bookmakers = bookmakersData;
-    
-    console.log("Database initialized with data from localStorage:", {
-      owners: database.owners.length,
-      groups: database.groups.length,
-      bookmakers: database.bookmakers.length
+    console.log("Banco de dados inicializado:", {
+      message: "Banco de dados inicializado com sucesso"
     });
     
-    // Save to file to ensure file is up to date
-    saveDatabase();
-    
     return {
-      message: "Database initialized successfully",
+      message: "Banco de dados inicializado com sucesso",
       data: database
     };
   } catch (error) {
-    console.error("Error initializing database:", error);
+    console.error("Erro ao inicializar banco de dados:", error);
     return {
-      message: "Error initializing database",
+      message: "Erro ao inicializar banco de dados",
       error: error.message
     };
   }
@@ -57,30 +49,25 @@ async function loadDatabase() {
     const data = await response.json();
     database = data;
     
-    // Also update localStorage for backward compatibility
-    localStorage.setItem('owners', JSON.stringify(database.owners));
-    localStorage.setItem('groups', JSON.stringify(database.groups));
-    localStorage.setItem('bookmakers', JSON.stringify(database.bookmakers));
-    
-    console.log("Database loaded successfully:", {
+    console.log("Dados carregados:", {
       owners: database.owners.length,
       groups: database.groups.length,
       bookmakers: database.bookmakers.length
     });
     
     return {
-      message: "Database loaded successfully",
+      message: "Banco de dados carregado com sucesso",
       data: database
     };
   } catch (error) {
-    console.error("Error loading database from file:", error);
-    console.log("Using data from memory or initializing empty database...");
+    console.error("Erro ao carregar banco de dados do arquivo:", error);
+    console.log("Inicializando banco de dados vazio...");
     
-    // If the file doesn't exist or has an error, try to use localStorage
+    // Se o arquivo não existir ou tiver erro, inicializa vazio
     initDatabase();
     
     return {
-      message: "Error loading database from file, using localStorage instead",
+      message: "Erro ao carregar banco de dados do arquivo, inicializando vazio",
       data: database
     };
   }
@@ -107,29 +94,17 @@ async function saveDatabase() {
     
     const result = await response.json();
     
-    // Also update localStorage for backward compatibility
-    localStorage.setItem('owners', JSON.stringify(database.owners));
-    localStorage.setItem('groups', JSON.stringify(database.groups));
-    localStorage.setItem('bookmakers', JSON.stringify(database.bookmakers));
-    
-    console.log("Database saved successfully:", result);
+    console.log("Banco de dados salvo com sucesso:", result);
     
     return {
-      message: "Database saved successfully",
+      message: "Banco de dados salvo com sucesso",
       result
     };
   } catch (error) {
-    console.error("Error saving database to file:", error);
-    
-    // Fallback to localStorage if fetch fails
-    localStorage.setItem('owners', JSON.stringify(database.owners));
-    localStorage.setItem('groups', JSON.stringify(database.groups));
-    localStorage.setItem('bookmakers', JSON.stringify(database.bookmakers));
-    
-    console.log("Data saved to localStorage as fallback");
+    console.error("Erro ao salvar banco de dados no arquivo:", error);
     
     return {
-      message: "Error saving database to file, using localStorage instead",
+      message: "Erro ao salvar banco de dados no arquivo",
       error: error.message
     };
   }
