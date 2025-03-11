@@ -517,8 +517,8 @@
                             <input type="text" id="account-username" class="form-control" placeholder="Enter username or email">
                         </div>
                         <div class="form-group">
-                            <label for="account-password">Password</label>
-                            <input type="password" id="account-password" class="form-control" placeholder="Enter password">
+                            <label for="bookmaker-account-password">Password</label>
+                            <input type="password" id="bookmaker-account-password" class="form-control" placeholder="Enter password">
                         </div>
                         <div class="form-group">
                             <label for="account-geographies">Associated Geographies</label>
@@ -789,7 +789,7 @@
                 document.getElementById('logo-preview').innerHTML = '';
 
                 document.getElementById('apply-billing').checked = false;
-                document.getElementById('billing-details').style.display = 'none';
+                document.getElementById('billing-details').style.display = 'none;
 
                 document.getElementById('billing-name').value = '';
                 document.getElementById('billing-vat').value = '';document.getElementById('billing-address1').value = '';
@@ -1241,11 +1241,11 @@
                 const ownerSelect = document.getElementById('bookmaker-account-owner');
                 const ownerId = ownerSelect.value;
                 const ownerName = ownerSelect.options[ownerSelect.selectedIndex].text;
-                
+
                 // Obtenha os valores corretos dos campos de formulário
                 const statusField = document.getElementById('account-status');
                 const usernameField = document.getElementById('account-username');
-                const passwordField = document.getElementById('account-password');
+                const passwordField = document.getElementById('bookmaker-account-password');
 
                 const accountData = {
                     id: Date.now().toString(),
@@ -1315,7 +1315,7 @@
                 document.getElementById('bookmaker-account-owner').selectedIndex = 0;
                 document.getElementById('account-status').value = 'active';
                 document.getElementById('account-username').value = '';
-                document.getElementById('account-password').value = '';
+                document.getElementById('bookmaker-account-password').value = '';
                 selectedAccountGeographies = [];
                 renderSelectedAccountGeographies();
             }
@@ -1395,7 +1395,7 @@
 
                 document.getElementById('account-status').value = account.status;
                 document.getElementById('account-username').value = account.username;
-                document.getElementById('account-password').value = account.password;
+                document.getElementById('bookmaker-account-password').value = account.password;
 
                 // Set selected geographies
                 selectedAccountGeographies = account.geographies.map(geo => {
