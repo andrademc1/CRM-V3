@@ -1,8 +1,25 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializa o banco de dados
+    initializeDatabase();
+
     // Get all navigation links
     const navLinks = document.querySelectorAll('.sidebar-nav li a');
     const sectionTitle = document.getElementById('section-title');
+    
+    // Função para inicializar o banco de dados
+    function initializeDatabase() {
+        fetch('/api/setup', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Banco de dados inicializado:', data);
+        })
+        .catch(error => {
+            console.error('Erro ao inicializar banco de dados:', error);
+        });
+    }
     
     // Add click event listeners to each link
     navLinks.forEach(link => {

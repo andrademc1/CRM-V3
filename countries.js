@@ -1761,3 +1761,53 @@ window.countriesModule = {
   getCountryByCode,
   getCountryByName
 };
+// Lista de países
+const countries = [
+  {
+    name: "Brasil",
+    code: "BR",
+    continent: "América do Sul",
+    flag: "🇧🇷",
+    capital: "Brasília",
+    languages: ["Português"],
+    currency: "Real"
+  },
+  {
+    name: "Portugal",
+    code: "PT",
+    continent: "Europa",
+    flag: "🇵🇹",
+    capital: "Lisboa",
+    languages: ["Português"],
+    currency: "Euro"
+  },
+  {
+    name: "Estados Unidos",
+    code: "US",
+    continent: "América do Norte",
+    flag: "🇺🇸",
+    capital: "Washington",
+    languages: ["Inglês"],
+    currency: "Dólar Americano"
+  },
+  {
+    name: "Reino Unido",
+    code: "GB",
+    continent: "Europa",
+    flag: "🇬🇧",
+    capital: "Londres",
+    languages: ["Inglês"],
+    currency: "Libra Esterlina"
+  },
+  {
+    name: "Alemanha",
+    code: "DE",
+    continent: "Europa",
+    flag: "🇩🇪",
+    capital: "Berlim",
+    languages: ["Alemão"],
+    currency: "Euro"
+  }
+];
+
+module.exports = countries;
