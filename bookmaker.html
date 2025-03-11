@@ -173,22 +173,352 @@
         </main>
     </div>
     
+    <!-- Owner Modal -->
+    <div id="ownerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Owner</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab active" data-tab="owner-settings">Owner Settings</div>
+                    <div class="tab" data-tab="owner-billing">Owner Billing Details</div>
+                </div>
+                
+                <div class="tab-content active" id="owner-settings">
+                    <div class="form-group">
+                        <label for="owner-status">Owner Status</label>
+                        <select id="owner-status" class="form-control">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="owner-name">Owner Name</label>
+                        <input type="text" id="owner-name" class="form-control" placeholder="Enter owner name">
+                    </div>
+                    <div class="form-group">
+                        <label for="owner-logo">Owner Logo</label>
+                        <input type="file" id="owner-logo" class="form-control" accept="image/*">
+                        <div id="logo-preview" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="owner-billing">
+                    <div class="form-check">
+                        <input type="checkbox" id="apply-billing" class="form-control" style="width: auto;">
+                        <label for="apply-billing">Apply Billing Details by Owner?</label>
+                    </div>
+                    
+                    <div id="billing-details" style="display: none;">
+                        <div class="form-group">
+                            <label for="billing-name">Name</label>
+                            <input type="text" id="billing-name" class="form-control" placeholder="Enter billing name">
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-vat">VAT</label>
+                            <input type="text" id="billing-vat" class="form-control" placeholder="Enter VAT number">
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-address1">Address 1</label>
+                            <input type="text" id="billing-address1" class="form-control" placeholder="Enter address line 1">
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-address2">Address 2</label>
+                            <input type="text" id="billing-address2" class="form-control" placeholder="Enter address line 2">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="billing-city">City</label>
+                                <input type="text" id="billing-city" class="form-control" placeholder="Enter city">
+                            </div>
+                            <div class="form-col">
+                                <label for="billing-state">State/Province/Region</label>
+                                <input type="text" id="billing-state" class="form-control" placeholder="Enter state/province">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="billing-zipcode">Zip-Code</label>
+                                <input type="text" id="billing-zipcode" class="form-control" placeholder="Enter zip code">
+                            </div>
+                            <div class="form-col">
+                                <label for="billing-country">Country</label>
+                                <div class="country-selector">
+                                    <input type="text" id="country-search" class="country-search" placeholder="Search country">
+                                    <div id="country-list" class="country-list"></div>
+                                    <div id="selected-country" class="selected-country" style="display: none;">
+                                        <span id="selected-flag" class="country-flag"></span>
+                                        <span id="selected-name"></span>
+                                        <span class="country-remove">×</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background-color: #6c757d;">Cancel</button>
+                <button class="btn" id="save-owner">Save Owner</button>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="owner-modal.css">
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Funções para o gerenciamento de bookmakers, owners e grupos
+            // Get country data from countries.js
+            let countriesData = [];
+            
+            // Try to import countries first
+            try {
+                // Dynamic import
+                import('./countries.js')
+                    .then(module => {
+                        countriesData = module.countries;
+                        initCountrySelector();
+                    })
+                    .catch(error => {
+                        console.error("Error importing countries module:", error);
+                        // Fallback to fetch
+                        fetchCountries();
+                    });
+            } catch (e) {
+                console.error("Import error:", e);
+                // Fallback to fetch
+                fetchCountries();
+            }
+            
+            function fetchCountries() {
+                // Fallback method to get countries
+                fetch('./countries.js')
+                    .then(response => response.text())
+                    .then(text => {
+                        // Extract the countries array from the JS file content
+                        try {
+                            const startIndex = text.indexOf('const countries = [');
+                            const endIndex = text.indexOf('module.exports');
+                            if (startIndex !== -1 && endIndex !== -1) {
+                                const countriesStr = text.substring(startIndex, endIndex);
+                                // Using Function constructor to safely evaluate the array
+                                const getCountries = new Function('return ' + countriesStr.replace('const countries = ', '').trim().slice(0, -1));
+                                countriesData = getCountries();
+                                initCountrySelector();
+                            }
+                        } catch (error) {
+                            console.error("Error parsing countries:", error);
+                        }
+                    })
+                    .catch(error => console.error("Error fetching countries:", error));
+            }
+            
+            // Modal functionality
+            const ownerModal = document.getElementById('ownerModal');
+            const closeModalBtn = document.querySelector('.modal-close');
+            const cancelBtn = document.querySelector('.modal-footer .btn:first-child');
+            
+            // Open owner modal when Add Owner button is clicked
             document.getElementById('addOwner').addEventListener('click', function() {
-                alert('Formulário para adicionar novo proprietário seria exibido aqui.');
-                // Em uma implementação real, abriria um modal com um formulário
+                ownerModal.classList.add('active');
             });
             
+            // Close modal when close button or cancel is clicked
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelBtn.addEventListener('click', closeModal);
+            
+            function closeModal() {
+                ownerModal.classList.remove('active');
+                resetForm();
+            }
+            
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+            
+            // Toggle billing details based on checkbox
+            const applyBillingCheckbox = document.getElementById('apply-billing');
+            const billingDetailsSection = document.getElementById('billing-details');
+            
+            applyBillingCheckbox.addEventListener('change', function() {
+                billingDetailsSection.style.display = this.checked ? 'block' : 'none';
+            });
+            
+            // Logo preview functionality
+            const ownerLogoInput = document.getElementById('owner-logo');
+            const logoPreview = document.getElementById('logo-preview');
+            
+            ownerLogoInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        logoPreview.innerHTML = `
+                            <img src="${e.target.result}" style="max-width: 100%; max-height: 150px;">
+                            <button type="button" id="remove-logo" style="display: block; margin-top: 5px;" class="btn btn-sm btn-delete">Remove</button>
+                        `;
+                        
+                        document.getElementById('remove-logo').addEventListener('click', function() {
+                            ownerLogoInput.value = '';
+                            logoPreview.innerHTML = '';
+                        });
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Country selector functionality
+            function initCountrySelector() {
+                const countrySearch = document.getElementById('country-search');
+                const countryList = document.getElementById('country-list');
+                const selectedCountry = document.getElementById('selected-country');
+                const selectedFlag = document.getElementById('selected-flag');
+                const selectedName = document.getElementById('selected-name');
+                const countryRemove = document.querySelector('.country-remove');
+                
+                // Populate country list
+                function renderCountryList(filter = '') {
+                    countryList.innerHTML = '';
+                    
+                    const filteredCountries = filter 
+                        ? countriesData.filter(c => c.name.toLowerCase().includes(filter.toLowerCase())) 
+                        : countriesData;
+                    
+                    filteredCountries.forEach(country => {
+                        const item = document.createElement('div');
+                        item.className = 'country-item';
+                        item.innerHTML = `
+                            <span class="country-flag">${country.flag}</span>
+                            <span>${country.name}</span>
+                        `;
+                        
+                        item.addEventListener('click', function() {
+                            // Set selected country
+                            selectedFlag.textContent = country.flag;
+                            selectedName.textContent = country.name;
+                            selectedCountry.style.display = 'flex';
+                            countrySearch.value = '';
+                            countryList.classList.remove('active');
+                            
+                            // Store the country data
+                            selectedCountry.dataset.code = country.code;
+                        });
+                        
+                        countryList.appendChild(item);
+                    });
+                }
+                
+                // Show country list on focus
+                countrySearch.addEventListener('focus', function() {
+                    countryList.classList.add('active');
+                    renderCountryList();
+                });
+                
+                // Filter countries on search
+                countrySearch.addEventListener('input', function() {
+                    renderCountryList(this.value);
+                    countryList.classList.add('active');
+                });
+                
+                // Remove selected country
+                countryRemove.addEventListener('click', function() {
+                    selectedCountry.style.display = 'none';
+                    delete selectedCountry.dataset.code;
+                });
+                
+                // Close country list when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.country-selector')) {
+                        countryList.classList.remove('active');
+                    }
+                });
+                
+                // Initial render
+                renderCountryList();
+            }
+            
+            // Save owner
+            document.getElementById('save-owner').addEventListener('click', function() {
+                // Here you would collect all the form data and send it to your backend
+                // For now, we'll just log it to the console and close the modal
+                
+                const ownerData = {
+                    status: document.getElementById('owner-status').value,
+                    name: document.getElementById('owner-name').value,
+                    // Logo handling would typically involve uploading the file to a server
+                    applyBilling: document.getElementById('apply-billing').checked
+                };
+                
+                if (ownerData.applyBilling) {
+                    ownerData.billing = {
+                        name: document.getElementById('billing-name').value,
+                        vat: document.getElementById('billing-vat').value,
+                        address1: document.getElementById('billing-address1').value,
+                        address2: document.getElementById('billing-address2').value,
+                        city: document.getElementById('billing-city').value,
+                        state: document.getElementById('billing-state').value,
+                        zipCode: document.getElementById('billing-zipcode').value,
+                        country: document.getElementById('selected-country').dataset.code
+                    };
+                }
+                
+                console.log('Owner data:', ownerData);
+                alert('Owner would be saved in a real implementation.');
+                closeModal();
+            });
+            
+            function resetForm() {
+                // Reset form fields
+                document.getElementById('owner-status').value = 'active';
+                document.getElementById('owner-name').value = '';
+                document.getElementById('owner-logo').value = '';
+                document.getElementById('logo-preview').innerHTML = '';
+                
+                document.getElementById('apply-billing').checked = false;
+                document.getElementById('billing-details').style.display = 'none';
+                
+                document.getElementById('billing-name').value = '';
+                document.getElementById('billing-vat').value = '';
+                document.getElementById('billing-address1').value = '';
+                document.getElementById('billing-address2').value = '';
+                document.getElementById('billing-city').value = '';
+                document.getElementById('billing-state').value = '';
+                document.getElementById('billing-zipcode').value = '';
+                
+                document.getElementById('country-search').value = '';
+                document.getElementById('selected-country').style.display = 'none';
+                delete document.getElementById('selected-country').dataset.code;
+                
+                // Reset to first tab
+                document.querySelector('.tab[data-tab="owner-settings"]').click();
+            }
+            
+            // Group & Bookmaker buttons (keeping the original functionality)
             document.getElementById('addGroup').addEventListener('click', function() {
                 alert('Formulário para adicionar novo grupo seria exibido aqui.');
-                // Em uma implementação real, abriria um modal com um formulário
             });
             
             document.getElementById('addBookmaker').addEventListener('click', function() {
                 alert('Formulário para adicionar novo bookmaker seria exibido aqui.');
-                // Em uma implementação real, abriria um modal com um formulário
             });
             
             // Configurar listeners para botões de edição
@@ -209,7 +539,6 @@
                     
                     if (confirm(`Tem certeza que deseja excluir o bookmaker "${name}"?`)) {
                         alert(`Bookmaker "${name}" seria excluído em uma implementação real.`);
-                        // Em uma implementação real, enviaria requisição para o servidor
                     }
                 });
             });
