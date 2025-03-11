@@ -140,6 +140,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Chama a função para carregar e inicializar os dados
     loadAndInitializeData();
     
+    // Adiciona evento para salvar dados antes de sair da página
+    window.addEventListener('beforeunload', function() {
+        console.log("Página está sendo fechada, salvando dados...");
+        saveAllData();
+    });
+    
+    // Adiciona evento para salvar a cada 30 segundos
+    setInterval(function() {
+        console.log("Salvamento automático de dados...");
+        saveAllData();
+    }, 30000);
+    
     // Get all navigation links
     const navLinks = document.querySelectorAll('.sidebar-nav li a');
     const sectionTitle = document.getElementById('section-title');
@@ -297,21 +309,41 @@ function saveAllData() {
     
     // Verifica e salva bookmakers
     if (window.bookmakersData && Array.isArray(window.bookmakersData)) {
-        console.log("Bookmakers salvos verificados:", window.bookmakersData.length);
-        window.DB.bookmakers.save(window.bookmakersData);
-        console.log("Bookmakers salvos:", window.bookmakersData.length);
+        console.log("Bookmakers para salvar:", window.bookmakersData.length);
+        
+        // Garantir que não há dados undefined ou null
+        const validBookmakers = window.bookmakersData.filter(b => b && typeof b === 'object');
+        console.log("Bookmakers válidos:", validBookmakers.length);
+        
+        // Forçar salvamento
+        const resultado = window.DB.bookmakers.save(validBookmakers);
+        console.log("Resultado do salvamento de bookmakers:", resultado);
+        
+        // Verificar se os dados foram salvos corretamente
+        const savedData = localStorage.getItem(window.DATABASE_KEYS.BOOKMAKERS);
+        console.log("Dados brutos no localStorage:", savedData ? savedData.substring(0, 100) + "..." : "vazio");
     } else {
         console.error("Não foi possível salvar bookmakers - dados inválidos");
     }
     
     // Verifica os dados no localStorage após salvar
     try {
-        console.log("Dados no localStorage:", {
-            owners: window.DB.owners.get().length,
-            groups: window.DB.groups.get().length,
-            bookmakers: window.DB.bookmakers.get().length
+        const ownersCount = window.DB.owners.get().length;
+        const groupsCount = window.DB.groups.get().length;
+        const bookmakersCount = window.DB.bookmakers.get().length;
+        
+        console.log("Dados verificados no localStorage:", {
+            owners: ownersCount,
+            groups: groupsCount,
+            bookmakers: bookmakersCount
         });
-        console.log("Dados salvos com sucesso!");
+        
+        // Se os dados não foram salvos, alertar
+        if (window.bookmakersData && window.bookmakersData.length > 0 && bookmakersCount === 0) {
+            console.error("ATENÇÃO: Os bookmakers não foram salvos corretamente!");
+        } else {
+            console.log("Dados salvos com sucesso!");
+        }
     } catch (error) {
         console.error("Erro ao verificar dados salvos:", error);
     }

@@ -1,14 +1,15 @@
 
 // database.js - Gerencia o armazenamento local de dados
 
-// Verificando se DATABASE_KEYS já existe antes de declará-lo
-if (typeof window.DATABASE_KEYS === 'undefined') {
-  window.DATABASE_KEYS = {
-    OWNERS: 'crm_owners',
-    GROUPS: 'crm_groups',
-    BOOKMAKERS: 'crm_bookmakers'
-  };
-}
+// Definindo constantes para as chaves do localStorage
+const DATABASE_KEYS = {
+  OWNERS: 'crm_owners',
+  GROUPS: 'crm_groups',
+  BOOKMAKERS: 'crm_bookmakers'
+};
+
+// Tornando DATABASE_KEYS acessível globalmente
+window.DATABASE_KEYS = DATABASE_KEYS;
 
 // Função para inicializar o banco de dados local
 function initDatabase() {
@@ -109,8 +110,19 @@ function saveBookmakers(bookmakersData) {
       console.error("Dados de bookmakers inválidos:", bookmakersData);
       return false;
     }
-    localStorage.setItem(window.DATABASE_KEYS.BOOKMAKERS, JSON.stringify(bookmakersData));
-    console.log("Bookmakers salvos com sucesso:", bookmakersData.length);
+    
+    // Verificar se os dados são válidos antes de salvar
+    const validData = bookmakersData.filter(item => item && typeof item === 'object');
+    
+    // Salvar no localStorage com stringify melhorado
+    const jsonData = JSON.stringify(validData);
+    localStorage.setItem(DATABASE_KEYS.BOOKMAKERS, jsonData);
+    
+    // Verificar se os dados foram realmente salvos
+    const savedData = localStorage.getItem(DATABASE_KEYS.BOOKMAKERS);
+    console.log("Bookmakers salvos com sucesso:", validData.length);
+    console.log("Dados no localStorage após salvar:", savedData ? savedData.substring(0, 50) + "..." : "vazio");
+    
     return true;
   } catch (error) {
     console.error("Erro ao salvar bookmakers:", error);
@@ -120,10 +132,26 @@ function saveBookmakers(bookmakersData) {
 
 function getBookmakers() {
   try {
-    const bookmakers = localStorage.getItem(window.DATABASE_KEYS.BOOKMAKERS);
-    const parsedData = bookmakers ? JSON.parse(bookmakers) : [];
-    console.log("Bookmakers recuperados do localStorage:", parsedData.length);
-    return parsedData;
+    const bookmakers = localStorage.getItem(DATABASE_KEYS.BOOKMAKERS);
+    
+    if (!bookmakers) {
+      console.log("Nenhum dado de bookmakers encontrado no localStorage");
+      return [];
+    }
+    
+    try {
+      const parsedData = JSON.parse(bookmakers);
+      if (!Array.isArray(parsedData)) {
+        console.error("Dados de bookmakers no localStorage não são um array");
+        return [];
+      }
+      
+      console.log("Bookmakers recuperados do localStorage:", parsedData.length);
+      return parsedData;
+    } catch (parseError) {
+      console.error("Erro ao fazer parse dos dados de bookmakers:", parseError);
+      return [];
+    }
   } catch (error) {
     console.error("Erro ao recuperar bookmakers:", error);
     return [];
