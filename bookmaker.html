@@ -500,6 +500,9 @@
 
                     <div id="account-form" style="display: none; border: 1px solid #e0e0e0; padding: 15px; margin-top: 15px; border-radius: 4px;">
                         <div class="form-group">
+                            <button type="button" id="auto-fill-from-group" class="btn" style="margin-bottom: 15px; background-color: #28a745;">Auto-fill from Group Account</button>
+                        </div>
+                        <div class="form-group">
                             <label for="bookmaker-account-owner">Owner</label>
                             <select id="bookmaker-account-owner" class="form-control">
                                 <option value="">Select an owner</option>
@@ -1263,6 +1266,51 @@
                 currentEditIndex = -1;
                 // Update owner dropdown in the account form
                 updateAccountOwnerDropdown();
+            });
+            
+            // Auto-fill from Group Account Settings
+            document.getElementById('auto-fill-from-group').addEventListener('click', function() {
+                const groupSelect = document.getElementById('bookmaker-group');
+                if (!groupSelect || !groupSelect.value) {
+                    alert('Please select a group in the Bookmaker Settings tab first.');
+                    return;
+                }
+                
+                const selectedGroupId = groupSelect.value;
+                const selectedGroup = groupsData.find(group => group.id === selectedGroupId);
+                
+                if (!selectedGroup) {
+                    alert('Selected group not found.');
+                    return;
+                }
+                
+                if (!selectedGroup.account) {
+                    alert('The selected group does not have account settings configured.');
+                    return;
+                }
+                
+                // Fill the account form with group account settings
+                const ownerSelect = document.getElementById('bookmaker-account-owner');
+                const statusSelect = document.getElementById('account-status');
+                const usernameField = document.getElementById('bookmaker-account-username');
+                const passwordField = document.getElementById('bookmaker-account-password');
+                
+                // Set owner
+                for (let i = 0; i < ownerSelect.options.length; i++) {
+                    if (ownerSelect.options[i].value === selectedGroup.account.owner) {
+                        ownerSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+                
+                // Set status
+                statusSelect.value = selectedGroup.account.status || 'active';
+                
+                // Set username and password
+                usernameField.value = selectedGroup.account.username || '';
+                passwordField.value = selectedGroup.account.password || '';
+                
+                alert('Account details auto-filled from group account settings.');
             });
 
             // Cancel account button click
