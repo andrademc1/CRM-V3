@@ -327,25 +327,47 @@ function renderSelectedGeographies() {}
 function renderGeographyList(searchValue) {}
 
 
-// If this is the bookmaker deal, billing or url tab, render the appropriate content
-const bookmakerModal = document.getElementById("bookmaker-modal"); //Assumed ID
+// Tab functionality for all modals
+const tabsContainers = document.querySelectorAll(".tabs");
 
-if (bookmakerModal) { //Check if element exists to avoid errors
-    const tabs = bookmakerModal.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const target = this.dataset.tab;
+tabsContainers.forEach((container) => {
+    const tabs = container.querySelectorAll(".tab");
+    // Find the parent modal
+    const modal = container.closest(".modal");
+    // Get all tab contents in this modal
+    const tabContents = modal.querySelectorAll(".tab-content");
 
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", function () {
+            const target = this.getAttribute("data-tab");
+
+            // Remove active class from all tabs and contents within this modal
+            tabs.forEach((t) => t.classList.remove("active"));
+            tabContents.forEach((content) =>
+                content.classList.remove("active"),
+            );
+
+            // Add active class to clicked tab and corresponding content
+            this.classList.add("active");
+            modal
+                .querySelector(`#${target}`)
+                .classList.add("active");
+
+            // If this is one of the special tabs that needs data rendering
             if (target === "bookmaker-deal") {
                 renderDealAccounts();
-            } else if (target === "bookmaker-billing") {
+            }
+
+            if (target === "bookmaker-billing") {
                 renderBillingAccounts();
-            } else if (target === "bookmaker-url") {
+            }
+
+            if (target === "bookmaker-url") {
                 renderBookmakerURLs();
             }
         });
     });
-}
+});
 
 
 // Reset bookmaker URLs
@@ -355,6 +377,7 @@ bookmakerURLs = {
 };
 
 // Reset to first tab
+const bookmakerModal = document.getElementById("bookmaker-modal");
 if (bookmakerModal) { //Check if element exists to avoid errors
     bookmakerModal
         .querySelector('.tab[data-tab="bookmaker-settings"]')
