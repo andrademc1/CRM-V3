@@ -194,6 +194,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if(window.DB) {
         window.DB.init();
         
+        // Carrega os dados existentes diretamente do localStorage
+        const ownersPersisted = localStorage.getItem('crm_owners');
+        const groupsPersisted = localStorage.getItem('crm_groups');
+        const bookmakersPersisted = localStorage.getItem('crm_bookmakers');
+        
+        // Verifica valores salvos no localStorage
+        console.log("Dados no localStorage:", {
+            owners: ownersPersisted ? JSON.parse(ownersPersisted).length : 0,
+            groups: groupsPersisted ? JSON.parse(groupsPersisted).length : 0,
+            bookmakers: bookmakersPersisted ? JSON.parse(bookmakersPersisted).length : 0
+        });
+        
         // Carrega os dados existentes
         window.ownersData = window.DB.owners.get() || [];
         window.groupsData = window.DB.groups.get() || [];
@@ -362,20 +374,28 @@ function saveAllData() {
     // Salva owners
     if (window.ownersData) {
         window.DB.owners.save(window.ownersData);
+        console.log("Owners salvos:", window.ownersData.length);
     }
     
     // Salva groups
     if (window.groupsData) {
         window.DB.groups.save(window.groupsData);
+        console.log("Groups salvos:", window.groupsData.length);
     }
     
     // Salva bookmakers
     if (window.bookmakersData) {
         window.DB.bookmakers.save(window.bookmakersData);
+        console.log("Bookmakers salvos:", window.bookmakersData.length);
     }
     
     console.log("Dados salvos com sucesso!");
 }
+
+// Adiciona evento para salvar dados antes de fechar a página
+window.addEventListener('beforeunload', function() {
+    saveAllData();
+});
 
 function saveOwnerData() {
     if (window.ownersData && window.DB) {

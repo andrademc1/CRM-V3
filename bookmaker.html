@@ -1126,6 +1126,17 @@
                     window.DB.init();
                     console.log("Banco de dados inicializado com sucesso na página bookmaker.html");
                     
+                    // Verificar dados direto no localStorage antes de carregar
+                    const ownersPersisted = localStorage.getItem('crm_owners');
+                    const groupsPersisted = localStorage.getItem('crm_groups');
+                    const bookmakersPersisted = localStorage.getItem('crm_bookmakers');
+                    
+                    console.log("Verificação de dados no localStorage:", {
+                        owners: ownersPersisted ? JSON.parse(ownersPersisted).length : 0,
+                        groups: groupsPersisted ? JSON.parse(groupsPersisted).length : 0,
+                        bookmakers: bookmakersPersisted ? JSON.parse(bookmakersPersisted).length : 0
+                    });
+                    
                     // Garantir que os dados globais existem - carrega diretamente do localStorage
                     window.ownersData = window.DB.owners.get() || [];
                     window.groupsData = window.DB.groups.get() || [];
