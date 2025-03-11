@@ -442,6 +442,7 @@
                 <div class="tabs">
                     <div class="tab active" data-tab="bookmaker-settings">Bookmaker Settings</div>
                     <div class="tab" data-tab="bookmaker-account">Bookmaker Account Settings</div>
+                    <div class="tab" data-tab="bookmaker-deal">Bookmaker Deal Settings</div>
                 </div>
 
                 <!-- Bookmaker Settings Tab -->
@@ -494,6 +495,24 @@
 
                     <div id="accounts-container">
                         <!-- Accounts will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Bookmaker Deal Settings Tab -->
+                <div class="tab-content" id="bookmaker-deal">
+                    <div class="form-group">
+                        <label for="bookmaker-deal-type">Deal Type</label>
+                        <select id="bookmaker-deal-type" class="form-control">
+                            <option value="revshare">Rev Share</option>
+                            <option value="cpa">CPA</option>
+                            <option value="hybrid">Hybrid</option>
+                            <option value="flatfee">Flat Fee</option>
+                            <option value="other">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookmaker-deal-description">Deal Description</label>
+                        <textarea id="bookmaker-deal-description" class="form-control" rows="4" placeholder="Enter deal description"></textarea>
                     </div>
 
                     <div id="account-form" style="display: none; border: 1px solid #e0e0e0; padding: 15px; margin-top: 15px; border-radius: 4px;">
@@ -1592,7 +1611,11 @@
                         name: country.name,
                         flag: country.flag
                     })),
-                    accounts: bookmakerAccounts
+                    accounts: bookmakerAccounts,
+                    deal: {
+                        type: document.getElementById('bookmaker-deal-type').value,
+                        description: document.getElementById('bookmaker-deal-description').value
+                    }
                 };
 
                 // Add to bookmakers array
@@ -1622,6 +1645,10 @@
                 // Clear geography search
                 document.getElementById('bookmaker-geography-search').value = '';
                 document.getElementById('bookmaker-geography-list').classList.remove('active');
+
+                // Reset deal settings
+                document.getElementById('bookmaker-deal-type').value = 'revshare';
+                document.getElementById('bookmaker-deal-description').value = '';
 
                 // Reset accounts
                 bookmakerAccounts = [];
