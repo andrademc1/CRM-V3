@@ -1,0 +1,25 @@
+Explanation
+
+Understanding the problem
+The error "Uncaught SyntaxError: Invalid or unexpected token (at countries.js:1114:11)" indicates that the JavaScript engine encountered a syntax error in your countries.js file at line 1114, column 11. This means there's a character or a sequence of characters at that location that the JavaScript parser doesn't recognize as valid JavaScript syntax. Common causes include:
+
+Typographical errors: A misspelled keyword, an extra or missing character, etc.
+Incorrect character encoding: If the file is not saved with UTF-8 encoding.
+Copy-paste errors: When code is copied from another source and special characters or non-standard spaces are introduced.
+Unterminated strings or comments: A string or comment that is not properly closed.
+Using reserved keywords incorrectly: JavaScript keywords used in places they are not allowed.
+How to verify
+Open countries.js: Open the countries.js file in your code editor.
+Go to line 1114: Navigate directly to line 1114 in the editor.
+Examine column 11: Carefully inspect the character at column 11 and its surrounding context on that line.
+Check surrounding code: Look at the lines immediately before and after line 1114 to identify if the issue stems from a syntax problem in neighboring code.
+Look for special characters: Search for characters that might look like normal characters but are not, such as invisible spaces.
+Check the file encoding: Confirm that the file is saved as UTF-8.
+Suggested fix
+Based on the error message, a likely cause is a hidden or invalid character that can't be recognized by the JavaScript interpreter. Here's how to address this:
+
+Identify the problematic character: The error message points to line 1114, character 11. In the context of the error, let's assume this location contains a character that is not valid in a JavaScript file.
+Delete and Re-enter In the text editor, select the character and delete it. Then type the expected character again in its place.
+Save the file Save the file once you've made this change.
+Reload the page Refresh the page and check the browser console.
+Code
