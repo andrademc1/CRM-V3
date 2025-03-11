@@ -333,7 +333,226 @@
         </div>
     </div>
     
+    <!-- Modal para adicionar Group -->
+    <div id="groupModal" class="group-modal">
+        <div class="group-modal-content">
+            <div class="group-modal-header">
+                <h3>Adicionar Novo Grupo</h3>
+                <button class="close-button" onclick="closeGroupModal()">&times;</button>
+            </div>
+            
+            <form id="groupForm" onsubmit="handleGroupFormSubmit(event)">
+                <!-- Abas -->
+                <div class="group-tabs">
+                    <div class="group-tab active" data-tab="groupSettings" onclick="changeGroupTab('groupSettings')">Group Settings</div>
+                    <div class="group-tab" data-tab="accountSettings" onclick="changeGroupTab('accountSettings')">Group Account Settings</div>
+                    <div class="group-tab" data-tab="billingSettings" onclick="changeGroupTab('billingSettings')">Group Billing Settings</div>
+                    <div class="group-tab" data-tab="dealSettings" onclick="changeGroupTab('dealSettings')">Group Deal Settings</div>
+                </div>
+                
+                <!-- Group Settings -->
+                <div id="groupSettingsTab" class="group-tab-content active">
+                    <div class="form-group">
+                        <label for="groupStatus">Group Status</label>
+                        <select id="groupStatus" name="groupStatus" class="group-dropdown">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="groupName">Group Name</label>
+                        <input type="text" id="groupName" name="groupName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Group Logo</label>
+                        <div class="group-file-upload" onclick="document.getElementById('groupLogoUpload').click()">
+                            <div class="group-file-upload-icon">📷</div>
+                            <div class="group-file-upload-text">Clique para fazer upload de uma imagem</div>
+                            <input type="file" id="groupLogoUpload" name="groupLogoUpload" accept="image/*" style="display: none;" onchange="document.getElementById('groupLogoPreview').src = window.URL.createObjectURL(this.files[0]); document.getElementById('groupPreviewContainer').style.display = 'block';">
+                        </div>
+                        <div id="groupPreviewContainer" class="group-preview-container" style="display: none;">
+                            <img id="groupLogoPreview" src="#" alt="Logo Preview">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="groupURL">Group URL</label>
+                        <input type="url" id="groupURL" name="groupURL" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="groupAffiliateURL">Group Affiliate URL</label>
+                        <input type="url" id="groupAffiliateURL" name="groupAffiliateURL" class="form-control">
+                    </div>
+                </div>
+                
+                <!-- Group Account Settings -->
+                <div id="accountSettingsTab" class="group-tab-content">
+                    <div class="form-group">
+                        <label>Apply Account Settings by Group?</label>
+                        <div class="group-radio-group">
+                            <div class="group-radio-option">
+                                <input type="radio" id="applyAccountNo" name="applyAccountSettings" value="no" checked onchange="toggleAccountSettings()">
+                                <label for="applyAccountNo">No</label>
+                            </div>
+                            <div class="group-radio-option">
+                                <input type="radio" id="applyAccountYes" name="applyAccountSettings" value="yes" onchange="toggleAccountSettings()">
+                                <label for="applyAccountYes">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="accountSettingsContainer" style="display: none;">
+                        <div class="form-group">
+                            <label for="groupOwner">Owner</label>
+                            <select id="groupOwner" name="groupOwner" class="group-dropdown">
+                                <option value="">Selecione um owner</option>
+                                <!-- Os owners serão carregados via JavaScript -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="accountStatus">Account Status</label>
+                            <select id="accountStatus" name="accountStatus" class="group-dropdown">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="usernameEmail">Username/Email</label>
+                            <input type="text" id="usernameEmail" name="usernameEmail" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Group Billing Settings -->
+                <div id="billingSettingsTab" class="group-tab-content">
+                    <div class="form-group">
+                        <label>Apply Billing Settings by Group?</label>
+                        <div class="group-radio-group">
+                            <div class="group-radio-option">
+                                <input type="radio" id="applyBillingNo" name="applyBillingSettings" value="no" checked onchange="toggleBillingSettings()">
+                                <label for="applyBillingNo">No</label>
+                            </div>
+                            <div class="group-radio-option">
+                                <input type="radio" id="applyBillingYes" name="applyBillingSettings" value="yes" onchange="toggleBillingSettings()">
+                                <label for="applyBillingYes">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="billingSettingsContainer" style="display: none;">
+                        <div class="form-group">
+                            <label for="billingName">Name</label>
+                            <input type="text" id="billingName" name="billingName" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingVAT">VAT</label>
+                            <input type="text" id="billingVAT" name="billingVAT" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingAddress1">Address 1</label>
+                            <input type="text" id="billingAddress1" name="billingAddress1" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingAddress2">Address 2</label>
+                            <input type="text" id="billingAddress2" name="billingAddress2" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingCity">City</label>
+                            <input type="text" id="billingCity" name="billingCity" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingState">State/Province/Region</label>
+                            <input type="text" id="billingState" name="billingState" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingZipCode">Zip-Code</label>
+                            <input type="text" id="billingZipCode" name="billingZipCode" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="groupCountry">Country</label>
+                            <select id="groupCountry" name="groupCountry" class="group-dropdown">
+                                <option value="">Selecione um país</option>
+                                <!-- Os países serão carregados via JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Group Deal Settings -->
+                <div id="dealSettingsTab" class="group-tab-content">
+                    <div class="form-group">
+                        <label>Apply Deal Settings by Group?</label>
+                        <div class="group-radio-group">
+                            <div class="group-radio-option">
+                                <input type="radio" id="applyDealNo" name="applyDealSettings" value="no" checked onchange="toggleDealSettings()">
+                                <label for="applyDealNo">No</label>
+                            </div>
+                            <div class="group-radio-option">
+                                <input type="radio" id="applyDealYes" name="applyDealSettings" value="yes" onchange="toggleDealSettings()">
+                                <label for="applyDealYes">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="dealSettingsContainer" style="display: none;">
+                        <div class="form-group">
+                            <label for="dealType">Deal Type</label>
+                            <select id="dealType" name="dealType" class="group-dropdown">
+                                <option value="rev_share">Rev Share</option>
+                                <option value="cpa">CPA</option>
+                                <option value="hybrid">Hybrid</option>
+                                <option value="flat_fee">Flat Fee</option>
+                                <option value="other">Outro</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dealDescription">Deal Description</label>
+                            <textarea id="dealDescription" name="dealDescription" class="form-control" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="group-action-buttons">
+                    <button type="button" class="btn btn-cancel" onclick="closeGroupModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="countries.js"></script>
     <script src="owner-modal.js"></script>
+    <script src="group-modal.js"></script>
+    
+    <script>
+        // Atualização do listener para o botão "Add Group"
+        document.addEventListener('DOMContentLoaded', function() {
+            // Outros event listeners que já existem...
+            
+            document.getElementById('addGroup').addEventListener('click', function() {
+                openGroupModal();
+            });
+        });
+    </script>
 </body>
 </html>
