@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 formFields.forEach(field => {
                     // Skip if field is already properly formed with account ID
                     if (field.id.includes(accountId)) return;
-                    
+
                     // Make sure label for attributes match field IDs
                     let associatedLabel = this.closest(".billing-card").querySelector(`label[for="${field.id}"]`);
                     if (associatedLabel) {
@@ -119,24 +119,24 @@ document.addEventListener('DOMContentLoaded', function() {
 function ensureUniqueFormFieldIds(containerSelector) {
     const containers = document.querySelectorAll(containerSelector);
     const processedIds = new Set();
-    
+
     containers.forEach(container => {
         const formFields = container.querySelectorAll('[id]');
         formFields.forEach(field => {
             // If this ID has already been processed, make it unique
             if (processedIds.has(field.id)) {
                 const uniqueId = `${field.id}-${Math.random().toString(36).substr(2, 5)}`;
-                
+
                 // Find and update any label that references this field
                 const associatedLabel = document.querySelector(`label[for="${field.id}"]`);
                 if (associatedLabel) {
                     associatedLabel.setAttribute('for', uniqueId);
                 }
-                
+
                 // Update the field ID
                 field.id = uniqueId;
             }
-            
+
             processedIds.add(field.id);
         });
     });
@@ -153,3 +153,244 @@ document.addEventListener('DOMContentLoaded', function() {
         ensureUniqueFormFieldIds('.geography-deal-item');
     }, 500);
 });
+
+
+// Array para armazenar owners registrados
+let ownersData = [];
+// Array para armazenar groups registrados
+let groupsData = [];
+// Array para armazenar bookmakers registrados
+let bookmakersData = [];
+// Array para armazenar geographies selecionadas
+let selectedGeographies = [];
+// Objeto para armazenar URLs do bookmaker por geografia
+let bookmakerURLs = {
+    generalURL: "",
+    geographyURLs: []
+};
+
+// Add a country to selected geographies
+function addGeography(country) {
+    // Check if already selected
+    if (
+        selectedGeographies.some(
+            (selected) => selected.code === country.code,
+        )
+    ) {
+        return;
+    }
+
+    // Add to selected array
+    selectedGeographies.push(country);
+
+    // Add to UI
+    renderSelectedGeographies();
+
+    // Add empty URL entry for this geography
+    if (!bookmakerURLs.geographyURLs.some(url => url.geographyCode === country.code)) {
+        bookmakerURLs.geographyURLs.push({
+            geographyCode: country.code,
+            url: ""
+        });
+    }
+}
+
+// Remove a country from selected geographies
+function removeGeography(countryCode) {
+    selectedGeographies = selectedGeographies.filter(
+        (country) => country.code !== countryCode,
+    );
+    renderSelectedGeographies();
+    // Re-render geography list since a country was removed
+    renderGeographyList(geographySearch.value);
+
+    // Remove URL entry for this geography
+    bookmakerURLs.geographyURLs = bookmakerURLs.geographyURLs.filter(
+        url => url.geographyCode !== countryCode
+    );
+}
+
+
+// Render Bookmaker URLs
+function renderBookmakerURLs() {
+    const urlsContainer = document.getElementById("bookmaker-urls-container");
+    const noGeographiesMessage = document.getElementById("url-no-geographies-message");
+
+    if (!urlsContainer) return;
+
+    // Se não houver geografias selecionadas, mostrar mensagem
+    if (selectedGeographies.length === 0) {
+        noGeographiesMessage.style.display = "block";
+        urlsContainer.innerHTML = "";
+        return;
+    } else {
+        noGeographiesMessage.style.display = "none";
+    }
+
+    urlsContainer.innerHTML = "<h4>Configure as URLs para cada geografia selecionada:</h4>";
+
+    // Criar seção para URL geral
+    const generalURLSection = document.createElement("div");
+    generalURLSection.className = "url-section";
+    generalURLSection.innerHTML = `
+        <div class="form-group">
+            <label for="general-url">URL Geral</label>
+            <input type="url" id="general-url" class="form-control" 
+                   placeholder="URL padrão para todas as geografias" 
+                   value="${bookmakerURLs?.generalURL || ''}">
+            <small class="form-text text-muted">Esta URL será usada para todas as geografias, a menos que uma URL específica seja definida.</small>
+        </div>
+    `;
+    urlsContainer.appendChild(generalURLSection);
+
+    // Adicionar input para cada geografia
+    const geographyURLsContainer = document.createElement("div");
+    geographyURLsContainer.className = "geography-urls-container";
+    geographyURLsContainer.style.marginTop = "20px";
+
+    selectedGeographies.forEach(geography => {
+        const geographyURLItem = document.createElement("div");
+        geographyURLItem.className = "geography-url-item";
+        geographyURLItem.style.marginBottom = "15px";
+        geographyURLItem.style.padding = "10px";
+        geographyURLItem.style.backgroundColor = "#f8f9fa";
+        geographyURLItem.style.borderRadius = "4px";
+
+        // Encontrar URL específica para esta geografia ou usar vazio
+        const geographyURL = bookmakerURLs?.geographyURLs?.find(
+            url => url.geographyCode === geography.code
+        );
+
+        geographyURLItem.innerHTML = `
+            <div class="geography-name" style="margin-bottom: 8px;">
+                <span class="country-flag">${geography.flag}</span>
+                <strong>${geography.name}</strong>
+            </div>
+            <div class="form-group">
+                <label for="geo-url-${geography.code}">URL para ${geography.name}</label>
+                <input type="url" id="geo-url-${geography.code}" 
+                       class="form-control geography-url" 
+                       data-geography-code="${geography.code}" 
+                       placeholder="URL específica para ${geography.name}" 
+                       value="${geographyURL?.url || ''}">
+            </div>
+        `;
+
+        geographyURLsContainer.appendChild(geographyURLItem);
+    });
+
+    urlsContainer.appendChild(geographyURLsContainer);
+
+    // Adicionar listeners para os inputs
+    document.getElementById("general-url").addEventListener("input", function() {
+        if (!bookmakerURLs) {
+            bookmakerURLs = {
+                generalURL: "",
+                geographyURLs: []
+            };
+        }
+        bookmakerURLs.generalURL = this.value;
+    });
+
+    document.querySelectorAll(".geography-url").forEach(input => {
+        input.addEventListener("input", function() {
+            const geographyCode = this.dataset.geographyCode;
+
+            if (!bookmakerURLs) {
+                bookmakerURLs = {
+                    generalURL: "",
+                    geographyURLs: []
+                };
+            }
+
+            let geographyURL = bookmakerURLs.geographyURLs.find(
+                url => url.geographyCode === geographyCode
+            );
+
+            if (!geographyURL) {
+                geographyURL = {
+                    geographyCode: geographyCode,
+                    url: ""
+                };
+                bookmakerURLs.geographyURLs.push(geographyURL);
+            }
+
+            geographyURL.url = this.value;
+        });
+    });
+}
+
+// Placeholder functions -  These need to be defined elsewhere in your actual application
+function renderDealAccounts() {}
+function renderBillingAccounts() {}
+function renderSelectedGeographies() {}
+function renderGeographyList(searchValue) {}
+
+
+// If this is the bookmaker deal, billing or url tab, render the appropriate content
+const bookmakerModal = document.getElementById("bookmaker-modal"); //Assumed ID
+
+if (bookmakerModal) { //Check if element exists to avoid errors
+    const tabs = bookmakerModal.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const target = this.dataset.tab;
+
+            if (target === "bookmaker-deal") {
+                renderDealAccounts();
+            } else if (target === "bookmaker-billing") {
+                renderBillingAccounts();
+            } else if (target === "bookmaker-url") {
+                renderBookmakerURLs();
+            }
+        });
+    });
+}
+
+
+// Reset bookmaker URLs
+bookmakerURLs = {
+    generalURL: "",
+    geographyURLs: []
+};
+
+// Reset to first tab
+if (bookmakerModal) { //Check if element exists to avoid errors
+    bookmakerModal
+        .querySelector('.tab[data-tab="bookmaker-settings"]')
+        .click();
+}
+
+
+// Placeholder for bookmakerId -  This needs to be defined appropriately in your application
+const bookmakerId = 1; //Example ID
+
+// Function to submit bookmaker data (needs to be adapted to your actual submission mechanism)
+function submitBookmakerData() {
+    const bookmakerData = {
+        id: bookmakerId,
+        group: document.getElementById("bookmaker-group").value,
+        status: document.getElementById("bookmaker-status")
+            .value,
+        name: document.getElementById("bookmaker-name").value,
+        affiliateUrl: document.getElementById(
+            "bookmaker-affiliate-url",
+        ).value,
+        geographies: selectedGeographies.map((country) => ({
+            code: country.code,
+            name: country.name,
+            flag: country.flag,
+        })),
+        urls: bookmakerURLs,
+        accounts: bookmakerAccounts,
+    };
+
+    //  Replace this with your actual submission logic (e.g., fetch request)
+    console.log("Bookmaker data to submit:", bookmakerData); 
+}
+
+// Example of adding a submit button (adapt to your HTML structure)
+const submitButton = document.createElement('button');
+submitButton.textContent = 'Submit';
+submitButton.addEventListener('click', submitBookmakerData);
+if (bookmakerModal) bookmakerModal.appendChild(submitButton); //Append only if modal exists

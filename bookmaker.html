@@ -697,6 +697,9 @@
                         <div class="tab active" data-tab="bookmaker-settings">
                             Bookmaker Settings
                         </div>
+                        <div class="tab" data-tab="bookmaker-url">
+                            Bookmaker URL
+                        </div>
                         <div class="tab" data-tab="bookmaker-account">
                             Bookmaker Account Settings
                         </div>
@@ -782,6 +785,17 @@
                             >
                                 <!-- Selected countries will appear here -->
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Bookmaker URL Tab -->
+                    <div class="tab-content" id="bookmaker-url">
+                        <div id="url-no-geographies-message" class="no-accounts-message">
+                            <p>Por favor, selecione geografias na aba "Bookmaker Settings" primeiro antes de configurar URLs.</p>
+                        </div>
+
+                        <div id="bookmaker-urls-container">
+                            <!-- URLs por geografia serão adicionadas aqui dinamicamente -->
                         </div>
                     </div>
 
