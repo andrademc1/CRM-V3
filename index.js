@@ -253,7 +253,45 @@ app.use((req, res) => {
 app.post('/api/import-countries', async (req, res) => {
   try {
     // Carrega o arquivo countries.js
-    const countriesData = require('./countries.js');
+    const countriesPath = path.join(__dirname, 'countries.js');
+    let countriesData;
+    
+    // Verifica se o arquivo existe
+    if (fs.existsSync(countriesPath)) {
+      // Tenta carregar o arquivo de forma segura
+      try {
+        const countriesModule = require('./countries.js');
+        // Verifica se é um módulo com exports ou um array direto
+        countriesData = Array.isArray(countriesModule) ? countriesModule : countriesModule.countries || countriesModule;
+      } catch (error) {
+        // Se falhar ao usar require, tenta ler o arquivo e extrair os dados
+        console.log('Fallback: lendo arquivo countries.js como texto');
+        const fileContent = fs.readFileSync(countriesPath, 'utf8');
+        
+        // Extrai o array de países do conteúdo do arquivo
+        const startMarker = 'const countries = [';
+        const endMarker = 'module.exports';
+        
+        const startIndex = fileContent.indexOf(startMarker);
+        const endIndex = fileContent.indexOf(endMarker);
+        
+        if (startIndex !== -1 && endIndex !== -1) {
+          const countriesStr = fileContent.substring(startIndex + startMarker.length - 1, endIndex).trim();
+          // Avaliação segura do conteúdo extraído
+          countriesData = eval('(' + countriesStr + ')');
+        } else {
+          throw new Error('Não foi possível extrair dados de países do arquivo');
+        }
+      }
+    } else {
+      throw new Error('Arquivo countries.js não encontrado');
+    }
+    
+    if (!Array.isArray(countriesData) || countriesData.length === 0) {
+      throw new Error('Nenhum país encontrado no arquivo');
+    }
+    
+    console.log(`${countriesData.length} países encontrados no arquivo`);
     
     // Verifica se a tabela existe, se não, cria
     await query(`
@@ -272,19 +310,21 @@ app.post('/api/import-countries', async (req, res) => {
     // Insere cada país no banco de dados
     let insertedCount = 0;
     for (const country of countriesData) {
-      await query(
-        'INSERT INTO countries (name, code, continent, flag, capital, languages, currency) VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT (code) DO NOTHING',
-        [
-          country.name, 
-          country.code, 
-          country.continent, 
-          country.flag, 
-          country.capital, 
-          Array.isArray(country.languages) ? country.languages : [country.languages], 
-          country.currency
-        ]
-      );
-      insertedCount++;
+      if (country && country.name && country.code) {
+        await query(
+          'INSERT INTO countries (name, code, continent, flag, capital, languages, currency) VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT (code) DO NOTHING',
+          [
+            country.name, 
+            country.code, 
+            country.continent || '', 
+            country.flag || '', 
+            country.capital || '', 
+            Array.isArray(country.languages) ? country.languages : (country.languages ? [country.languages] : []), 
+            country.currency || ''
+          ]
+        );
+        insertedCount++;
+      }
     }
     
     res.json({ message: `${insertedCount} países importados com sucesso` });
