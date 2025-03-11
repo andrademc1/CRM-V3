@@ -1130,10 +1130,13 @@
         <link rel="stylesheet" href="bookmaker-modal.css" />
 
         <script src="database.js"></script>
+        <script src="script.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Inicialize o banco de dados
-                window.DB.init();
+                if (window.DB && window.DB.init()) {
+                    console.log("Banco de dados inicializado com sucesso na página bookmaker.html");
+                }
                 
                 // Get country data from countries.js
                 let countriesData = [];
@@ -4819,6 +4822,49 @@
 
                     // Initial render
                     renderCountryList();
+
+// Salvar dados quando os modais forem fechados
+function salvarDados() {
+    if (window.DB) {
+        if (window.ownersData) {
+            window.DB.owners.save(window.ownersData);
+        }
+        
+        if (window.groupsData) {
+            window.DB.groups.save(window.groupsData);
+        }
+        
+        if (window.bookmakersData) {
+            window.DB.bookmakers.save(window.bookmakersData);
+        }
+        
+        console.log("Dados salvos automaticamente:");
+        console.log("Owners:", window.ownersData ? window.ownersData.length : 0);
+        console.log("Groups:", window.groupsData ? window.groupsData.length : 0);
+        console.log("Bookmakers:", window.bookmakersData ? window.bookmakersData.length : 0);
+    } else {
+        console.error("DB não está disponível");
+    }
+}
+
+// Adicionar listeners para eventos de salvamento em botões
+document.querySelectorAll('#save-owner, #save-group, #save-bookmaker, #save-account').forEach(button => {
+    button.addEventListener('click', function() {
+        setTimeout(salvarDados, 500);
+    });
+});
+
+// Adicionar listeners para fechamento dos modais
+document.querySelectorAll('.modal-close, .modal-footer .btn').forEach(button => {
+    button.addEventListener('click', function() {
+        setTimeout(salvarDados, 500);
+    });
+});
+
+window.addEventListener('beforeunload', function() {
+    salvarDados();
+});
+
                 }
 
                 // Update billing country data

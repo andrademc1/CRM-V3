@@ -23,10 +23,22 @@ function initDatabase() {
       localStorage.setItem(DATABASE_KEYS.BOOKMAKERS, JSON.stringify([]));
     }
     
+    // Verificar se os dados estão em formatos válidos
+    try {
+      JSON.parse(localStorage.getItem(DATABASE_KEYS.OWNERS));
+      JSON.parse(localStorage.getItem(DATABASE_KEYS.GROUPS));
+      JSON.parse(localStorage.getItem(DATABASE_KEYS.BOOKMAKERS));
+    } catch (parseError) {
+      console.error("Erro ao analisar dados existentes, resetando...", parseError);
+      localStorage.setItem(DATABASE_KEYS.OWNERS, JSON.stringify([]));
+      localStorage.setItem(DATABASE_KEYS.GROUPS, JSON.stringify([]));
+      localStorage.setItem(DATABASE_KEYS.BOOKMAKERS, JSON.stringify([]));
+    }
+    
     console.log("Banco de dados inicializado:", { message: "Banco de dados inicializado com sucesso" });
     return true;
   } catch (error) {
-    console.log("Erro ao inicializar banco de dados:", error);
+    console.error("Erro ao inicializar banco de dados:", error);
     return { error: "Erro ao configurar banco de dados" };
   }
 }
