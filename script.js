@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.groupsData = window.DB.groups.get() || [];
         window.bookmakersData = window.DB.bookmakers.get() || [];
         
-        console.log("Dados carregados:", {
+        console.log("Dados carregados do localStorage:", {
             owners: window.ownersData.length,
             groups: window.groupsData.length,
             bookmakers: window.bookmakersData.length

@@ -1098,7 +1098,8 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Inicialize o banco de dados
-                if (window.DB && window.DB.init()) {
+                if (window.DB) {
+                    window.DB.init();
                     console.log("Banco de dados inicializado com sucesso na página bookmaker.html");
                     
                     // Carrega os dados existentes do localStorage
@@ -1111,6 +1112,14 @@
                         groups: window.groupsData.length,
                         bookmakers: window.bookmakersData.length
                     });
+                    
+                    // Atualiza variáveis locais para garantir sincronização
+                    ownersData = window.ownersData;
+                    groupsData = window.groupsData;
+                    bookmakersData = window.bookmakersData;
+                    
+                    console.log("Inicializando tabela de bookmakers...");
+                    setTimeout(renderBookmakersTable, 100);
                 }
                 
                 // Get country data from countries.js

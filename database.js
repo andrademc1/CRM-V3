@@ -1,4 +1,3 @@
-
 // database.js - Gerencia o armazenamento local de dados
 
 const DATABASE_KEYS = {
@@ -14,15 +13,15 @@ function initDatabase() {
     if (!localStorage.getItem(DATABASE_KEYS.OWNERS)) {
       localStorage.setItem(DATABASE_KEYS.OWNERS, JSON.stringify([]));
     }
-    
+
     if (!localStorage.getItem(DATABASE_KEYS.GROUPS)) {
       localStorage.setItem(DATABASE_KEYS.GROUPS, JSON.stringify([]));
     }
-    
+
     if (!localStorage.getItem(DATABASE_KEYS.BOOKMAKERS)) {
       localStorage.setItem(DATABASE_KEYS.BOOKMAKERS, JSON.stringify([]));
     }
-    
+
     // Verificar se os dados estão em formatos válidos
     try {
       JSON.parse(localStorage.getItem(DATABASE_KEYS.OWNERS));
@@ -34,7 +33,7 @@ function initDatabase() {
       localStorage.setItem(DATABASE_KEYS.GROUPS, JSON.stringify([]));
       localStorage.setItem(DATABASE_KEYS.BOOKMAKERS, JSON.stringify([]));
     }
-    
+
     console.log("Banco de dados inicializado:", { message: "Banco de dados inicializado com sucesso" });
     return true;
   } catch (error) {
@@ -47,6 +46,9 @@ function initDatabase() {
 function saveOwners(ownersData) {
   try {
     localStorage.setItem(DATABASE_KEYS.OWNERS, JSON.stringify(ownersData));
+    // Atualiza a variável global
+    window.ownersData = ownersData;
+    console.log("Owners salvos com sucesso:", ownersData.length);
     return true;
   } catch (error) {
     console.error("Erro ao salvar owners:", error);
@@ -68,6 +70,9 @@ function getOwners() {
 function saveGroups(groupsData) {
   try {
     localStorage.setItem(DATABASE_KEYS.GROUPS, JSON.stringify(groupsData));
+    // Atualiza a variável global
+    window.groupsData = groupsData;
+    console.log("Groups salvos com sucesso:", groupsData.length);
     return true;
   } catch (error) {
     console.error("Erro ao salvar groups:", error);
@@ -93,18 +98,18 @@ function saveBookmakers(bookmakersData) {
       console.error("Dados de bookmakers inválidos:", bookmakersData);
       return false;
     }
-    
+
     console.log("Bookmakers para salvar:", bookmakersData.length);
     console.log("Bookmakers válidos:", bookmakersData.filter(b => b && b.id).length);
-    
+
     // Salva no localStorage
     localStorage.setItem(DATABASE_KEYS.BOOKMAKERS, JSON.stringify(bookmakersData));
-    
+
     // Verifica se o salvamento foi bem-sucedido
     const savedData = localStorage.getItem(DATABASE_KEYS.BOOKMAKERS);
     console.log("Bookmakers salvos com sucesso:", savedData ? JSON.parse(savedData).length : 0);
     console.log("Dados no localStorage após salvar:", savedData ? `${savedData.substring(0, 5)}...` : "nenhum");
-    
+
     return true;
   } catch (error) {
     console.error("Erro ao salvar bookmakers:", error);
