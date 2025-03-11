@@ -17,10 +17,18 @@ deploymentTarget = "cloudrun"
 ignorePorts = false
 
 [workflows]
-runButton = "Run CRM"
+runButton = "Run"
 
 [[workflows.workflow]]
 name = "Run CRM"
+author = 39960115
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node index.js"
+
+[[workflows.workflow]]
+name = "Run"
 author = 39960115
 
 [[workflows.workflow.tasks]]
