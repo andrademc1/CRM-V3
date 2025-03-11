@@ -442,7 +442,6 @@
                 <div class="tabs">
                     <div class="tab active" data-tab="bookmaker-settings">Bookmaker Settings</div>
                     <div class="tab" data-tab="bookmaker-account">Bookmaker Account Settings</div>
-                    <div class="tab" data-tab="bookmaker-billing">Bookmaker Billing Settings</div>
                     <div class="tab" data-tab="bookmaker-deal">Bookmaker Deal Settings</div>
                 </div>
 
@@ -539,61 +538,6 @@
                     </div>
                 </div>
 
-                <!-- Bookmaker Billing Settings Tab -->
-                <div class="tab-content" id="bookmaker-billing">
-                    <div class="form-check apply-billing-toggle">
-                        <input type="checkbox" id="apply-bookmaker-billing" class="form-check-input">
-                        <label for="apply-bookmaker-billing">Apply Billing Settings for this Bookmaker?</label>
-                    </div>
-
-                    <div id="bookmaker-billing-details" class="bookmaker-billing-details" style="display: none;">
-                        <div class="form-group">
-                            <label for="bookmaker-billing-name">Name</label>
-                            <input type="text" id="bookmaker-billing-name" class="form-control" placeholder="Enter billing name">
-                        </div>
-                        <div class="form-group">
-                            <label for="bookmaker-billing-vat">VAT</label>
-                            <input type="text" id="bookmaker-billing-vat" class="form-control" placeholder="Enter VAT number">
-                        </div>
-                        <div class="form-group">
-                            <label for="bookmaker-billing-address1">Address 1</label>
-                            <input type="text" id="bookmaker-billing-address1" class="form-control" placeholder="Enter address line 1">
-                        </div>
-                        <div class="form-group">
-                            <label for="bookmaker-billing-address2">Address 2</label>
-                            <input type="text" id="bookmaker-billing-address2" class="form-control" placeholder="Enter address line 2">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-col">
-                                <label for="bookmaker-billing-city">City</label>
-                                <input type="text" id="bookmaker-billing-city" class="form-control" placeholder="Enter city">
-                            </div>
-                            <div class="form-col">
-                                <label for="bookmaker-billing-state">State/Province/Region</label>
-                                <input type="text" id="bookmaker-billing-state" class="form-control" placeholder="Enter state/province">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-col">
-                                <label for="bookmaker-billing-zipcode">Zip-Code</label>
-                                <input type="text" id="bookmaker-billing-zipcode" class="form-control" placeholder="Enter zip code">
-                            </div>
-                            <div class="form-col">
-                                <label for="bookmaker-billing-country">Country</label>
-                                <div class="country-selector">
-                                    <input type="text" id="bookmaker-country-search" class="country-search" placeholder="Search country">
-                                    <div id="bookmaker-country-list" class="country-list"></div>
-                                    <div id="bookmaker-selected-country" class="selected-country" style="display: none;">
-                                        <span id="bookmaker-selected-flag" class="country-flag"></span>
-                                        <span id="bookmaker-selected-name"></span>
-                                        <span class="country-remove">×</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Bookmaker Deal Settings Tab -->
                 <div class="tab-content" id="bookmaker-deal">
                     <div id="no-accounts-message" class="no-accounts-message">
@@ -639,7 +583,6 @@
                     countriesData = window.countriesModule.countries;
                     initCountrySelectors();
                     initGeographySelector();
-                    initBookmakerCountrySelector();
                 } else {
                     console.error("Countries module not properly loaded");
                     fetchCountries();
@@ -1678,20 +1621,6 @@
                     accounts: bookmakerAccounts
                 };
 
-                // Check if billing settings are enabled
-                if (document.getElementById('apply-bookmaker-billing').checked) {
-                    bookmakerData.billing = {
-                        name: document.getElementById('bookmaker-billing-name').value,
-                        vat: document.getElementById('bookmaker-billing-vat').value,
-                        address1: document.getElementById('bookmaker-billing-address1').value,
-                        address2: document.getElementById('bookmaker-billing-address2').value,
-                        city: document.getElementById('bookmaker-billing-city').value,
-                        state: document.getElementById('bookmaker-billing-state').value,
-                        zipCode: document.getElementById('bookmaker-billing-zipcode').value,
-                        country: document.getElementById('bookmaker-selected-country').dataset.code
-                    };
-                }
-
                 // Add to bookmakers array
                 bookmakersData.push(bookmakerData);
 
@@ -1702,22 +1631,6 @@
                 // Optionally, add the new bookmaker to the table
                 addBookmakerToTable(bookmakerData);
             });
-
-            // Initialize bookmaker country selector
-            function initBookmakerCountrySelector() {
-                // Initialize bookmaker billing country selector
-                initCountrySelector('bookmaker-country-search', 'bookmaker-country-list', 'bookmaker-selected-country', 'bookmaker-selected-flag', 'bookmaker-selected-name');
-            }
-
-            // Toggle bookmaker billing details based on checkbox
-            const applyBookmakerBillingCheckbox = document.getElementById('apply-bookmaker-billing');
-            const bookmakerBillingDetailsSection = document.getElementById('bookmaker-billing-details');
-
-            if (applyBookmakerBillingCheckbox && bookmakerBillingDetailsSection) {
-                applyBookmakerBillingCheckbox.addEventListener('change', function() {
-                    bookmakerBillingDetailsSection.style.display = this.checked ? 'block' : 'none';
-                });
-            }
 
             function resetBookmakerForm() {
                 // Reset Bookmaker Settings fields
@@ -1735,22 +1648,6 @@
                 // Clear geography search
                 document.getElementById('bookmaker-geography-search').value = '';
                 document.getElementById('bookmaker-geography-list').classList.remove('active');
-
-                // Reset Bookmaker Billing Settings
-                document.getElementById('apply-bookmaker-billing').checked = false;
-                document.getElementById('bookmaker-billing-details').style.display = 'none';
-                document.getElementById('bookmaker-billing-name').value = '';
-                document.getElementById('bookmaker-billing-vat').value = '';
-                document.getElementById('bookmaker-billing-address1').value = '';
-                document.getElementById('bookmaker-billing-address2').value = '';
-                document.getElementById('bookmaker-billing-city').value = '';
-                document.getElementById('bookmaker-billing-state').value = '';
-                document.getElementById('bookmaker-billing-zipcode').value = '';
-                
-                // Reset billing country selector
-                document.getElementById('bookmaker-country-search').value = '';
-                document.getElementById('bookmaker-selected-country').style.display = 'none';
-                delete document.getElementById('bookmaker-selected-country').dataset.code;
 
                 // Reset accounts
                 bookmakerAccounts = [];
