@@ -9,6 +9,43 @@ const PORT = process.env.PORT || 3000;
 // Serve static files
 app.use(express.static('./'));
 
+// Add a special route to handle script fixes
+app.get('/fix-billing-buttons.js', (req, res) => {
+  res.set('Content-Type', 'text/javascript');
+  res.send(`
+    // Function to fix billing buttons visibility when per-geography mode is active
+    function fixBillingButtonsVisibility() {
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add event listener to all per-geography checkboxes
+        document.querySelectorAll('.per-geography-billing-checkbox').forEach(checkbox => {
+          checkbox.addEventListener('change', function() {
+            const billingCard = this.closest('.billing-card');
+            const autoFillButtons = billingCard.querySelector('.auto-fill-buttons');
+            
+            if (this.checked) {
+              // Hide the general auto-fill buttons when per-geography is checked
+              if (autoFillButtons) autoFillButtons.style.display = 'none';
+            } else {
+              // Show the general auto-fill buttons when per-geography is unchecked
+              if (autoFillButtons) autoFillButtons.style.display = 'block';
+            }
+          });
+          
+          // Also apply the current state
+          const billingCard = checkbox.closest('.billing-card');
+          const autoFillButtons = billingCard.querySelector('.auto-fill-buttons');
+          if (checkbox.checked && autoFillButtons) {
+            autoFillButtons.style.display = 'none';
+          }
+        });
+      });
+    }
+    
+    // Run the fix
+    fixBillingButtonsVisibility();
+  `);
+});
+
 // Route handler for the root path
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
