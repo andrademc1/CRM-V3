@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>CRM</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#" data-section="homepage">
+                            <span class="icon">🏠</span>
+                            <span>Homepage</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="bookmaker">
+                            <span class="icon">📚</span>
+                            <span>Bookmaker Manager</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="user">
+                            <span class="icon">👤</span>
+                            <span>User Manager</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="content">
+            <header class="content-header">
+                <h2 id="section-title">Homepage</h2>
+            </header>
+            
+            <div id="homepage" class="section-content active">
+                <div class="welcome-message">
+                    <h3>Bem-vindo ao seu CRM</h3>
+                    <p>Selecione uma opção na barra lateral para começar.</p>
+                </div>
+            </div>
+            
+            <div id="bookmaker" class="section-content">
+                <h3>Bookmaker Manager</h3>
+                <p>Conteúdo do gerenciador de bookmakers aparecerá aqui.</p>
+            </div>
+            
+            <div id="user" class="section-content">
+                <h3>User Manager</h3>
+                <p>Conteúdo do gerenciador de usuários aparecerá aqui.</p>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
