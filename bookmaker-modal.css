@@ -103,4 +103,18 @@
     border-radius: 4px;
     padding: 15px;
     margin-top: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure form controls are visible */
+#account-form .form-group {
+    margin-bottom: 15px;
+}
+
+#account-form .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
