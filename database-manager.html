@@ -136,7 +136,7 @@
                 statusElement.textContent = 'Importando países...';
                 statusElement.className = 'status';
                 
-                fetch('./api/import-countries', {
+                fetch('/api/import-countries', {
                     method: 'POST'
                 })
                 .then(response => response.json())
