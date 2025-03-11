@@ -32,6 +32,68 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.section-content').forEach(section => {
                 section.classList.remove('active');
             });
+
+// Per geography toggle listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll(".per-geography-billing-checkbox");
+    if (checkboxes.length > 0) {
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", function () {
+                const accountId = this.dataset.accountId;
+                const account = window.bookmakerAccounts ? window.bookmakerAccounts.find(
+                    (a) => a.id === accountId,
+                ) : null;
+                if (account) {
+                    account.billing.perGeography = this.checked;
+                }
+
+                // Find the sections that need to be shown/hidden
+                const geographyBillingSection =
+                    document.getElementById(
+                        `geography-billing-${accountId}`,
+                    );
+                const generalBillingSection = this.closest(
+                    ".billing-card",
+                ).querySelector(".general-billing-section");
+                
+                // Find all auto-fill buttons in the card - both general and geography-specific
+                const generalAutoFillButtons = this.closest(
+                    ".billing-card",
+                ).querySelector(".auto-fill-buttons");
+                
+                // Show/hide the appropriate sections
+                if (geographyBillingSection) {
+                    geographyBillingSection.style.display = this
+                        .checked
+                        ? "block"
+                        : "none";
+                }
+
+                if (generalBillingSection) {
+                    if (this.checked) {
+                        generalBillingSection.classList.add(
+                            "hidden",
+                        );
+                    } else {
+                        generalBillingSection.classList.remove(
+                            "hidden",
+                        );
+                    }
+                }
+
+                // Show/hide the general auto-fill buttons
+                if (generalAutoFillButtons) {
+                    if (this.checked) {
+                        generalAutoFillButtons.classList.add("hidden");
+                    } else {
+                        generalAutoFillButtons.classList.remove("hidden");
+                    }
+                }
+            });
+        });
+    }
+});
+
             document.getElementById(sectionId).classList.add('active');
         });
     });
