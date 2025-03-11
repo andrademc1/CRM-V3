@@ -602,9 +602,7 @@
                                     />
                                 </div>
                                 <div class="form-col">
-                                    <label for="group-billing-country"
-                                        >Country</label
-                                    >
+                                    <label for="group-billing-country">Country</label>
                                     <div class="country-selector">
                                         <input
                                             type="text"
@@ -1060,9 +1058,7 @@
                     .getElementById("addOwner")
                     .addEventListener("click", function () {
                         ownerModal.classList.add("active");
-                    });
-
-                // Close modal when close button or cancel is clicked
+                    });                // Close modal when close button or cancel is clicked
                 ownerCloseBtn.addEventListener("click", function () {
                     closeOwnerModal();
                 });
@@ -2151,7 +2147,7 @@
                     const ownerSelect = document.getElementById(
                         "bookmaker-account-owner",
                     );
-                    for (let i = 0; i < ownerSelect.options.length; i++) {
+                    for (let i = 0; i <ownerSelect.options.length; i++) {
                         if (ownerSelect.options[i].value === account.owner.id) {
                             ownerSelect.selectedIndex = i;
                             break;
@@ -3052,7 +3048,7 @@
                                     );
                                     if (country) {
                                         geographyBilling.country = country.code;
-                                        geographyBilling.countryName =
+                                                                       geographyBilling.countryName =
                                             country.name;
                                         geographyBilling.countryFlag =
                                             country.flag;
@@ -3593,7 +3589,12 @@
                                     ".billing-card",
                                 ).querySelector(".general-billing-section");
 
-                                // Show/hide the appropriate sections
+                                // Encontrar os botões de auto-preenchimento
+                                const autoFillButtons = this.closest(
+                                    ".billing-card"
+                                ).querySelector(".auto-fill-buttons");
+
+                                // Mostrar/esconder as seções adequadas
                                 if (geographyBillingSection) {
                                     geographyBillingSection.style.display = this
                                         .checked
@@ -3611,6 +3612,12 @@
                                             "hidden",
                                         );
                                     }
+                                }
+
+                                // Mostrar/esconder os botões de auto-preenchimento
+                                if (autoFillButtons) {
+                                    autoFillButtons.style.display =
+                                        this.checked ? "none" : "block";
                                 }
 
                                 // Initialize geography billing if it doesn't exist
