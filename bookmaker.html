@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookmaker Manager - CRM System</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="owner-modal.css">
     <style>
         /* Estilos específicos para a página de Bookmaker */
         .bookmaker-container {
@@ -177,8 +178,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Funções para o gerenciamento de bookmakers, owners e grupos
             document.getElementById('addOwner').addEventListener('click', function() {
-                alert('Formulário para adicionar novo proprietário seria exibido aqui.');
-                // Em uma implementação real, abriria um modal com um formulário
+                openOwnerModal();
             });
             
             document.getElementById('addGroup').addEventListener('click', function() {
@@ -215,5 +215,126 @@
             });
         });
     </script>
+<!-- Modal para adicionar Owner -->
+    <div id="ownerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar Novo Owner</h3>
+                <button class="close-button" onclick="closeOwnerModal()">&times;</button>
+            </div>
+            
+            <form id="ownerForm" onsubmit="handleOwnerFormSubmit(event)">
+                <!-- Owner Settings -->
+                <div class="form-section">
+                    <h4>Owner Settings</h4>
+                    
+                    <div class="form-group">
+                        <label>Owner Status</label>
+                        <div class="status-toggle">
+                            <div class="status-option status-active" onclick="this.classList.add('active'); document.querySelectorAll('.status-option:not(.status-active)').forEach(el => el.classList.remove('active')); document.getElementById('ownerStatus').value = 'active';">
+                                Active
+                            </div>
+                            <div class="status-option status-inactive" onclick="this.classList.add('active'); document.querySelectorAll('.status-option:not(.status-inactive)').forEach(el => el.classList.remove('active')); document.getElementById('ownerStatus').value = 'inactive';">
+                                Inactive
+                            </div>
+                            <div class="status-option status-suspended" onclick="this.classList.add('active'); document.querySelectorAll('.status-option:not(.status-suspended)').forEach(el => el.classList.remove('active')); document.getElementById('ownerStatus').value = 'suspended';">
+                                Suspended
+                            </div>
+                        </div>
+                        <input type="hidden" id="ownerStatus" name="ownerStatus" value="active">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ownerName">Owner Name</label>
+                        <input type="text" id="ownerName" name="ownerName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Owner Logo</label>
+                        <div class="file-upload" onclick="document.getElementById('logoUpload').click()">
+                            <div class="file-upload-icon">📷</div>
+                            <div class="file-upload-text">Clique para fazer upload de uma imagem</div>
+                            <input type="file" id="logoUpload" name="logoUpload" accept="image/*" onchange="document.getElementById('logoPreview').src = window.URL.createObjectURL(this.files[0]); document.getElementById('previewContainer').style.display = 'block';">
+                        </div>
+                        <div id="previewContainer" class="preview-container" style="display: none;">
+                            <img id="logoPreview" src="#" alt="Logo Preview">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Owner Billing Details -->
+                <div class="form-section">
+                    <h4>Owner Billing Details</h4>
+                    
+                    <div class="form-group">
+                        <label>Apply Billing Details by Owner?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="applyBillingNo" name="applyBilling" value="no" checked onchange="toggleBillingDetails()">
+                                <label for="applyBillingNo">No</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="applyBillingYes" name="applyBilling" value="yes" onchange="toggleBillingDetails()">
+                                <label for="applyBillingYes">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="billingDetailsContainer" style="display: none;">
+                        <div class="form-group">
+                            <label for="billingName">Name</label>
+                            <input type="text" id="billingName" name="billingName" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingVAT">VAT</label>
+                            <input type="text" id="billingVAT" name="billingVAT" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingAddress1">Address 1</label>
+                            <input type="text" id="billingAddress1" name="billingAddress1" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingAddress2">Address 2</label>
+                            <input type="text" id="billingAddress2" name="billingAddress2" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingCity">City</label>
+                            <input type="text" id="billingCity" name="billingCity" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingState">State/Province/Region</label>
+                            <input type="text" id="billingState" name="billingState" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billingZipCode">Zip-Code</label>
+                            <input type="text" id="billingZipCode" name="billingZipCode" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country" name="country" class="form-control">
+                                <option value="">Selecione um país</option>
+                                <!-- Os países serão carregados via JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-cancel" onclick="closeOwnerModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="countries.js"></script>
+    <script src="owner-modal.js"></script>
 </body>
 </html>
