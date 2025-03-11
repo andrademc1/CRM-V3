@@ -1311,6 +1311,38 @@
                 accountForm.style.display = 'none';
             }
 
+            // Function to render selected account geographies in the UI
+            function renderSelectedAccountGeographies() {
+                const selectedGeographiesContainer = document.getElementById('account-selected-geographies');
+                
+                if (!selectedGeographiesContainer) return;
+                
+                selectedGeographiesContainer.innerHTML = '';
+
+                if (selectedAccountGeographies.length === 0) {
+                    selectedGeographiesContainer.innerHTML = '<i>No countries selected</i>';
+                    return;
+                }
+
+                selectedAccountGeographies.forEach(country => {
+                    const tag = document.createElement('div');
+                    tag.className = 'geography-tag';
+                    tag.dataset.code = country.code;
+                    tag.innerHTML = `
+                        <span class="country-flag">${country.flag}</span>
+                        <span>${country.name}</span>
+                        <span class="remove-geography">×</span>
+                    `;
+
+                    tag.querySelector('.remove-geography').addEventListener('click', function() {
+                        selectedAccountGeographies = selectedAccountGeographies.filter(c => c.code !== country.code);
+                        renderSelectedAccountGeographies();
+                    });
+
+                    selectedGeographiesContainer.appendChild(tag);
+                });
+            }
+            
             // Function to reset the account form
             function resetAccountForm() {
                 document.getElementById('bookmaker-account-owner').selectedIndex = 0;
@@ -1510,32 +1542,14 @@
                     renderAccountGeographyList(geographySearch.value);
                 }
 
-                // Render selected account geographies in the UI
-                function renderSelectedAccountGeographies() {
-                    selectedGeographiesContainer.innerHTML = '';
-
-                    if (selectedAccountGeographies.length === 0) {
-                        selectedGeographiesContainer.innerHTML = '<i>No countries selected</i>';
-                        return;
-                    }
-
-                    selectedAccountGeographies.forEach(country => {
-                        const tag = document.createElement('div');
-                        tag.className = 'geography-tag';
-                        tag.dataset.code = country.code;
-                        tag.innerHTML = `
-                            <span class="country-flag">${country.flag}</span>
-                            <span>${country.name}</span>
-                            <span class="remove-geography">×</span>
-                        `;
-
-                        tag.querySelector('.remove-geography').addEventListener('click', function() {
-                            removeAccountGeography(country.code);
-                        });
-
-                        selectedGeographiesContainer.appendChild(tag);
-                    });
+                // Handle removing geography specifically within this context
+                function removeAccountGeography(countryCode) {
+                    selectedAccountGeographies = selectedAccountGeographies.filter(country => country.code !== countryCode);
+                    renderSelectedAccountGeographies();
+                    renderAccountGeographyList(geographySearch.value);
                 }
+                
+                // Use the global renderSelectedAccountGeographies function
 
                 // Show geography list on focus
                 geographySearch.addEventListener('focus', function() {
