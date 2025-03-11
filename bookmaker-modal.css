@@ -125,7 +125,8 @@
 }
 
 .general-deal-section.hidden,
-.general-billing-section.hidden {
+.general-billing-section.hidden,
+.auto-fill-buttons.hidden {
     display: none;
 }
 
