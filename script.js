@@ -1,30 +1,8 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicializa o CRM (que inclui a inicialização do banco de dados)
-    if (window.initializeCRM) {
-        initializeCRM();
-    } else {
-        // Fallback para inicialização básica do banco de dados
-        initializeDatabase();
-    }
-
     // Get all navigation links
     const navLinks = document.querySelectorAll('.sidebar-nav li a');
     const sectionTitle = document.getElementById('section-title');
-    
-    // Função para inicializar o banco de dados (fallback)
-    function initializeDatabase() {
-        fetch('/api/setup', {
-            method: 'POST'
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Banco de dados inicializado:', data);
-        })
-        .catch(error => {
-            console.error('Erro ao inicializar banco de dados:', error);
-        });
-    }
     
     // Add click event listeners to each link
     navLinks.forEach(link => {
@@ -63,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             checkbox.addEventListener("change", function () {
                 const accountId = this.dataset.accountId;
                 const account = window.bookmakerAccounts ? window.bookmakerAccounts.find(
-                    (a) => a.id === accountId
+                    (a) => a.id === accountId,
                 ) : null;
                 if (account) {
                     account.billing.perGeography = this.checked;
@@ -72,15 +50,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Find the sections that need to be shown/hidden
                 const geographyBillingSection =
                     document.getElementById(
-                        `geography-billing-${accountId}`
+                        `geography-billing-${accountId}`,
                     );
                 const generalBillingSection = this.closest(
-                    ".billing-card"
+                    ".billing-card",
                 ).querySelector(".general-billing-section");
                 
                 // Find all auto-fill buttons in the card - both general and geography-specific
                 const generalAutoFillButtons = this.closest(
-                    ".billing-card"
+                    ".billing-card",
                 ).querySelector(".auto-fill-buttons");
                 
                 // Show/hide the appropriate sections
@@ -94,11 +72,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (generalBillingSection) {
                     if (this.checked) {
                         generalBillingSection.classList.add(
-                            "hidden"
+                            "hidden",
                         );
                     } else {
                         generalBillingSection.classList.remove(
-                            "hidden"
+                            "hidden",
                         );
                     }
                 }
