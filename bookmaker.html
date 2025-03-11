@@ -1241,6 +1241,11 @@
                 const ownerSelect = document.getElementById('bookmaker-account-owner');
                 const ownerId = ownerSelect.value;
                 const ownerName = ownerSelect.options[ownerSelect.selectedIndex].text;
+                
+                // Obtenha os valores corretos dos campos de formulário
+                const statusField = document.getElementById('account-status');
+                const usernameField = document.getElementById('account-username');
+                const passwordField = document.getElementById('account-password');
 
                 const accountData = {
                     id: Date.now().toString(),
@@ -1248,15 +1253,20 @@
                         id: ownerId,
                         name: ownerName
                     },
-                    status: document.getElementById('account-status').value,
-                    username: document.getElementById('account-username').value,
-                    password: document.getElementById('account-password').value,
+                    status: statusField.value,
+                    username: usernameField.value,
+                    password: passwordField.value,
                     geographies: selectedAccountGeographies.map(country => ({
                         code: country.code,
                         name: country.name,
                         flag: country.flag
                     }))
                 };
+
+                console.log("Valores dos campos:", {
+                    username: usernameField.value,
+                    password: passwordField.value
+                });
 
                 // Validate
                 if (!accountData.owner.id) {
