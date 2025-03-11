@@ -697,6 +697,9 @@
                         <div class="tab active" data-tab="bookmaker-settings">
                             Bookmaker Settings
                         </div>
+                        <div class="tab" data-tab="bookmaker-url">
+                            Bookmaker URL
+                        </div>
                         <div class="tab" data-tab="bookmaker-account">
                             Bookmaker Account Settings
                         </div>
@@ -782,6 +785,17 @@
                             >
                                 <!-- Selected countries will appear here -->
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Bookmaker URL Tab -->
+                    <div class="tab-content" id="bookmaker-url">
+                        <div id="url-no-geographies-message" class="no-geographies-message">
+                            <p>Please select geographies in the "Bookmaker Settings" tab first before configuring URLs.</p>
+                        </div>
+
+                        <div id="url-geographies-container">
+                            <!-- Geography URL fields will be added here dynamically -->
                         </div>
                     </div>
 
@@ -2357,6 +2371,98 @@
                 // Initialize accounts list
                 renderBookmakerAccounts();
 
+                // Function to render geography URL fields
+                function renderGeographyURLs() {
+                    const urlContainer = document.getElementById("url-geographies-container");
+                    const noGeographiesMessage = document.getElementById("url-no-geographies-message");
+                    
+                    if (!urlContainer) return;
+                    
+                    // Show or hide the no geographies message
+                    if (selectedGeographies.length === 0) {
+                        noGeographiesMessage.style.display = "block";
+                        urlContainer.innerHTML = "";
+                        return;
+                    } else {
+                        noGeographiesMessage.style.display = "none";
+                    }
+                    
+                    urlContainer.innerHTML = "";
+                    
+                    // Create URL field for each geography
+                    selectedGeographies.forEach((geography) => {
+                        // Find existing URL or create empty one
+                        const geographyURL = bookmakerURLs.find(u => u.geographyCode === geography.code)?.url || "";
+                        
+                        const urlFieldContainer = document.createElement("div");
+                        urlFieldContainer.className = "geography-url-field";
+                        urlFieldContainer.innerHTML = `
+                            <div class="geography-name" style="margin-top: 15px; margin-bottom: 5px;">
+                                <span class="country-flag">${geography.flag}</span>
+                                <strong>${geography.name}</strong>
+                            </div>
+                            <div class="form-group">
+                                <label for="geography-url-${geography.code}">URL for ${geography.name}</label>
+                                <input 
+                                    type="url" 
+                                    id="geography-url-${geography.code}" 
+                                    class="form-control geography-url" 
+                                    data-geography-code="${geography.code}" 
+                                    placeholder="Enter URL for ${geography.name}"
+                                    value="${geographyURL}"
+                                />
+                            </div>
+                        `;
+                        
+                        urlContainer.appendChild(urlFieldContainer);
+                    });
+                    
+                    // Add event listeners for URL changes
+                    document.querySelectorAll(".geography-url").forEach(input => {
+                        input.addEventListener("input", function() {
+                            const geographyCode = this.dataset.geographyCode;
+                            const urlValue = this.value;
+                            
+                            // Find if URL already exists for this geography
+                            const existingURLIndex = bookmakerURLs.findIndex(u => u.geographyCode === geographyCode);
+                            
+                            if (existingURLIndex !== -1) {
+                                bookmakerURLs[existingURLIndex].url = urlValue;
+                            } else {
+                                bookmakerURLs.push({
+                                    geographyCode: geographyCode,
+                                    url: urlValue
+                                });
+                            }
+                        });
+                    });
+                }
+                
+                // Array to store geography URLs
+                let bookmakerURLs = [];
+                
+                // Add event listener to the Bookmaker URL tab to render URLs when tab is clicked
+                const bookmakerURLTab = document.querySelector('.tab[data-tab="bookmaker-url"]');
+                bookmakerURLTab.addEventListener("click", renderGeographyURLs);
+                
+                // Add event listener to render URL tab content when geographies change
+                const geographiesObserver = new MutationObserver(function(mutations) {
+                    for (let mutation of mutations) {
+                        if (mutation.type === 'childList') {
+                            // If the current active tab is bookmaker-url, render the URLs
+                            if (document.querySelector('.tab[data-tab="bookmaker-url"]').classList.contains('active')) {
+                                renderGeographyURLs();
+                            }
+                        }
+                    }
+                });
+                
+                // Start observing the selected-geographies container for changes
+                geographiesObserver.observe(document.getElementById("selected-geographies"), {
+                    childList: true,
+                    subtree: true
+                });
+
                 // Save bookmaker
                 bookmakerSaveBtn.addEventListener("click", function () {
                     const bookmakerId = Date.now().toString(); // Generate a unique ID
@@ -2374,6 +2480,7 @@
                             name: country.name,
                             flag: country.flag,
                         })),
+                        geographyURLs: bookmakerURLs,
                         accounts: bookmakerAccounts,
                     };
 
@@ -2406,6 +2513,17 @@
                     selectedGeographies = [];
                     document.getElementById("selected-geographies").innerHTML =
                         "<i>No countries selected</i>";
+
+                    // Reset geography URLs
+                    bookmakerURLs = [];
+                    const urlGeographiesContainer = document.getElementById("url-geographies-container");
+                    if (urlGeographiesContainer) {
+                        urlGeographiesContainer.innerHTML = "";
+                    }
+                    const noGeographiesMessage = document.getElementById("url-no-geographies-message");
+                    if (noGeographiesMessage) {
+                        noGeographiesMessage.style.display = "block";
+                    }
 
                     // Clear geography search
                     document.getElementById(

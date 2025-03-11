@@ -85,6 +85,29 @@
     background-color: #f9f9f9;
 }
 
+/* Bookmaker URL Tab Styles */
+.geography-url-field {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.geography-url-field:last-child {
+    border-bottom: none;
+}
+
+.no-geographies-message {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+    color: #6c757d;
+}
+
+#url-geographies-container {
+    margin-top: 15px;
+}
+
 .deal-card {
     background-color: #f8f9fa;
     border: 1px solid #e0e0e0;
