@@ -210,14 +210,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Popula as tabelas quando estiver na página bookmaker.html
             if (document.getElementById('bookmakers-table-body')) {
                 populateBookmakersTable();
-                console.log("Populando tabela de bookmakers:", bookmakersData.length);
+                console.log("Populando tabela de bookmakers:", window.bookmakersData.length);
             }
             
             if (document.getElementById('groups-table-body')) {
                 populateGroupsTable();
-                console.log("Populando tabela de grupos:", groupsData.length);
+                console.log("Populando tabela de grupos:", window.groupsData.length);
             }
-        }, 100);
+        }, 500); // Aumentado o timeout para garantir que tudo esteja carregado
     }
     
     // Get all navigation links
