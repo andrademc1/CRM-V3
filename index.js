@@ -258,30 +258,18 @@ app.post('/api/import-countries', async (req, res) => {
     
     // Verifica se o arquivo existe
     if (fs.existsSync(countriesPath)) {
-      // Tenta carregar o arquivo de forma segura
       try {
+        // Remover cache do módulo para garantir que alterações sejam carregadas
+        delete require.cache[require.resolve('./countries.js')];
         const countriesModule = require('./countries.js');
+        
         // Verifica se é um módulo com exports ou um array direto
-        countriesData = Array.isArray(countriesModule) ? countriesModule : countriesModule.countries || countriesModule;
+        countriesData = Array.isArray(countriesModule) ? countriesModule : countriesModule;
+        
+        console.log(`Dados carregados com sucesso: ${countriesData.length} países`);
       } catch (error) {
-        // Se falhar ao usar require, tenta ler o arquivo e extrair os dados
-        console.log('Fallback: lendo arquivo countries.js como texto');
-        const fileContent = fs.readFileSync(countriesPath, 'utf8');
-        
-        // Extrai o array de países do conteúdo do arquivo
-        const startMarker = 'const countries = [';
-        const endMarker = 'module.exports';
-        
-        const startIndex = fileContent.indexOf(startMarker);
-        const endIndex = fileContent.indexOf(endMarker);
-        
-        if (startIndex !== -1 && endIndex !== -1) {
-          const countriesStr = fileContent.substring(startIndex + startMarker.length - 1, endIndex).trim();
-          // Avaliação segura do conteúdo extraído
-          countriesData = eval('(' + countriesStr + ')');
-        } else {
-          throw new Error('Não foi possível extrair dados de países do arquivo');
-        }
+        console.error('Erro ao carregar countries.js:', error);
+        throw new Error(`Erro ao carregar arquivo countries.js: ${error.message}`);
       }
     } else {
       throw new Error('Arquivo countries.js não encontrado');
