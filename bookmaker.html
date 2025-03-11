@@ -3074,23 +3074,55 @@
                 // Function to show the contact form
                 function showContactForm() {
                     const contactForm = document.getElementById("contact-form");
-                    contactForm.style.display = "block";
+                    if (contactForm) {
+                        contactForm.style.display = "block";
+                    } else {
+                        console.error("Element with ID 'contact-form' not found.");
+                        return; // Exit the function if the form doesn't exist
+                    }
                     
-                    // Clear form fields
-                    document.getElementById("contact-name").value = "";
-                    document.getElementById("department-search").value = "";
-                    document.getElementById("contact-department").value = "";
-                    document.getElementById("selected-department").style.display = "none";
-                    document.getElementById("selected-department").textContent = "";
-                    document.getElementById("contact-geography-search").value = "";
-                    document.getElementById("contact-selected-geographies").innerHTML = "";
+                    // Function to safely set value on form elements
+                    function safeSetValue(elementId, value) {
+                        const element = document.getElementById(elementId);
+                        if (element) {
+                            element.value = value;
+                        } else {
+                            console.error(`Element with ID '${elementId}' not found.`);
+                        }
+                    }
+                    
+                    // Safely clear form fields
+                    safeSetValue("contact-name", "");
+                    safeSetValue("department-search", "");
+                    safeSetValue("contact-department", "");
+                    
+                    const selectedDepartment = document.getElementById("selected-department");
+                    if (selectedDepartment) {
+                        selectedDepartment.style.display = "none";
+                        selectedDepartment.textContent = "";
+                    } else {
+                        console.error("Element with ID 'selected-department' not found.");
+                    }
+                    
+                    safeSetValue("contact-geography-search", "");
+                    
+                    const contactSelectedGeographies = document.getElementById("contact-selected-geographies");
+                    if (contactSelectedGeographies) {
+                        contactSelectedGeographies.innerHTML = "";
+                    } else {
+                        console.error("Element with ID 'contact-selected-geographies' not found.");
+                    }
                     
                     // Clear contact methods
                     const contactMethodsList = document.getElementById("contact-methods-list");
-                    contactMethodsList.innerHTML = "";
-                    
-                    // Add an initial contact method
-                    addContactMethod();
+                    if (contactMethodsList) {
+                        contactMethodsList.innerHTML = "";
+                        
+                        // Add an initial contact method
+                        addContactMethod();
+                    } else {
+                        console.error("Element with ID 'contact-methods-list' not found.");
+                    }
                 }
                 
                 // Function to hide the contact form
