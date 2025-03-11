@@ -44,16 +44,100 @@ function toggleBillingDetails() {
 function loadCountries() {
   const countrySelect = document.getElementById('country');
   
-  // Limpar opções existentes
-  countrySelect.innerHTML = '<option value="">Selecione um país</option>';
+  // Transformar o select em um campo com pesquisa
+  // Primeiro, escondemos o select original
+  countrySelect.style.display = 'none';
   
-  // Adicionar países do arquivo countries.js
-  countries.forEach(country => {
-    const option = document.createElement('option');
-    option.value = country.code;
-    option.textContent = `${country.flag} ${country.name}`;
-    countrySelect.appendChild(option);
+  // Criar o contêiner para o campo de pesquisa e resultados
+  const searchContainer = document.createElement('div');
+  searchContainer.className = 'country-search-container';
+  
+  // Criar o campo de pesquisa
+  const searchInput = document.createElement('input');
+  searchInput.type = 'text';
+  searchInput.className = 'form-control country-search-input';
+  searchInput.placeholder = 'Pesquisar país...';
+  
+  // Criar o contêiner para os resultados da pesquisa
+  const resultsContainer = document.createElement('div');
+  resultsContainer.className = 'country-search-results';
+  resultsContainer.style.display = 'none';
+  
+  // Adicionar os elementos ao DOM
+  searchContainer.appendChild(searchInput);
+  searchContainer.appendChild(resultsContainer);
+  countrySelect.parentNode.insertBefore(searchContainer, countrySelect.nextSibling);
+  
+  // Adicionar evento de input para pesquisar países
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    
+    // Filtrar países com base no termo de pesquisa
+    const filteredCountries = countries.filter(country => 
+      country.name.toLowerCase().includes(searchTerm)
+    );
+    
+    // Exibir resultados
+    updateSearchResults(filteredCountries, resultsContainer, countrySelect, searchInput);
+    
+    // Mostrar ou esconder o contêiner de resultados
+    resultsContainer.style.display = filteredCountries.length > 0 && searchTerm.length > 0 ? 'block' : 'none';
   });
+  
+  // Esconder resultados ao clicar fora
+  document.addEventListener('click', function(e) {
+    if (!searchContainer.contains(e.target)) {
+      resultsContainer.style.display = 'none';
+    }
+  });
+  
+  // Exibir todos os países ao clicar no campo de pesquisa
+  searchInput.addEventListener('focus', function() {
+    if (this.value === '') {
+      updateSearchResults(countries, resultsContainer, countrySelect, searchInput);
+      resultsContainer.style.display = 'block';
+    }
+  });
+}
+
+// Função para atualizar os resultados da pesquisa
+function updateSearchResults(filteredCountries, resultsContainer, countrySelect, searchInput) {
+  resultsContainer.innerHTML = '';
+  
+  // Limitar a 10 resultados para não sobrecarregar a interface
+  const displayCountries = filteredCountries.slice(0, 10);
+  
+  displayCountries.forEach(country => {
+    const resultItem = document.createElement('div');
+    resultItem.className = 'country-result-item';
+    resultItem.innerHTML = `${country.flag} ${country.name}`;
+    
+    // Ao clicar em um resultado
+    resultItem.addEventListener('click', function() {
+      // Atualizar o valor do select original
+      countrySelect.value = country.code;
+      
+      // Atualizar o texto do campo de pesquisa
+      searchInput.value = `${country.flag} ${country.name}`;
+      
+      // Esconder resultados
+      resultsContainer.style.display = 'none';
+      
+      // Disparar evento de mudança no select original
+      const event = new Event('change');
+      countrySelect.dispatchEvent(event);
+    });
+    
+    resultsContainer.appendChild(resultItem);
+  });
+  
+  // Se não houver resultados
+  if (displayCountries.length === 0) {
+    const noResults = document.createElement('div');
+    noResults.className = 'country-no-results';
+    noResults.textContent = 'Nenhum país encontrado';
+    resultsContainer.appendChild(noResults);
+  }
 }
 
 // Função para lidar com o envio do formulário

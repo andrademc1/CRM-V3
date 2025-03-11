@@ -1,4 +1,47 @@
 
+/* Estilos para a pesquisa de países */
+.country-search-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.country-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.country-search-results {
+    position: absolute;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.country-result-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.country-result-item:hover {
+    background-color: #f5f5f5;
+}
+
+.country-no-results {
+    padding: 8px 12px;
+    color: #888;
+    font-style: italic;
+}
+
+
 /* Estilos para a modal */
 .modal {
   display: none;
