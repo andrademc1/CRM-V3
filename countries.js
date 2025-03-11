@@ -1,3 +1,4 @@
+
 // Lista de países com informações geográficas e bandeiras
 const countries = [
   {
@@ -7,7 +8,7 @@ const countries = [
     flag: "🇦🇫",
     capital: "Cabul",
     languages: ["Dari", "Pashto"],
-    currency: "Afegani",
+    currency: "Afegani"
   },
   {
     name: "Albânia",
@@ -16,7 +17,7 @@ const countries = [
     flag: "🇦🇱",
     capital: "Tirana",
     languages: ["Albanês"],
-    currency: "Lek",
+    currency: "Lek"
   },
   {
     name: "Argélia",
@@ -25,7 +26,7 @@ const countries = [
     flag: "🇩🇿",
     capital: "Argel",
     languages: ["Árabe", "Berbere", "Francês"],
-    currency: "Dinar argelino",
+    currency: "Dinar argelino"
   },
   {
     name: "Andorra",
@@ -34,7 +35,7 @@ const countries = [
     flag: "🇦🇩",
     capital: "Andorra la Vella",
     languages: ["Catalão"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Angola",
@@ -43,16 +44,7 @@ const countries = [
     flag: "🇦🇴",
     capital: "Luanda",
     languages: ["Português"],
-    currency: "Kwanza",
-  },
-  {
-    name: "Antígua e Barbuda",
-    code: "AG",
-    continent: "América do Norte",
-    flag: "🇦🇬",
-    capital: "Saint John's",
-    languages: ["Inglês"],
-    currency: "Dólar do Caribe Oriental",
+    currency: "Kwanza"
   },
   {
     name: "Argentina",
@@ -61,7 +53,7 @@ const countries = [
     flag: "🇦🇷",
     capital: "Buenos Aires",
     languages: ["Espanhol"],
-    currency: "Peso argentino",
+    currency: "Peso argentino"
   },
   {
     name: "Armênia",
@@ -70,7 +62,7 @@ const countries = [
     flag: "🇦🇲",
     capital: "Yerevan",
     languages: ["Armênio"],
-    currency: "Dram armênio",
+    currency: "Dram armênio"
   },
   {
     name: "Austrália",
@@ -79,7 +71,7 @@ const countries = [
     flag: "🇦🇺",
     capital: "Camberra",
     languages: ["Inglês"],
-    currency: "Dólar australiano",
+    currency: "Dólar australiano"
   },
   {
     name: "Áustria",
@@ -88,7 +80,7 @@ const countries = [
     flag: "🇦🇹",
     capital: "Viena",
     languages: ["Alemão"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Azerbaijão",
@@ -97,7 +89,7 @@ const countries = [
     flag: "🇦🇿",
     capital: "Baku",
     languages: ["Azerbaijano"],
-    currency: "Manat azerbaijano",
+    currency: "Manat azerbaijano"
   },
   {
     name: "Bahamas",
@@ -106,7 +98,7 @@ const countries = [
     flag: "🇧🇸",
     capital: "Nassau",
     languages: ["Inglês"],
-    currency: "Dólar bahamense",
+    currency: "Dólar bahamense"
   },
   {
     name: "Bahrein",
@@ -115,7 +107,7 @@ const countries = [
     flag: "🇧🇭",
     capital: "Manama",
     languages: ["Árabe"],
-    currency: "Dinar bareinita",
+    currency: "Dinar bareinita"
   },
   {
     name: "Bangladesh",
@@ -124,7 +116,7 @@ const countries = [
     flag: "🇧🇩",
     capital: "Dhaka",
     languages: ["Bengali"],
-    currency: "Taka",
+    currency: "Taka"
   },
   {
     name: "Barbados",
@@ -133,7 +125,7 @@ const countries = [
     flag: "🇧🇧",
     capital: "Bridgetown",
     languages: ["Inglês"],
-    currency: "Dólar de Barbados",
+    currency: "Dólar de Barbados"
   },
   {
     name: "Bielorrússia",
@@ -142,7 +134,7 @@ const countries = [
     flag: "🇧🇾",
     capital: "Minsk",
     languages: ["Bielorrusso", "Russo"],
-    currency: "Rublo bielorrusso",
+    currency: "Rublo bielorrusso"
   },
   {
     name: "Bélgica",
@@ -151,7 +143,7 @@ const countries = [
     flag: "🇧🇪",
     capital: "Bruxelas",
     languages: ["Holandês", "Francês", "Alemão"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Belize",
@@ -160,7 +152,7 @@ const countries = [
     flag: "🇧🇿",
     capital: "Belmopan",
     languages: ["Inglês"],
-    currency: "Dólar de Belize",
+    currency: "Dólar de Belize"
   },
   {
     name: "Benin",
@@ -169,7 +161,7 @@ const countries = [
     flag: "🇧🇯",
     capital: "Porto-Novo",
     languages: ["Francês"],
-    currency: "Franco CFA ocidental",
+    currency: "Franco CFA ocidental"
   },
   {
     name: "Butão",
@@ -178,7 +170,7 @@ const countries = [
     flag: "🇧🇹",
     capital: "Thimphu",
     languages: ["Dzongkha"],
-    currency: "Ngultrum",
+    currency: "Ngultrum"
   },
   {
     name: "Bolívia",
@@ -187,7 +179,7 @@ const countries = [
     flag: "🇧🇴",
     capital: "Sucre",
     languages: ["Espanhol", "Quíchua", "Aimará"],
-    currency: "Boliviano",
+    currency: "Boliviano"
   },
   {
     name: "Bósnia e Herzegovina",
@@ -196,7 +188,7 @@ const countries = [
     flag: "🇧🇦",
     capital: "Sarajevo",
     languages: ["Bósnio", "Croata", "Sérvio"],
-    currency: "Marco conversível",
+    currency: "Marco conversível"
   },
   {
     name: "Botswana",
@@ -205,7 +197,7 @@ const countries = [
     flag: "🇧🇼",
     capital: "Gaborone",
     languages: ["Inglês", "Tswana"],
-    currency: "Pula",
+    currency: "Pula"
   },
   {
     name: "Brasil",
@@ -214,7 +206,7 @@ const countries = [
     flag: "🇧🇷",
     capital: "Brasília",
     languages: ["Português"],
-    currency: "Real",
+    currency: "Real"
   },
   {
     name: "Brunei",
@@ -223,7 +215,7 @@ const countries = [
     flag: "🇧🇳",
     capital: "Bandar Seri Begawan",
     languages: ["Malaio"],
-    currency: "Dólar de Brunei",
+    currency: "Dólar de Brunei"
   },
   {
     name: "Bulgária",
@@ -232,7 +224,7 @@ const countries = [
     flag: "🇧🇬",
     capital: "Sófia",
     languages: ["Búlgaro"],
-    currency: "Lev búlgaro",
+    currency: "Lev búlgaro"
   },
   {
     name: "Burkina Faso",
@@ -241,7 +233,7 @@ const countries = [
     flag: "🇧🇫",
     capital: "Ouagadougou",
     languages: ["Francês"],
-    currency: "Franco CFA ocidental",
+    currency: "Franco CFA ocidental"
   },
   {
     name: "Burundi",
@@ -250,7 +242,7 @@ const countries = [
     flag: "🇧🇮",
     capital: "Bujumbura",
     languages: ["Kirundi", "Francês"],
-    currency: "Franco burundiano",
+    currency: "Franco burundiano"
   },
   {
     name: "Camboja",
@@ -259,7 +251,7 @@ const countries = [
     flag: "🇰🇭",
     capital: "Phnom Penh",
     languages: ["Khmer"],
-    currency: "Riel",
+    currency: "Riel"
   },
   {
     name: "Camarões",
@@ -268,7 +260,7 @@ const countries = [
     flag: "🇨🇲",
     capital: "Yaoundé",
     languages: ["Francês", "Inglês"],
-    currency: "Franco CFA central",
+    currency: "Franco CFA central"
   },
   {
     name: "Canadá",
@@ -277,7 +269,7 @@ const countries = [
     flag: "🇨🇦",
     capital: "Ottawa",
     languages: ["Inglês", "Francês"],
-    currency: "Dólar canadense",
+    currency: "Dólar canadense"
   },
   {
     name: "Cabo Verde",
@@ -286,7 +278,7 @@ const countries = [
     flag: "🇨🇻",
     capital: "Praia",
     languages: ["Português"],
-    currency: "Escudo cabo-verdiano",
+    currency: "Escudo cabo-verdiano"
   },
   {
     name: "República Centro-Africana",
@@ -295,7 +287,7 @@ const countries = [
     flag: "🇨🇫",
     capital: "Bangui",
     languages: ["Francês", "Sango"],
-    currency: "Franco CFA central",
+    currency: "Franco CFA central"
   },
   {
     name: "Chade",
@@ -304,7 +296,7 @@ const countries = [
     flag: "🇹🇩",
     capital: "N'Djamena",
     languages: ["Francês", "Árabe"],
-    currency: "Franco CFA central",
+    currency: "Franco CFA central"
   },
   {
     name: "Chile",
@@ -313,7 +305,7 @@ const countries = [
     flag: "🇨🇱",
     capital: "Santiago",
     languages: ["Espanhol"],
-    currency: "Peso chileno",
+    currency: "Peso chileno"
   },
   {
     name: "China",
@@ -322,7 +314,7 @@ const countries = [
     flag: "🇨🇳",
     capital: "Pequim",
     languages: ["Mandarim"],
-    currency: "Renminbi",
+    currency: "Renminbi"
   },
   {
     name: "Colômbia",
@@ -331,7 +323,7 @@ const countries = [
     flag: "🇨🇴",
     capital: "Bogotá",
     languages: ["Espanhol"],
-    currency: "Peso colombiano",
+    currency: "Peso colombiano"
   },
   {
     name: "Comores",
@@ -340,7 +332,7 @@ const countries = [
     flag: "🇰🇲",
     capital: "Moroni",
     languages: ["Árabe", "Francês", "Comoriano"],
-    currency: "Franco comoriano",
+    currency: "Franco comoriano"
   },
   {
     name: "República do Congo",
@@ -349,16 +341,7 @@ const countries = [
     flag: "🇨🇬",
     capital: "Brazzaville",
     languages: ["Francês"],
-    currency: "Franco CFA central",
-  },
-  {
-    name: "República Democrática do Congo",
-    code: "CD",
-    continent: "África",
-    flag: "🇨🇩",
-    capital: "Kinshasa",
-    languages: ["Francês"],
-    currency: "Franco congolês",
+    currency: "Franco CFA central"
   },
   {
     name: "Costa Rica",
@@ -367,7 +350,7 @@ const countries = [
     flag: "🇨🇷",
     capital: "San José",
     languages: ["Espanhol"],
-    currency: "Colón costa-riquenho",
+    currency: "Colón costa-riquenho"
   },
   {
     name: "Croácia",
@@ -376,7 +359,7 @@ const countries = [
     flag: "🇭🇷",
     capital: "Zagreb",
     languages: ["Croata"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Cuba",
@@ -385,7 +368,7 @@ const countries = [
     flag: "🇨🇺",
     capital: "Havana",
     languages: ["Espanhol"],
-    currency: "Peso cubano",
+    currency: "Peso cubano"
   },
   {
     name: "Chipre",
@@ -394,7 +377,7 @@ const countries = [
     flag: "🇨🇾",
     capital: "Nicósia",
     languages: ["Grego", "Turco"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "República Tcheca",
@@ -403,7 +386,7 @@ const countries = [
     flag: "🇨🇿",
     capital: "Praga",
     languages: ["Tcheco"],
-    currency: "Coroa tcheca",
+    currency: "Coroa tcheca"
   },
   {
     name: "Dinamarca",
@@ -412,7 +395,7 @@ const countries = [
     flag: "🇩🇰",
     capital: "Copenhague",
     languages: ["Dinamarquês"],
-    currency: "Coroa dinamarquesa",
+    currency: "Coroa dinamarquesa"
   },
   {
     name: "Djibouti",
@@ -421,7 +404,7 @@ const countries = [
     flag: "🇩🇯",
     capital: "Djibouti",
     languages: ["Francês", "Árabe"],
-    currency: "Franco djibutiano",
+    currency: "Franco djibutiano"
   },
   {
     name: "Dominica",
@@ -430,7 +413,7 @@ const countries = [
     flag: "🇩🇲",
     capital: "Roseau",
     languages: ["Inglês"],
-    currency: "Dólar do Caribe Oriental",
+    currency: "Dólar do Caribe Oriental"
   },
   {
     name: "República Dominicana",
@@ -439,7 +422,7 @@ const countries = [
     flag: "🇩🇴",
     capital: "Santo Domingo",
     languages: ["Espanhol"],
-    currency: "Peso dominicano",
+    currency: "Peso dominicano"
   },
   {
     name: "Equador",
@@ -448,7 +431,7 @@ const countries = [
     flag: "🇪🇨",
     capital: "Quito",
     languages: ["Espanhol"],
-    currency: "Dólar americano",
+    currency: "Dólar americano"
   },
   {
     name: "Egito",
@@ -457,7 +440,7 @@ const countries = [
     flag: "🇪🇬",
     capital: "Cairo",
     languages: ["Árabe"],
-    currency: "Libra egípcia",
+    currency: "Libra egípcia"
   },
   {
     name: "El Salvador",
@@ -466,7 +449,7 @@ const countries = [
     flag: "🇸🇻",
     capital: "San Salvador",
     languages: ["Espanhol"],
-    currency: "Dólar americano",
+    currency: "Dólar americano"
   },
   {
     name: "Guiné Equatorial",
@@ -475,7 +458,7 @@ const countries = [
     flag: "🇬🇶",
     capital: "Malabo",
     languages: ["Espanhol", "Francês", "Português"],
-    currency: "Franco CFA central",
+    currency: "Franco CFA central"
   },
   {
     name: "Eritreia",
@@ -484,7 +467,7 @@ const countries = [
     flag: "🇪🇷",
     capital: "Asmara",
     languages: ["Tigrínia"],
-    currency: "Nakfa",
+    currency: "Nakfa"
   },
   {
     name: "Estônia",
@@ -493,7 +476,7 @@ const countries = [
     flag: "🇪🇪",
     capital: "Tallinn",
     languages: ["Estoniano"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Etiópia",
@@ -502,7 +485,7 @@ const countries = [
     flag: "🇪🇹",
     capital: "Addis Ababa",
     languages: ["Amárico"],
-    currency: "Birr etíope",
+    currency: "Birr etíope"
   },
   {
     name: "Fiji",
@@ -511,7 +494,7 @@ const countries = [
     flag: "🇫🇯",
     capital: "Suva",
     languages: ["Inglês", "Fijiano", "Hindi"],
-    currency: "Dólar fijiano",
+    currency: "Dólar fijiano"
   },
   {
     name: "Finlândia",
@@ -520,7 +503,7 @@ const countries = [
     flag: "🇫🇮",
     capital: "Helsinki",
     languages: ["Finlandês", "Sueco"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "França",
@@ -529,7 +512,7 @@ const countries = [
     flag: "🇫🇷",
     capital: "Paris",
     languages: ["Francês"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Gabão",
@@ -538,7 +521,7 @@ const countries = [
     flag: "🇬🇦",
     capital: "Libreville",
     languages: ["Francês"],
-    currency: "Franco CFA central",
+    currency: "Franco CFA central"
   },
   {
     name: "Gâmbia",
@@ -547,7 +530,7 @@ const countries = [
     flag: "🇬🇲",
     capital: "Banjul",
     languages: ["Inglês"],
-    currency: "Dalasi",
+    currency: "Dalasi"
   },
   {
     name: "Geórgia",
@@ -556,7 +539,7 @@ const countries = [
     flag: "🇬🇪",
     capital: "Tbilisi",
     languages: ["Georgiano"],
-    currency: "Lari",
+    currency: "Lari"
   },
   {
     name: "Alemanha",
@@ -565,7 +548,7 @@ const countries = [
     flag: "🇩🇪",
     capital: "Berlim",
     languages: ["Alemão"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Gana",
@@ -574,7 +557,7 @@ const countries = [
     flag: "🇬🇭",
     capital: "Accra",
     languages: ["Inglês"],
-    currency: "Cedi",
+    currency: "Cedi"
   },
   {
     name: "Grécia",
@@ -583,7 +566,7 @@ const countries = [
     flag: "🇬🇷",
     capital: "Atenas",
     languages: ["Grego"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Granada",
@@ -592,7 +575,7 @@ const countries = [
     flag: "🇬🇩",
     capital: "St. George's",
     languages: ["Inglês"],
-    currency: "Dólar do Caribe Oriental",
+    currency: "Dólar do Caribe Oriental"
   },
   {
     name: "Guatemala",
@@ -601,7 +584,7 @@ const countries = [
     flag: "🇬🇹",
     capital: "Cidade da Guatemala",
     languages: ["Espanhol"],
-    currency: "Quetzal",
+    currency: "Quetzal"
   },
   {
     name: "Guiné",
@@ -610,7 +593,7 @@ const countries = [
     flag: "🇬🇳",
     capital: "Conakry",
     languages: ["Francês"],
-    currency: "Franco guineano",
+    currency: "Franco guineano"
   },
   {
     name: "Guiné-Bissau",
@@ -619,7 +602,7 @@ const countries = [
     flag: "🇬🇼",
     capital: "Bissau",
     languages: ["Português"],
-    currency: "Franco CFA ocidental",
+    currency: "Franco CFA ocidental"
   },
   {
     name: "Guiana",
@@ -628,7 +611,7 @@ const countries = [
     flag: "🇬🇾",
     capital: "Georgetown",
     languages: ["Inglês"],
-    currency: "Dólar guianense",
+    currency: "Dólar guianense"
   },
   {
     name: "Haiti",
@@ -637,7 +620,7 @@ const countries = [
     flag: "🇭🇹",
     capital: "Port-au-Prince",
     languages: ["Francês", "Crioulo haitiano"],
-    currency: "Gourde",
+    currency: "Gourde"
   },
   {
     name: "Honduras",
@@ -646,7 +629,7 @@ const countries = [
     flag: "🇭🇳",
     capital: "Tegucigalpa",
     languages: ["Espanhol"],
-    currency: "Lempira",
+    currency: "Lempira"
   },
   {
     name: "Hungria",
@@ -655,7 +638,7 @@ const countries = [
     flag: "🇭🇺",
     capital: "Budapeste",
     languages: ["Húngaro"],
-    currency: "Forint",
+    currency: "Forint"
   },
   {
     name: "Islândia",
@@ -664,7 +647,7 @@ const countries = [
     flag: "🇮🇸",
     capital: "Reykjavik",
     languages: ["Islandês"],
-    currency: "Coroa islandesa",
+    currency: "Coroa islandesa"
   },
   {
     name: "Índia",
@@ -673,7 +656,7 @@ const countries = [
     flag: "🇮🇳",
     capital: "Nova Delhi",
     languages: ["Hindi", "Inglês"],
-    currency: "Rupia indiana",
+    currency: "Rupia indiana"
   },
   {
     name: "Indonésia",
@@ -682,7 +665,7 @@ const countries = [
     flag: "🇮🇩",
     capital: "Jacarta",
     languages: ["Indonésio"],
-    currency: "Rupia indonésia",
+    currency: "Rupia indonésia"
   },
   {
     name: "Irã",
@@ -691,7 +674,7 @@ const countries = [
     flag: "🇮🇷",
     capital: "Teerã",
     languages: ["Persa"],
-    currency: "Rial iraniano",
+    currency: "Rial iraniano"
   },
   {
     name: "Iraque",
@@ -700,7 +683,7 @@ const countries = [
     flag: "🇮🇶",
     capital: "Bagdá",
     languages: ["Árabe", "Curdo"],
-    currency: "Dinar iraquiano",
+    currency: "Dinar iraquiano"
   },
   {
     name: "Irlanda",
@@ -709,7 +692,7 @@ const countries = [
     flag: "🇮🇪",
     capital: "Dublin",
     languages: ["Inglês", "Irlandês"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Israel",
@@ -718,7 +701,7 @@ const countries = [
     flag: "🇮🇱",
     capital: "Jerusalém",
     languages: ["Hebraico", "Árabe"],
-    currency: "Novo shekel israelense",
+    currency: "Novo shekel israelense"
   },
   {
     name: "Itália",
@@ -727,7 +710,7 @@ const countries = [
     flag: "🇮🇹",
     capital: "Roma",
     languages: ["Italiano"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Jamaica",
@@ -736,7 +719,7 @@ const countries = [
     flag: "🇯🇲",
     capital: "Kingston",
     languages: ["Inglês"],
-    currency: "Dólar jamaicano",
+    currency: "Dólar jamaicano"
   },
   {
     name: "Japão",
@@ -745,7 +728,7 @@ const countries = [
     flag: "🇯🇵",
     capital: "Tóquio",
     languages: ["Japonês"],
-    currency: "Iene",
+    currency: "Iene"
   },
   {
     name: "Jordânia",
@@ -754,7 +737,7 @@ const countries = [
     flag: "🇯🇴",
     capital: "Amã",
     languages: ["Árabe"],
-    currency: "Dinar jordaniano",
+    currency: "Dinar jordaniano"
   },
   {
     name: "Cazaquistão",
@@ -763,7 +746,7 @@ const countries = [
     flag: "🇰🇿",
     capital: "Astana",
     languages: ["Cazaque", "Russo"],
-    currency: "Tenge",
+    currency: "Tenge"
   },
   {
     name: "Quênia",
@@ -772,7 +755,7 @@ const countries = [
     flag: "🇰🇪",
     capital: "Nairobi",
     languages: ["Inglês", "Suaíli"],
-    currency: "Xelim queniano",
+    currency: "Xelim queniano"
   },
   {
     name: "Kiribati",
@@ -781,7 +764,7 @@ const countries = [
     flag: "🇰🇮",
     capital: "Tarawa",
     languages: ["Inglês", "Gilbertês"],
-    currency: "Dólar australiano",
+    currency: "Dólar australiano"
   },
   {
     name: "Coreia do Norte",
@@ -790,7 +773,7 @@ const countries = [
     flag: "🇰🇵",
     capital: "Pyongyang",
     languages: ["Coreano"],
-    currency: "Won norte-coreano",
+    currency: "Won norte-coreano"
   },
   {
     name: "Coreia do Sul",
@@ -799,7 +782,7 @@ const countries = [
     flag: "🇰🇷",
     capital: "Seul",
     languages: ["Coreano"],
-    currency: "Won sul-coreano",
+    currency: "Won sul-coreano"
   },
   {
     name: "Kuwait",
@@ -808,16 +791,7 @@ const countries = [
     flag: "🇰🇼",
     capital: "Kuwait City",
     languages: ["Árabe"],
-    currency: "Dinar kuwaitiano",
-  },
-  {
-    name: "Kosovo",
-    code: "XK",
-    continent: "Europa",
-    flag: "🇽🇰",
-    capital: "Pristina",
-    languages: ["Albanês", "Sérvio"],
-    currency: "Euro",
+    currency: "Dinar kuwaitiano"
   },
   {
     name: "Quirguistão",
@@ -826,7 +800,7 @@ const countries = [
     flag: "🇰🇬",
     capital: "Bishkek",
     languages: ["Quirguiz", "Russo"],
-    currency: "Som",
+    currency: "Som"
   },
   {
     name: "Laos",
@@ -835,7 +809,7 @@ const countries = [
     flag: "🇱🇦",
     capital: "Vientiane",
     languages: ["Lao"],
-    currency: "Kip",
+    currency: "Kip"
   },
   {
     name: "Letônia",
@@ -844,7 +818,7 @@ const countries = [
     flag: "🇱🇻",
     capital: "Riga",
     languages: ["Letão"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Líbano",
@@ -853,7 +827,7 @@ const countries = [
     flag: "🇱🇧",
     capital: "Beirute",
     languages: ["Árabe", "Francês"],
-    currency: "Libra libanesa",
+    currency: "Libra libanesa"
   },
   {
     name: "Lesoto",
@@ -862,7 +836,7 @@ const countries = [
     flag: "🇱🇸",
     capital: "Maseru",
     languages: ["Inglês", "Sesotho"],
-    currency: "Loti",
+    currency: "Loti"
   },
   {
     name: "Libéria",
@@ -871,7 +845,7 @@ const countries = [
     flag: "🇱🇷",
     capital: "Monróvia",
     languages: ["Inglês"],
-    currency: "Dólar liberiano",
+    currency: "Dólar liberiano"
   },
   {
     name: "Líbia",
@@ -880,7 +854,7 @@ const countries = [
     flag: "🇱🇾",
     capital: "Tripoli",
     languages: ["Árabe"],
-    currency: "Dinar líbio",
+    currency: "Dinar líbio"
   },
   {
     name: "Liechtenstein",
@@ -889,7 +863,7 @@ const countries = [
     flag: "🇱🇮",
     capital: "Vaduz",
     languages: ["Alemão"],
-    currency: "Franco suíço",
+    currency: "Franco suíço"
   },
   {
     name: "Lituânia",
@@ -898,7 +872,7 @@ const countries = [
     flag: "🇱🇹",
     capital: "Vilnius",
     languages: ["Lituano"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Luxemburgo",
@@ -907,7 +881,7 @@ const countries = [
     flag: "🇱🇺",
     capital: "Luxemburgo",
     languages: ["Francês", "Alemão", "Luxemburguês"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Macedônia do Norte",
@@ -916,7 +890,7 @@ const countries = [
     flag: "🇲🇰",
     capital: "Skopje",
     languages: ["Macedônio"],
-    currency: "Denar",
+    currency: "Denar"
   },
   {
     name: "Madagascar",
@@ -925,7 +899,7 @@ const countries = [
     flag: "🇲🇬",
     capital: "Antananarivo",
     languages: ["Francês", "Malgaxe"],
-    currency: "Ariary",
+    currency: "Ariary"
   },
   {
     name: "Malawi",
@@ -934,7 +908,7 @@ const countries = [
     flag: "🇲🇼",
     capital: "Lilongwe",
     languages: ["Inglês", "Chichewa"],
-    currency: "Kwacha malauiana",
+    currency: "Kwacha malauiana"
   },
   {
     name: "Malásia",
@@ -943,7 +917,7 @@ const countries = [
     flag: "🇲🇾",
     capital: "Kuala Lumpur",
     languages: ["Malaio"],
-    currency: "Ringgit",
+    currency: "Ringgit"
   },
   {
     name: "Maldivas",
@@ -952,7 +926,7 @@ const countries = [
     flag: "🇲🇻",
     capital: "Malé",
     languages: ["Divehi"],
-    currency: "Rufiyaa",
+    currency: "Rufiyaa"
   },
   {
     name: "Mali",
@@ -961,7 +935,7 @@ const countries = [
     flag: "🇲🇱",
     capital: "Bamako",
     languages: ["Francês"],
-    currency: "Franco CFA ocidental",
+    currency: "Franco CFA ocidental"
   },
   {
     name: "Malta",
@@ -970,7 +944,7 @@ const countries = [
     flag: "🇲🇹",
     capital: "Valletta",
     languages: ["Maltês", "Inglês"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Ilhas Marshall",
@@ -979,7 +953,7 @@ const countries = [
     flag: "🇲🇭",
     capital: "Majuro",
     languages: ["Inglês", "Marshallês"],
-    currency: "Dólar americano",
+    currency: "Dólar americano"
   },
   {
     name: "Mauritânia",
@@ -988,7 +962,7 @@ const countries = [
     flag: "🇲🇷",
     capital: "Nouakchott",
     languages: ["Árabe"],
-    currency: "Ouguiya",
+    currency: "Ouguiya"
   },
   {
     name: "Maurício",
@@ -997,7 +971,7 @@ const countries = [
     flag: "🇲🇺",
     capital: "Port Louis",
     languages: ["Inglês", "Francês", "Crioulo mauriciano"],
-    currency: "Rupia mauriciana",
+    currency: "Rupia mauriciana"
   },
   {
     name: "México",
@@ -1006,7 +980,7 @@ const countries = [
     flag: "🇲🇽",
     capital: "Cidade do México",
     languages: ["Espanhol"],
-    currency: "Peso mexicano",
+    currency: "Peso mexicano"
   },
   {
     name: "Micronésia",
@@ -1015,7 +989,7 @@ const countries = [
     flag: "🇫🇲",
     capital: "Palikir",
     languages: ["Inglês"],
-    currency: "Dólar americano",
+    currency: "Dólar americano"
   },
   {
     name: "Moldávia",
@@ -1024,7 +998,7 @@ const countries = [
     flag: "🇲🇩",
     capital: "Chisinau",
     languages: ["Romeno"],
-    currency: "Leu moldavo",
+    currency: "Leu moldavo"
   },
   {
     name: "Mônaco",
@@ -1033,7 +1007,7 @@ const countries = [
     flag: "🇲🇨",
     capital: "Mônaco",
     languages: ["Francês"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Mongólia",
@@ -1042,7 +1016,7 @@ const countries = [
     flag: "🇲🇳",
     capital: "Ulaanbaatar",
     languages: ["Mongol"],
-    currency: "Tugrik",
+    currency: "Tugrik"
   },
   {
     name: "Montenegro",
@@ -1051,7 +1025,7 @@ const countries = [
     flag: "🇲🇪",
     capital: "Podgorica",
     languages: ["Montenegrino"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Marrocos",
@@ -1060,7 +1034,7 @@ const countries = [
     flag: "🇲🇦",
     capital: "Rabat",
     languages: ["Árabe", "Berbere"],
-    currency: "Dirham marroquino",
+    currency: "Dirham marroquino"
   },
   {
     name: "Moçambique",
@@ -1069,7 +1043,7 @@ const countries = [
     flag: "🇲🇿",
     capital: "Maputo",
     languages: ["Português"],
-    currency: "Metical",
+    currency: "Metical"
   },
   {
     name: "Myanmar",
@@ -1078,7 +1052,7 @@ const countries = [
     flag: "🇲🇲",
     capital: "Naypyidaw",
     languages: ["Birmanês"],
-    currency: "Kyat",
+    currency: "Kyat"
   },
   {
     name: "Namíbia",
@@ -1087,7 +1061,7 @@ const countries = [
     flag: "🇳🇦",
     capital: "Windhoek",
     languages: ["Inglês", "Afrikaans"],
-    currency: "Dólar namibiano",
+    currency: "Dólar namibiano"
   },
   {
     name: "Nauru",
@@ -1096,7 +1070,7 @@ const countries = [
     flag: "🇳🇷",
     capital: "Yaren",
     languages: ["Inglês", "Nauruano"],
-    currency: "Dólar australiano",
+    currency: "Dólar australiano"
   },
   {
     name: "Nepal",
@@ -1105,7 +1079,7 @@ const countries = [
     flag: "🇳🇵",
     capital: "Kathmandu",
     languages: ["Nepali"],
-    currency: "Rupia nepalesa",
+    currency: "Rupia nepalesa"
   },
   {
     name: "Países Baixos",
@@ -1114,7 +1088,7 @@ const countries = [
     flag: "🇳🇱",
     capital: "Amsterdã",
     languages: ["Holandês"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Nova Zelândia",
@@ -1123,7 +1097,7 @@ const countries = [
     flag: "🇳🇿",
     capital: "Wellington",
     languages: ["Inglês", "Maori"],
-    currency: "Dólar neozelandês",
+    currency: "Dólar neozelandês"
   },
   {
     name: "Nicarágua",
@@ -1132,7 +1106,7 @@ const countries = [
     flag: "🇳🇮",
     capital: "Manágua",
     languages: ["Espanhol"],
-    currency: "Córdoba oro",
+    currency: "Córdoba oro"
   },
   {
     name: "Níger",
@@ -1141,7 +1115,7 @@ const countries = [
     flag: "🇳🇪",
     capital: "Niamey",
     languages: ["Francês"],
-    currency: "Franco CFA ocidental",
+    currency: "Franco CFA ocidental"
   },
   {
     name: "Nigéria",
@@ -1150,7 +1124,7 @@ const countries = [
     flag: "🇳🇬",
     capital: "Abuja",
     languages: ["Inglês"],
-    currency: "Naira",
+    currency: "Naira"
   },
   {
     name: "Noruega",
@@ -1159,7 +1133,7 @@ const countries = [
     flag: "🇳🇴",
     capital: "Oslo",
     languages: ["Norueguês"],
-    currency: "Coroa norueguesa",
+    currency: "Coroa norueguesa"
   },
   {
     name: "Omã",
@@ -1168,7 +1142,7 @@ const countries = [
     flag: "🇴🇲",
     capital: "Muscat",
     languages: ["Árabe"],
-    currency: "Rial omanense",
+    currency: "Rial omanense"
   },
   {
     name: "Paquistão",
@@ -1177,7 +1151,7 @@ const countries = [
     flag: "🇵🇰",
     capital: "Islamabad",
     languages: ["Urdu", "Inglês"],
-    currency: "Rupia paquistanesa",
+    currency: "Rupia paquistanesa"
   },
   {
     name: "Palau",
@@ -1186,7 +1160,7 @@ const countries = [
     flag: "🇵🇼",
     capital: "Ngerulmud",
     languages: ["Inglês", "Palauano"],
-    currency: "Dólar americano",
+    currency: "Dólar americano"
   },
   {
     name: "Palestina",
@@ -1195,7 +1169,7 @@ const countries = [
     flag: "🇵🇸",
     capital: "Jerusalém Oriental",
     languages: ["Árabe"],
-    currency: "Novo shekel israelense",
+    currency: "Novo shekel israelense"
   },
   {
     name: "Panamá",
@@ -1204,7 +1178,7 @@ const countries = [
     flag: "🇵🇦",
     capital: "Cidade do Panamá",
     languages: ["Espanhol"],
-    currency: "Balboa",
+    currency: "Balboa"
   },
   {
     name: "Papua-Nova Guiné",
@@ -1213,7 +1187,7 @@ const countries = [
     flag: "🇵🇬",
     capital: "Port Moresby",
     languages: ["Inglês", "Tok Pisin", "Hiri Motu"],
-    currency: "Kina",
+    currency: "Kina"
   },
   {
     name: "Paraguai",
@@ -1222,7 +1196,7 @@ const countries = [
     flag: "🇵🇾",
     capital: "Assunção",
     languages: ["Espanhol", "Guarani"],
-    currency: "Guarani",
+    currency: "Guarani"
   },
   {
     name: "Peru",
@@ -1231,7 +1205,7 @@ const countries = [
     flag: "🇵🇪",
     capital: "Lima",
     languages: ["Espanhol", "Quíchua", "Aimará"],
-    currency: "Sol",
+    currency: "Sol"
   },
   {
     name: "Filipinas",
@@ -1240,7 +1214,7 @@ const countries = [
     flag: "🇵🇭",
     capital: "Manila",
     languages: ["Filipino", "Inglês"],
-    currency: "Peso filipino",
+    currency: "Peso filipino"
   },
   {
     name: "Polônia",
@@ -1249,7 +1223,7 @@ const countries = [
     flag: "🇵🇱",
     capital: "Varsóvia",
     languages: ["Polonês"],
-    currency: "Złoty",
+    currency: "Złoty"
   },
   {
     name: "Portugal",
@@ -1258,7 +1232,7 @@ const countries = [
     flag: "🇵🇹",
     capital: "Lisboa",
     languages: ["Português"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Catar",
@@ -1267,7 +1241,7 @@ const countries = [
     flag: "🇶🇦",
     capital: "Doha",
     languages: ["Árabe"],
-    currency: "Rial catariano",
+    currency: "Rial catariano"
   },
   {
     name: "Romênia",
@@ -1276,7 +1250,7 @@ const countries = [
     flag: "🇷🇴",
     capital: "Bucareste",
     languages: ["Romeno"],
-    currency: "Leu romeno",
+    currency: "Leu romeno"
   },
   {
     name: "Rússia",
@@ -1285,7 +1259,7 @@ const countries = [
     flag: "🇷🇺",
     capital: "Moscou",
     languages: ["Russo"],
-    currency: "Rublo russo",
+    currency: "Rublo russo"
   },
   {
     name: "Ruanda",
@@ -1294,7 +1268,7 @@ const countries = [
     flag: "🇷🇼",
     capital: "Kigali",
     languages: ["Kinyarwanda", "Inglês", "Francês"],
-    currency: "Franco ruandês",
+    currency: "Franco ruandês"
   },
   {
     name: "São Cristóvão e Névis",
@@ -1303,7 +1277,7 @@ const countries = [
     flag: "🇰🇳",
     capital: "Basseterre",
     languages: ["Inglês"],
-    currency: "Dólar do Caribe Oriental",
+    currency: "Dólar do Caribe Oriental"
   },
   {
     name: "Santa Lúcia",
@@ -1312,7 +1286,7 @@ const countries = [
     flag: "🇱🇨",
     capital: "Castries",
     languages: ["Inglês"],
-    currency: "Dólar do Caribe Oriental",
+    currency: "Dólar do Caribe Oriental"
   },
   {
     name: "São Vicente e Granadinas",
@@ -1321,7 +1295,7 @@ const countries = [
     flag: "🇻🇨",
     capital: "Kingstown",
     languages: ["Inglês"],
-    currency: "Dólar do Caribe Oriental",
+    currency: "Dólar do Caribe Oriental"
   },
   {
     name: "Samoa",
@@ -1330,7 +1304,7 @@ const countries = [
     flag: "🇼🇸",
     capital: "Apia",
     languages: ["Samoano", "Inglês"],
-    currency: "Tala",
+    currency: "Tala"
   },
   {
     name: "São Marinho",
@@ -1339,7 +1313,7 @@ const countries = [
     flag: "🇸🇲",
     capital: "San Marino",
     languages: ["Italiano"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "São Tomé e Príncipe",
@@ -1348,7 +1322,7 @@ const countries = [
     flag: "🇸🇹",
     capital: "São Tomé",
     languages: ["Português"],
-    currency: "Dobra",
+    currency: "Dobra"
   },
   {
     name: "Arábia Saudita",
@@ -1357,7 +1331,7 @@ const countries = [
     flag: "🇸🇦",
     capital: "Riade",
     languages: ["Árabe"],
-    currency: "Riyal saudita",
+    currency: "Riyal saudita"
   },
   {
     name: "Senegal",
@@ -1366,7 +1340,7 @@ const countries = [
     flag: "🇸🇳",
     capital: "Dakar",
     languages: ["Francês"],
-    currency: "Franco CFA ocidental",
+    currency: "Franco CFA ocidental"
   },
   {
     name: "Sérvia",
@@ -1375,7 +1349,7 @@ const countries = [
     flag: "🇷🇸",
     capital: "Belgrado",
     languages: ["Sérvio"],
-    currency: "Dinar sérvio",
+    currency: "Dinar sérvio"
   },
   {
     name: "Seychelles",
@@ -1384,7 +1358,7 @@ const countries = [
     flag: "🇸🇨",
     capital: "Victoria",
     languages: ["Francês", "Inglês", "Crioulo seichelense"],
-    currency: "Rupia seichelense",
+    currency: "Rupia seichelense"
   },
   {
     name: "Serra Leoa",
@@ -1393,7 +1367,7 @@ const countries = [
     flag: "🇸🇱",
     capital: "Freetown",
     languages: ["Inglês"],
-    currency: "Leone",
+    currency: "Leone"
   },
   {
     name: "Singapura",
@@ -1402,7 +1376,7 @@ const countries = [
     flag: "🇸🇬",
     capital: "Singapura",
     languages: ["Inglês", "Malaio", "Mandarim", "Tâmil"],
-    currency: "Dólar singapuriano",
+    currency: "Dólar singapuriano"
   },
   {
     name: "Eslováquia",
@@ -1411,7 +1385,7 @@ const countries = [
     flag: "🇸🇰",
     capital: "Bratislava",
     languages: ["Eslovaco"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Eslovênia",
@@ -1420,7 +1394,7 @@ const countries = [
     flag: "🇸🇮",
     capital: "Ljubljana",
     languages: ["Esloveno"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Ilhas Salomão",
@@ -1429,7 +1403,7 @@ const countries = [
     flag: "🇸🇧",
     capital: "Honiara",
     languages: ["Inglês"],
-    currency: "Dólar das Ilhas Salomão",
+    currency: "Dólar das Ilhas Salomão"
   },
   {
     name: "Somália",
@@ -1438,7 +1412,7 @@ const countries = [
     flag: "🇸🇴",
     capital: "Mogadíscio",
     languages: ["Somali", "Árabe"],
-    currency: "Xelim somali",
+    currency: "Xelim somali"
   },
   {
     name: "África do Sul",
@@ -1446,20 +1420,8 @@ const countries = [
     continent: "África",
     flag: "🇿🇦",
     capital: "Pretória",
-    languages: [
-      "Africâner",
-      "Inglês",
-      "Zulu",
-      "Xhosa",
-      "Swati",
-      "Ndebele",
-      "Sotho do Sul",
-      "Sotho do Norte",
-      "Tsonga",
-      "Tswana",
-      "Venda",
-    ],
-    currency: "Rand",
+    languages: ["Africâner", "Inglês", "Zulu", "Xhosa", "Swati", "Ndebele", "Sotho do Sul", "Sotho do Norte", "Tsonga", "Tswana", "Venda"],
+    currency: "Rand"
   },
   {
     name: "Sudão do Sul",
@@ -1468,7 +1430,7 @@ const countries = [
     flag: "🇸🇸",
     capital: "Juba",
     languages: ["Inglês"],
-    currency: "Libra sul-sudanesa",
+    currency: "Libra sul-sudanesa"
   },
   {
     name: "Espanha",
@@ -1477,7 +1439,7 @@ const countries = [
     flag: "🇪🇸",
     capital: "Madri",
     languages: ["Espanhol"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Sri Lanka",
@@ -1486,7 +1448,7 @@ const countries = [
     flag: "🇱🇰",
     capital: "Sri Jayawardenepura Kotte",
     languages: ["Cingalês", "Tâmil"],
-    currency: "Rupia cingalesa",
+    currency: "Rupia cingalesa"
   },
   {
     name: "Sudão",
@@ -1495,7 +1457,7 @@ const countries = [
     flag: "🇸🇩",
     capital: "Cartum",
     languages: ["Árabe", "Inglês"],
-    currency: "Libra sudanesa",
+    currency: "Libra sudanesa"
   },
   {
     name: "Suriname",
@@ -1504,16 +1466,16 @@ const countries = [
     flag: "🇸🇷",
     capital: "Paramaribo",
     languages: ["Holandês"],
-    currency: "Dólar surinamês",
+    currency: "Dólar surinamês"
   },
   {
-    name: "Essuatini",
+    name: "Suazilândia",
     code: "SZ",
     continent: "África",
     flag: "🇸🇿",
     capital: "Mbabane",
     languages: ["Inglês", "Swati"],
-    currency: "Lilangeni",
+    currency: "Lilangeni"
   },
   {
     name: "Suécia",
@@ -1522,7 +1484,7 @@ const countries = [
     flag: "🇸🇪",
     capital: "Estocolmo",
     languages: ["Sueco"],
-    currency: "Coroa sueca",
+    currency: "Coroa sueca"
   },
   {
     name: "Suíça",
@@ -1531,7 +1493,7 @@ const countries = [
     flag: "🇨🇭",
     capital: "Berna",
     languages: ["Alemão", "Francês", "Italiano", "Romanche"],
-    currency: "Franco suíço",
+    currency: "Franco suíço"
   },
   {
     name: "Síria",
@@ -1540,7 +1502,7 @@ const countries = [
     flag: "🇸🇾",
     capital: "Damasco",
     languages: ["Árabe"],
-    currency: "Libra síria",
+    currency: "Libra síria"
   },
   {
     name: "Tajiquistão",
@@ -1549,16 +1511,7 @@ const countries = [
     flag: "🇹🇯",
     capital: "Dushanbe",
     languages: ["Tajique", "Russo"],
-    currency: "Somoni",
-  },
-  {
-    name: "Taiwan",
-    code: "TW",
-    continent: "Ásia",
-    flag: "🇹🇼",
-    capital: "Taipei",
-    languages: ["Mandarim"],
-    currency: "Novo dólar taiwanês",
+    currency: "Somoni"
   },
   {
     name: "Tanzânia",
@@ -1567,7 +1520,7 @@ const countries = [
     flag: "🇹🇿",
     capital: "Dodoma",
     languages: ["Suaíli", "Inglês"],
-    currency: "Xelim tanzaniano",
+    currency: "Xelim tanzaniano"
   },
   {
     name: "Tailândia",
@@ -1576,7 +1529,7 @@ const countries = [
     flag: "🇹🇭",
     capital: "Bangkok",
     languages: ["Tailandês"],
-    currency: "Baht",
+    currency: "Baht"
   },
   {
     name: "Timor-Leste",
@@ -1585,7 +1538,7 @@ const countries = [
     flag: "🇹🇱",
     capital: "Díli",
     languages: ["Português", "Tetum"],
-    currency: "Dólar americano",
+    currency: "Dólar americano"
   },
   {
     name: "Togo",
@@ -1594,7 +1547,7 @@ const countries = [
     flag: "🇹🇬",
     capital: "Lomé",
     languages: ["Francês"],
-    currency: "Franco CFA ocidental",
+    currency: "Franco CFA ocidental"
   },
   {
     name: "Tonga",
@@ -1603,7 +1556,7 @@ const countries = [
     flag: "🇹🇴",
     capital: "Nuku'alofa",
     languages: ["Inglês", "Tonganês"],
-    currency: "Paʻanga",
+    currency: "Paʻanga"
   },
   {
     name: "Trinidad e Tobago",
@@ -1612,7 +1565,7 @@ const countries = [
     flag: "🇹🇹",
     capital: "Port of Spain",
     languages: ["Inglês"],
-    currency: "Dólar de Trinidad e Tobago",
+    currency: "Dólar de Trinidad e Tobago"
   },
   {
     name: "Tunísia",
@@ -1621,7 +1574,7 @@ const countries = [
     flag: "🇹🇳",
     capital: "Tunis",
     languages: ["Árabe"],
-    currency: "Dinar tunisiano",
+    currency: "Dinar tunisiano"
   },
   {
     name: "Turquia",
@@ -1630,7 +1583,7 @@ const countries = [
     flag: "🇹🇷",
     capital: "Ancara",
     languages: ["Turco"],
-    currency: "Lira turca",
+    currency: "Lira turca"
   },
   {
     name: "Turcomenistão",
@@ -1639,7 +1592,7 @@ const countries = [
     flag: "🇹🇲",
     capital: "Ashgabat",
     languages: ["Turcomeno", "Russo"],
-    currency: "Manat turcomeno",
+    currency: "Manat turcomeno"
   },
   {
     name: "Tuvalu",
@@ -1648,7 +1601,7 @@ const countries = [
     flag: "🇹🇻",
     capital: "Funafuti",
     languages: ["Inglês", "Tuvaluano"],
-    currency: "Dólar australiano",
+    currency: "Dólar australiano"
   },
   {
     name: "Uganda",
@@ -1657,7 +1610,7 @@ const countries = [
     flag: "🇺🇬",
     capital: "Kampala",
     languages: ["Inglês", "Suaíli"],
-    currency: "Xelim ugandês",
+    currency: "Xelim ugandês"
   },
   {
     name: "Ucrânia",
@@ -1666,7 +1619,7 @@ const countries = [
     flag: "🇺🇦",
     capital: "Kiev",
     languages: ["Ucraniano"],
-    currency: "Grívnia",
+    currency: "Grívnia"
   },
   {
     name: "Emirados Árabes Unidos",
@@ -1675,7 +1628,7 @@ const countries = [
     flag: "🇦🇪",
     capital: "Abu Dhabi",
     languages: ["Árabe"],
-    currency: "Dirham dos Emirados",
+    currency: "Dirham dos Emirados"
   },
   {
     name: "Reino Unido",
@@ -1684,7 +1637,7 @@ const countries = [
     flag: "🇬🇧",
     capital: "Londres",
     languages: ["Inglês"],
-    currency: "Libra esterlina",
+    currency: "Libra esterlina"
   },
   {
     name: "Estados Unidos",
@@ -1693,7 +1646,7 @@ const countries = [
     flag: "🇺🇸",
     capital: "Washington, D.C.",
     languages: ["Inglês"],
-    currency: "Dólar americano",
+    currency: "Dólar americano"
   },
   {
     name: "Uruguai",
@@ -1702,7 +1655,7 @@ const countries = [
     flag: "🇺🇾",
     capital: "Montevidéu",
     languages: ["Espanhol"],
-    currency: "Peso uruguaio",
+    currency: "Peso uruguaio"
   },
   {
     name: "Uzbequistão",
@@ -1711,7 +1664,7 @@ const countries = [
     flag: "🇺🇿",
     capital: "Tashkent",
     languages: ["Uzbeque", "Russo"],
-    currency: "Som uzbeque",
+    currency: "Som uzbeque"
   },
   {
     name: "Vanuatu",
@@ -1720,7 +1673,7 @@ const countries = [
     flag: "🇻🇺",
     capital: "Port Vila",
     languages: ["Bislama", "Inglês", "Francês"],
-    currency: "Vatu",
+    currency: "Vatu"
   },
   {
     name: "Cidade do Vaticano",
@@ -1729,7 +1682,7 @@ const countries = [
     flag: "🇻🇦",
     capital: "Cidade do Vaticano",
     languages: ["Italiano", "Latim"],
-    currency: "Euro",
+    currency: "Euro"
   },
   {
     name: "Venezuela",
@@ -1738,7 +1691,7 @@ const countries = [
     flag: "🇻🇪",
     capital: "Caracas",
     languages: ["Espanhol"],
-    currency: "Bolívar Soberano",
+    currency: "Bolívar Soberano"
   },
   {
     name: "Vietnã",
@@ -1747,7 +1700,7 @@ const countries = [
     flag: "🇻🇳",
     capital: "Hanói",
     languages: ["Vietnamita"],
-    currency: "Dong",
+    currency: "Dong"
   },
   {
     name: "Iêmen",
@@ -1756,7 +1709,7 @@ const countries = [
     flag: "🇾🇪",
     capital: "Sanaa",
     languages: ["Árabe"],
-    currency: "Rial iemenita",
+    currency: "Rial iemenita"
   },
   {
     name: "Zâmbia",
@@ -1765,7 +1718,7 @@ const countries = [
     flag: "🇿🇲",
     capital: "Lusaka",
     languages: ["Inglês"],
-    currency: "Kwacha zambiano",
+    currency: "Kwacha zambiano"
   },
   {
     name: "Zimbábue",
@@ -1774,36 +1727,36 @@ const countries = [
     flag: "🇿🇼",
     capital: "Harare",
     languages: ["Inglês", "Shona", "Ndebele"],
-    currency: "Dólar do Zimbábue",
-  },
+    currency: "Dólar do Zimbábue"
+  }
 ];
 
 // Função para filtrar países por continente
 function getCountriesByContinent(continent) {
-  return countries.filter((country) => country.continent === continent);
+  return countries.filter(country => country.continent === continent);
 }
 
 // Função para obter todos os continentes
 function getAllContinents() {
-  const continents = new Set(countries.map((country) => country.continent));
+  const continents = new Set(countries.map(country => country.continent));
   return Array.from(continents);
 }
 
 // Função para buscar país por código
 function getCountryByCode(code) {
-  return countries.find((country) => country.code === code);
+  return countries.find(country => country.code === code);
 }
 
 // Função para buscar país por nome
 function getCountryByName(name) {
-  return countries.find((country) =>
-    country.name.toLowerCase().includes(name.toLowerCase()),
-  );
+  return countries.find(country => country.name.toLowerCase().includes(name.toLowerCase()));
 }
 
-// Exportar para uso global no navegador (sem usar module.exports)
-window.countries = countries;
-window.getCountriesByContinent = getCountriesByContinent;
-window.getAllContinents = getAllContinents;
-window.getCountryByCode = getCountryByCode;
-window.getCountryByName = getCountryByName;
+// Exportar para uso em outros módulos
+module.exports = {
+  countries,
+  getCountriesByContinent,
+  getAllContinents,
+  getCountryByCode,
+  getCountryByName
+};
