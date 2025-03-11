@@ -858,7 +858,7 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="contact-department">Department</label>
+                                    <label for="contact-department">Departments</label>
                                     <div class="department-selector" style="position: relative;">
                                         <input type="text" id="department-search" class="form-control" placeholder="Search departments..." autocomplete="off">
                                         <div id="departments-dropdown" class="dropdown-list" style="display: none; position: absolute; width: 100%; max-height: 200px; overflow-y: auto; z-index: 100; background-color: white; border: 1px solid #ced4da; border-radius: 4px;">
@@ -873,8 +873,9 @@
                                             <div class="dropdown-item" data-value="General">General</div>
                                             <div class="dropdown-item" data-value="Outro">Outro</div>
                                         </div>
-                                        <input type="hidden" id="contact-department" value="">
-                                        <div id="selected-department" class="selected-value" style="display: none;"></div>
+                                        <div id="contact-selected-departments" class="selected-items" style="margin-top: 5px;">
+                                            <!-- Selected departments will appear here -->
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -3101,8 +3102,7 @@
                 function initDepartmentDropdown() {
                     const departmentSearch = document.getElementById("department-search");
                     const departmentsDropdown = document.getElementById("departments-dropdown");
-                    const selectedDepartment = document.getElementById("selected-department");
-                    const contactDepartmentInput = document.getElementById("contact-department");
+                    const selectedDepartmentsContainer = document.getElementById("contact-selected-departments");
                     
                     // Show dropdown on focus
                     departmentSearch.addEventListener("focus", function() {
@@ -3120,10 +3120,13 @@
                     departmentsDropdown.querySelectorAll(".dropdown-item").forEach(item => {
                         item.addEventListener("click", function() {
                             const department = this.dataset.value;
-                            contactDepartmentInput.value = department;
+                            
+                            // Check if already selected
+                            if (!isDepartmentSelected(department)) {
+                                addSelectedDepartment(department);
+                            }
+                            
                             departmentSearch.value = "";
-                            selectedDepartment.textContent = department;
-                            selectedDepartment.style.display = "inline-block";
                             departmentsDropdown.style.display = "none";
                         });
                     });
@@ -3134,6 +3137,29 @@
                             departmentsDropdown.style.display = "none";
                         }
                     });
+                    
+                    // Function to check if department is already selected
+                    function isDepartmentSelected(department) {
+                        return selectedDepartmentsContainer.querySelector(`.selected-item[data-value="${department}"]`) !== null;
+                    }
+                    
+                    // Function to add a selected department
+                    function addSelectedDepartment(department) {
+                        const item = document.createElement("div");
+                        item.className = "selected-item";
+                        item.dataset.value = department;
+                        item.innerHTML = `
+                            <span>${department}</span>
+                            <span class="remove-item">×</span>
+                        `;
+                        
+                        // Add event listener to remove item
+                        item.querySelector(".remove-item").addEventListener("click", function() {
+                            item.remove();
+                        });
+                        
+                        selectedDepartmentsContainer.appendChild(item);
+                    }
                     
                     // Filter departments based on search
                     function filterDepartments(query) {
@@ -3336,7 +3362,6 @@
                 // Function to save a contact
                 function saveContact() {
                     const name = document.getElementById("contact-name").value;
-                    const department = document.getElementById("contact-department").value;
                     
                     // Validate required fields
                     if (!name) {
@@ -3344,8 +3369,13 @@
                         return;
                     }
                     
-                    if (!department) {
-                        alert("Please select a department");
+                    // Get selected departments
+                    const selectedDepartmentElements = document.getElementById("contact-selected-departments").querySelectorAll(".selected-item");
+                    const departments = Array.from(selectedDepartmentElements).map(element => element.dataset.value);
+                    
+                    // Validate at least one department
+                    if (departments.length === 0) {
+                        alert("Please select at least one department");
                         return;
                     }
                     
@@ -3389,7 +3419,7 @@
                     const contact = {
                         id: Date.now().toString(),
                         name,
-                        department,
+                        departments,
                         geographies,
                         contactMethods
                     };
@@ -3430,6 +3460,11 @@
                         contactCard.className = "contact-card";
                         contactCard.dataset.id = contact.id;
                         
+                        // Create the department tags
+                        const departmentTags = (Array.isArray(contact.departments) ? contact.departments : [contact.department])
+                            .map(dept => `<span class="department-tag" style="display: inline-block; margin-right: 5px; background-color: #e9ecef; padding: 2px 6px; border-radius: 3px;">${dept}</span>`)
+                            .join(" ");
+                        
                         // Create the geography tags
                         const geographyTags = contact.geographies.map(geo => 
                             `<div class="selected-item">
@@ -3455,7 +3490,7 @@
                                 </div>
                             </div>
                             <div class="contact-info">
-                                <strong>Department:</strong> ${contact.department}
+                                <strong>Departments:</strong> ${departmentTags}
                             </div>
                             <div class="contact-info">
                                 <strong>Geographies:</strong>
@@ -3496,9 +3531,28 @@
                     
                     // Fill the form with contact data
                     document.getElementById("contact-name").value = contact.name;
-                    document.getElementById("contact-department").value = contact.department;
-                    document.getElementById("selected-department").textContent = contact.department;
-                    document.getElementById("selected-department").style.display = "inline-block";
+                    
+                    // Clear existing departments
+                    document.getElementById("contact-selected-departments").innerHTML = "";
+                    
+                    // Add selected departments
+                    const departments = Array.isArray(contact.departments) ? contact.departments : [contact.department];
+                    departments.forEach(dept => {
+                        const item = document.createElement("div");
+                        item.className = "selected-item";
+                        item.dataset.value = dept;
+                        item.innerHTML = `
+                            <span>${dept}</span>
+                            <span class="remove-item">×</span>
+                        `;
+                        
+                        // Add event listener to remove item
+                        item.querySelector(".remove-item").addEventListener("click", function() {
+                            item.remove();
+                        });
+                        
+                        document.getElementById("contact-selected-departments").appendChild(item);
+                    });
                     
                     // Clear existing geographies
                     document.getElementById("contact-selected-geographies").innerHTML = "";
@@ -3554,7 +3608,6 @@
                 // Function to update a contact
                 function updateContact(contactId) {
                     const name = document.getElementById("contact-name").value;
-                    const department = document.getElementById("contact-department").value;
                     
                     // Validate required fields
                     if (!name) {
@@ -3562,8 +3615,13 @@
                         return;
                     }
                     
-                    if (!department) {
-                        alert("Please select a department");
+                    // Get selected departments
+                    const selectedDepartmentElements = document.getElementById("contact-selected-departments").querySelectorAll(".selected-item");
+                    const departments = Array.from(selectedDepartmentElements).map(element => element.dataset.value);
+                    
+                    // Validate at least one department
+                    if (departments.length === 0) {
+                        alert("Please select at least one department");
                         return;
                     }
                     
@@ -3611,7 +3669,7 @@
                     bookmakerContacts[contactIndex] = {
                         id: contactId,
                         name,
-                        department,
+                        departments,
                         geographies,
                         contactMethods
                     };
