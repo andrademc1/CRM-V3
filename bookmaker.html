@@ -501,7 +501,11 @@
                 <!-- Bookmaker Deal Settings Tab -->
                 <div class="tab-content" id="bookmaker-deal">
                     <div class="form-group">
-                        <label for="bookmaker-deal-type">Deal Type</label>
+                        <p><strong>Deal Management:</strong> Os dados de Deal Type e Deal Description podem ser definidos por Account e opcionalmente por Geography.</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bookmaker-deal-type">Default Deal Type</label>
                         <select id="bookmaker-deal-type" class="form-control">
                             <option value="revshare">Rev Share</option>
                             <option value="cpa">CPA</option>
@@ -511,8 +515,15 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="bookmaker-deal-description">Deal Description</label>
+                        <label for="bookmaker-deal-description">Default Deal Description</label>
                         <textarea id="bookmaker-deal-description" class="form-control" rows="4" placeholder="Enter deal description"></textarea>
+                    </div>
+                    
+                    <div id="deals-by-account-container">
+                        <h4>Deals por Account</h4>
+                        <div id="account-deals-list" style="margin-top: 15px;">
+                            <p><i>Nenhuma Account criada ainda. Adicione Accounts na aba "Bookmaker Account Settings"</i></p>
+                        </div>
                     </div>
 
                     <div id="account-form" style="display: none; border: 1px solid #e0e0e0; padding: 15px; margin-top: 15px; border-radius: 4px;">
@@ -928,6 +939,11 @@
             applyAccountCheckbox.addEventListener('change', function() {
                 accountDetailsSection.style.display = this.checked ? 'block' : 'none';
             });
+            
+            // Atualizar os deals quando o usuário muda para a aba de deals
+            document.querySelector('.tab[data-tab="bookmaker-deal"]').addEventListener('click', function() {
+                renderAccountDeals();
+            });
 
             // Toggle group billing details
             const applyGroupBillingCheckbox = document.getElementById('apply-group-billing');
@@ -1279,8 +1295,14 @@
                     geographies: selectedAccountGeographies.map(country => ({
                         code: country.code,
                         name: country.name,
-                        flag: country.flag
-                    }))
+                        flag: country.flag,
+                        // Inicialmente, cada geografia usa o deal padrão da conta
+                        dealType: null,
+                        dealDescription: null
+                    })),
+                    // Deal padrão da conta
+                    dealType: null,
+                    dealDescription: null
                 };
 
                 console.log("Valores dos campos:", {
@@ -1362,6 +1384,16 @@
                 });
             }
             
+            // Atualiza os tabs para manter deals atualizados
+            bookmakerModal.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    if (tabId === 'bookmaker-deal') {
+                        renderAccountDeals();
+                    }
+                });
+            });
+            
             // Function to reset the account form
             function resetAccountForm() {
                 document.getElementById('bookmaker-account-owner').selectedIndex = 0;
@@ -1392,6 +1424,10 @@
                     const geographiesText = account.geographies.length > 0 
                         ? account.geographies.map(g => `${g.flag} ${g.name}`).join(', ')
                         : 'No geographies selected';
+                    
+                    const dealText = account.dealType 
+                        ? `<span style="color: #28a745;">Deal definido</span>` 
+                        : `<span style="color: #dc3545;">Deal não definido</span>`;
 
                     accountEl.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1400,6 +1436,9 @@
                                 <div style="font-size: 0.9em; color: #666;">Status: ${account.status}</div>
                                 <div style="font-size: 0.9em; margin-top: 5px;">
                                     <strong>Geographies:</strong> ${geographiesText}
+                                </div>
+                                <div style="font-size: 0.9em; margin-top: 5px;">
+                                    <strong>Deal:</strong> ${dealText}
                                 </div>
                             </div>
                             <div>
@@ -1597,6 +1636,193 @@
             // Initialize accounts list
             renderBookmakerAccounts();
 
+            // Função para renderizar os deals por account
+            function renderAccountDeals() {
+                const accountDealsList = document.getElementById('account-deals-list');
+                
+                if (bookmakerAccounts.length === 0) {
+                    accountDealsList.innerHTML = '<p><i>Nenhuma Account criada ainda. Adicione Accounts na aba "Bookmaker Account Settings"</i></p>';
+                    return;
+                }
+                
+                accountDealsList.innerHTML = '';
+                
+                bookmakerAccounts.forEach((account, accountIndex) => {
+                    const accountDealContainer = document.createElement('div');
+                    accountDealContainer.className = 'account-deal-item';
+                    accountDealContainer.style.border = '1px solid #e0e0e0';
+                    accountDealContainer.style.borderRadius = '4px';
+                    accountDealContainer.style.padding = '15px';
+                    accountDealContainer.style.marginBottom = '15px';
+                    
+                    // Header com informações da conta
+                    const accountHeader = document.createElement('div');
+                    accountHeader.innerHTML = `
+                        <h5>${account.username} (${account.owner.name})</h5>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Status:</strong> ${account.status}
+                        </div>
+                    `;
+                    accountDealContainer.appendChild(accountHeader);
+                    
+                    // Deal da Account
+                    const accountDealSection = document.createElement('div');
+                    accountDealSection.style.marginBottom = '15px';
+                    accountDealSection.style.padding = '10px';
+                    accountDealSection.style.backgroundColor = '#f9f9f9';
+                    
+                    accountDealSection.innerHTML = `
+                        <h6>Deal da Account</h6>
+                        <div class="form-group">
+                            <label for="account-deal-type-${accountIndex}">Deal Type</label>
+                            <select id="account-deal-type-${accountIndex}" class="form-control" data-account-index="${accountIndex}">
+                                <option value="revshare" ${account.dealType === 'revshare' ? 'selected' : ''}>Rev Share</option>
+                                <option value="cpa" ${account.dealType === 'cpa' ? 'selected' : ''}>CPA</option>
+                                <option value="hybrid" ${account.dealType === 'hybrid' ? 'selected' : ''}>Hybrid</option>
+                                <option value="flatfee" ${account.dealType === 'flatfee' ? 'selected' : ''}>Flat Fee</option>
+                                <option value="other" ${account.dealType === 'other' ? 'selected' : ''}>Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="account-deal-description-${accountIndex}">Deal Description</label>
+                            <textarea id="account-deal-description-${accountIndex}" class="form-control" rows="3" placeholder="Enter deal description" data-account-index="${accountIndex}">${account.dealDescription || ''}</textarea>
+                        </div>
+                    `;
+                    accountDealContainer.appendChild(accountDealSection);
+                    
+                    // Toggle para mostrar deals por geografia
+                    if (account.geographies.length > 0) {
+                        const geoToggleSection = document.createElement('div');
+                        geoToggleSection.style.marginBottom = '10px';
+                        geoToggleSection.innerHTML = `
+                            <div class="form-check">
+                                <input type="checkbox" id="use-geo-deals-${accountIndex}" class="form-check-input" ${account.geographies.some(geo => geo.dealType !== null) ? 'checked' : ''}>
+                                <label for="use-geo-deals-${accountIndex}">Definir Deals específicos por Geografia</label>
+                            </div>
+                        `;
+                        accountDealContainer.appendChild(geoToggleSection);
+                        
+                        // Container para deals por geografia
+                        const geoDealsContainer = document.createElement('div');
+                        geoDealsContainer.id = `geo-deals-container-${accountIndex}`;
+                        geoDealsContainer.style.marginTop = '10px';
+                        geoDealsContainer.style.display = account.geographies.some(geo => geo.dealType !== null) ? 'block' : 'none';
+                        
+                        // Deals para cada geografia
+                        account.geographies.forEach((geo, geoIndex) => {
+                            const geoDealItem = document.createElement('div');
+                            geoDealItem.style.marginBottom = '15px';
+                            geoDealItem.style.padding = '10px';
+                            geoDealItem.style.backgroundColor = '#f5f5f5';
+                            geoDealItem.style.border = '1px solid #ddd';
+                            geoDealItem.style.borderRadius = '4px';
+                            
+                            geoDealItem.innerHTML = `
+                                <h6>${geo.flag} ${geo.name}</h6>
+                                <div class="form-group">
+                                    <label for="geo-deal-type-${accountIndex}-${geoIndex}">Deal Type</label>
+                                    <select id="geo-deal-type-${accountIndex}-${geoIndex}" class="form-control" data-account-index="${accountIndex}" data-geo-index="${geoIndex}">
+                                        <option value="revshare" ${geo.dealType === 'revshare' ? 'selected' : ''}>Rev Share</option>
+                                        <option value="cpa" ${geo.dealType === 'cpa' ? 'selected' : ''}>CPA</option>
+                                        <option value="hybrid" ${geo.dealType === 'hybrid' ? 'selected' : ''}>Hybrid</option>
+                                        <option value="flatfee" ${geo.dealType === 'flatfee' ? 'selected' : ''}>Flat Fee</option>
+                                        <option value="other" ${geo.dealType === 'other' ? 'selected' : ''}>Outro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="geo-deal-description-${accountIndex}-${geoIndex}">Deal Description</label>
+                                    <textarea id="geo-deal-description-${accountIndex}-${geoIndex}" class="form-control" rows="3" placeholder="Enter deal description" data-account-index="${accountIndex}" data-geo-index="${geoIndex}">${geo.dealDescription || ''}</textarea>
+                                </div>
+                            `;
+                            
+                            geoDealsContainer.appendChild(geoDealItem);
+                        });
+                        
+                        accountDealContainer.appendChild(geoDealsContainer);
+                        
+                        // Adiciona event listener para o checkbox de toggle
+                        accountDealContainer.querySelector(`#use-geo-deals-${accountIndex}`).addEventListener('change', function() {
+                            const geoDealsContainer = document.getElementById(`geo-deals-container-${accountIndex}`);
+                            geoDealsContainer.style.display = this.checked ? 'block' : 'none';
+                            
+                            // Se desativar, limpa os deals específicos das geografias
+                            if (!this.checked) {
+                                account.geographies.forEach(geo => {
+                                    geo.dealType = null;
+                                    geo.dealDescription = null;
+                                });
+                            } else {
+                                // Se ativar, inicializa cada geografia com o deal da conta
+                                account.geographies.forEach(geo => {
+                                    geo.dealType = account.dealType;
+                                    geo.dealDescription = account.dealDescription;
+                                });
+                            }
+                        });
+                    }
+                    
+                    accountDealsList.appendChild(accountDealContainer);
+                });
+                
+                // Adiciona event listeners para os campos de deal da account
+                bookmakerAccounts.forEach((_, accountIndex) => {
+                    const dealTypeSelect = document.getElementById(`account-deal-type-${accountIndex}`);
+                    const dealDescriptionTextarea = document.getElementById(`account-deal-description-${accountIndex}`);
+                    
+                    if (dealTypeSelect && dealDescriptionTextarea) {
+                        dealTypeSelect.addEventListener('change', function() {
+                            const accountIndex = parseInt(this.getAttribute('data-account-index'));
+                            bookmakerAccounts[accountIndex].dealType = this.value;
+                            
+                            // Se não estiver usando deals específicos por geografia,
+                            // atualiza também os deals das geografias
+                            const useGeoDeals = document.getElementById(`use-geo-deals-${accountIndex}`);
+                            if (!useGeoDeals || !useGeoDeals.checked) {
+                                bookmakerAccounts[accountIndex].geographies.forEach(geo => {
+                                    geo.dealType = null;
+                                });
+                            }
+                        });
+                        
+                        dealDescriptionTextarea.addEventListener('input', function() {
+                            const accountIndex = parseInt(this.getAttribute('data-account-index'));
+                            bookmakerAccounts[accountIndex].dealDescription = this.value;
+                            
+                            // Se não estiver usando deals específicos por geografia,
+                            // atualiza também os deals das geografias
+                            const useGeoDeals = document.getElementById(`use-geo-deals-${accountIndex}`);
+                            if (!useGeoDeals || !useGeoDeals.checked) {
+                                bookmakerAccounts[accountIndex].geographies.forEach(geo => {
+                                    geo.dealDescription = null;
+                                });
+                            }
+                        });
+                    }
+                });
+                
+                // Adiciona event listeners para os campos de deal das geografias
+                bookmakerAccounts.forEach((account, accountIndex) => {
+                    account.geographies.forEach((geo, geoIndex) => {
+                        const geoDealTypeSelect = document.getElementById(`geo-deal-type-${accountIndex}-${geoIndex}`);
+                        const geoDealDescriptionTextarea = document.getElementById(`geo-deal-description-${accountIndex}-${geoIndex}`);
+                        
+                        if (geoDealTypeSelect && geoDealDescriptionTextarea) {
+                            geoDealTypeSelect.addEventListener('change', function() {
+                                const accountIndex = parseInt(this.getAttribute('data-account-index'));
+                                const geoIndex = parseInt(this.getAttribute('data-geo-index'));
+                                bookmakerAccounts[accountIndex].geographies[geoIndex].dealType = this.value;
+                            });
+                            
+                            geoDealDescriptionTextarea.addEventListener('input', function() {
+                                const accountIndex = parseInt(this.getAttribute('data-account-index'));
+                                const geoIndex = parseInt(this.getAttribute('data-geo-index'));
+                                bookmakerAccounts[accountIndex].geographies[geoIndex].dealDescription = this.value;
+                            });
+                        }
+                    });
+                });
+            }
+            
             // Save bookmaker
             bookmakerSaveBtn.addEventListener('click', function() {
                 const bookmakerId = Date.now().toString(); // Generate a unique ID
@@ -1612,11 +1838,54 @@
                         flag: country.flag
                     })),
                     accounts: bookmakerAccounts,
-                    deal: {
+                    defaultDeal: {
                         type: document.getElementById('bookmaker-deal-type').value,
                         description: document.getElementById('bookmaker-deal-description').value
                     }
                 };
+                
+                // Garante que todos os accounts têm deals definidos (ou na conta ou em cada geografia)
+                bookmakerData.accounts.forEach(account => {
+                    // Se a conta não tem deal definido, usa-se o deal default do bookmaker
+                    if (!account.dealType || !account.dealDescription) {
+                        account.dealType = account.dealType || bookmakerData.defaultDeal.type;
+                        account.dealDescription = account.dealDescription || bookmakerData.defaultDeal.description;
+                    }
+                    
+                    // Para cada geografia que não tem deal específico, usa o deal da conta
+                    account.geographies.forEach(geo => {
+                        if (!geo.dealType || !geo.dealDescription) {
+                            geo.dealType = account.dealType;
+                            geo.dealDescription = account.dealDescription;
+                        }
+                    });
+                });
+
+                // Validar que todos os accounts têm deals definidos
+                let dealsMissing = false;
+                let missingDealAccounts = [];
+                
+                bookmakerAccounts.forEach(account => {
+                    // Verifica se o deal da conta está definido
+                    const hasAccountDeal = account.dealType && account.dealDescription;
+                    
+                    if (!hasAccountDeal) {
+                        // Se não tem deal na conta, verifica se todas as geografias têm deals específicos
+                        const hasGeoDeals = account.geographies.every(geo => geo.dealType && geo.dealDescription);
+                        
+                        if (!hasGeoDeals) {
+                            dealsMissing = true;
+                            missingDealAccounts.push(account.username);
+                        }
+                    }
+                });
+                
+                if (dealsMissing) {
+                    alert(`Os seguintes accounts não têm deals completos: ${missingDealAccounts.join(', ')}. Por favor, defina Deal Type e Deal Description para cada account ou para cada geografia associada.`);
+                    // Muda para a aba de deals
+                    bookmakerModal.querySelector('.tab[data-tab="bookmaker-deal"]').click();
+                    return;
+                }
 
                 // Add to bookmakers array
                 bookmakersData.push(bookmakerData);
@@ -1649,6 +1918,7 @@
                 // Reset deal settings
                 document.getElementById('bookmaker-deal-type').value = 'revshare';
                 document.getElementById('bookmaker-deal-description').value = '';
+                document.getElementById('account-deals-list').innerHTML = '<p><i>Nenhuma Account criada ainda. Adicione Accounts na aba "Bookmaker Account Settings"</i></p>';
 
                 // Reset accounts
                 bookmakerAccounts = [];
