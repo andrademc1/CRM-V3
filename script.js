@@ -9,9 +9,22 @@ window.appData = {
 // Inicializar banco de dados
 function initDatabase() {
     try {
-        // Carregar dados do localStorage
+        // Verificar se o localStorage está disponível
+        if (typeof localStorage === 'undefined') {
+            throw new Error('localStorage não está disponível');
+        }
+        
+        // Carregar dados do localStorage com tratamento de erro
         const savedData = window.StorageManager.loadAllData();
-        window.appData = savedData;
+        
+        // Garantir que todos os arrays estejam inicializados
+        const validData = {
+            owners: Array.isArray(savedData.owners) ? savedData.owners : [],
+            groups: Array.isArray(savedData.groups) ? savedData.groups : [],
+            bookmakers: Array.isArray(savedData.bookmakers) ? savedData.bookmakers : []
+        };
+        
+        window.appData = validData;
         
         console.log("Banco de dados inicializado:", {
             message: "Banco de dados inicializado com sucesso"
@@ -19,17 +32,19 @@ function initDatabase() {
         
         // Registro de dados carregados
         const counts = {
-            owners: savedData.owners ? savedData.owners.length : 0,
-            groups: savedData.groups ? savedData.groups.length : 0,
-            bookmakers: savedData.bookmakers ? savedData.bookmakers.length : 0
+            owners: validData.owners.length,
+            groups: validData.groups.length,
+            bookmakers: validData.bookmakers.length
         };
         
         console.log("Dados carregados:", counts);
         
-        return savedData;
+        return validData;
     } catch (error) {
         console.error("Erro ao inicializar banco de dados:", error);
-        return { owners: [], groups: [], bookmakers: [] };
+        // Inicializar com dados vazios em caso de erro
+        window.appData = { owners: [], groups: [], bookmakers: [] };
+        return window.appData;
     }
 }
 

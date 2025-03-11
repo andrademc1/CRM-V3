@@ -1,4 +1,3 @@
-
 // Gerenciador de Modais e Formulários
 
 // Modal de Proprietário (Owner)
@@ -6,11 +5,11 @@ function handleOwnerModal() {
     // Seletor do modal
     const ownerModal = document.getElementById('ownerModal');
     if (!ownerModal) return;
-    
+
     // Seletor do formulário
     const ownerForm = ownerModal.querySelector('form') || ownerModal.querySelector('#owner-form');
     if (!ownerForm) return;
-    
+
     // Botão de salvar
     const saveButton = ownerModal.querySelector('#save-owner');
     if (saveButton) {
@@ -24,20 +23,20 @@ function handleOwnerModal() {
                 url: formData.get('url') || '',
                 notes: formData.get('notes') || ''
             };
-            
+
             // Verificar dados obrigatórios
             if (!ownerData.name) {
                 alert('O nome do proprietário é obrigatório.');
                 return;
             }
-            
+
             // Salvar dados
             const savedSuccessfully = saveOwner(ownerData);
-            
+
             if (savedSuccessfully) {
                 // Fechar modal
                 closeModal(ownerModal);
-                
+
                 // Atualizar tabela
                 updateOwnersTable();
             } else {
@@ -45,7 +44,7 @@ function handleOwnerModal() {
             }
         });
     }
-    
+
     // Botão de cancelar
     const cancelButton = ownerModal.querySelector('button.btn:not(#save-owner)');
     if (cancelButton) {
@@ -60,11 +59,11 @@ function handleGroupModal() {
     // Seletor do modal
     const groupModal = document.getElementById('groupModal');
     if (!groupModal) return;
-    
+
     // Seletor do formulário
     const groupForm = groupModal.querySelector('form') || groupModal.querySelector('#group-form');
     if (!groupForm) return;
-    
+
     // Botão de salvar
     const saveButton = groupModal.querySelector('#save-group');
     if (saveButton) {
@@ -79,20 +78,20 @@ function handleGroupModal() {
                 affiliateUrl: formData.get('affiliateUrl') || '',
                 notes: formData.get('notes') || ''
             };
-            
+
             // Verificar dados obrigatórios
             if (!groupData.name) {
                 alert('O nome do grupo é obrigatório.');
                 return;
             }
-            
+
             // Salvar dados
             const savedSuccessfully = saveGroup(groupData);
-            
+
             if (savedSuccessfully) {
                 // Fechar modal
                 closeModal(groupModal);
-                
+
                 // Atualizar tabela
                 updateGroupsTable();
             } else {
@@ -100,7 +99,7 @@ function handleGroupModal() {
             }
         });
     }
-    
+
     // Botão de cancelar
     const cancelButton = groupModal.querySelector('button.btn:not(#save-group)');
     if (cancelButton) {
@@ -115,18 +114,18 @@ function handleBookmakerModal() {
     // Seletor do modal
     const bookmakerModal = document.getElementById('bookmakerModal');
     if (!bookmakerModal) return;
-    
+
     // Seletor do formulário
     const bookmakerForm = bookmakerModal.querySelector('form') || bookmakerModal.querySelector('#bookmaker-form');
     if (!bookmakerForm) return;
-    
+
     // Botão de salvar
     const saveButton = bookmakerModal.querySelector('#save-bookmaker');
     if (saveButton) {
         saveButton.addEventListener('click', function() {
             // Coletar dados do formulário
             const formData = new FormData(bookmakerForm);
-            
+
             // Dados básicos
             const bookmakerData = {
                 id: formData.get('id') || Date.now().toString(),
@@ -135,49 +134,49 @@ function handleBookmakerModal() {
                 ownerId: formData.get('ownerId'),
                 groupId: formData.get('groupId'),
                 notes: formData.get('notes') || '',
-                
+
                 // Referências completas aos objetos relacionados
                 owner: null,
                 group: null,
-                
+
                 // Dados de geografia
                 geographies: getSelectedGeographies(),
-                
+
                 // Dados de contatos
                 contacts: getContacts(),
-                
+
                 // Dados de negociação
                 deals: getDeals(),
-                
+
                 // Dados de faturamento
                 billing: getBilling(),
-                
+
                 // URLs por geografia
                 urls: getGeographyUrls()
             };
-            
+
             // Resolver referências a owner e group
             if (bookmakerData.ownerId) {
                 bookmakerData.owner = window.appData.owners.find(o => o.id === bookmakerData.ownerId) || null;
             }
-            
+
             if (bookmakerData.groupId) {
                 bookmakerData.group = window.appData.groups.find(g => g.id === bookmakerData.groupId) || null;
             }
-            
+
             // Verificar dados obrigatórios
             if (!bookmakerData.name) {
                 alert('O nome do bookmaker é obrigatório.');
                 return;
             }
-            
+
             // Salvar dados
             const savedSuccessfully = saveBookmaker(bookmakerData);
-            
+
             if (savedSuccessfully) {
                 // Fechar modal
                 closeModal(bookmakerModal);
-                
+
                 // Atualizar tabela
                 updateBookmakersTable();
             } else {
@@ -185,7 +184,7 @@ function handleBookmakerModal() {
             }
         });
     }
-    
+
     // Botão de cancelar
     const cancelButton = bookmakerModal.querySelector('button.btn:not(#save-bookmaker)');
     if (cancelButton) {
@@ -193,14 +192,14 @@ function handleBookmakerModal() {
             closeModal(bookmakerModal);
         });
     }
-    
+
     // Funções auxiliares para coletar dados específicos do formulário
-    
+
     // Geografias selecionadas
     function getSelectedGeographies() {
         const geographiesContainer = bookmakerModal.querySelector('.selected-geographies');
         if (!geographiesContainer) return [];
-        
+
         const geographyTags = geographiesContainer.querySelectorAll('.geography-tag');
         return Array.from(geographyTags).map(tag => {
             return {
@@ -209,12 +208,12 @@ function handleBookmakerModal() {
             };
         });
     }
-    
+
     // Contatos
     function getContacts() {
         const contactsContainer = bookmakerModal.querySelector('#contacts-container');
         if (!contactsContainer) return [];
-        
+
         const contactCards = contactsContainer.querySelectorAll('.contact-card');
         return Array.from(contactCards).map(card => {
             const contact = {
@@ -224,7 +223,7 @@ function handleBookmakerModal() {
                 geographies: [],
                 methods: []
             };
-            
+
             // Geografias do contato
             const geographyTags = card.querySelectorAll('.contact-geography');
             contact.geographies = Array.from(geographyTags).map(tag => {
@@ -233,7 +232,7 @@ function handleBookmakerModal() {
                     name: tag.textContent
                 };
             });
-            
+
             // Métodos de contato
             const methodItems = card.querySelectorAll('.contact-method-item');
             contact.methods = Array.from(methodItems).map(item => {
@@ -242,18 +241,18 @@ function handleBookmakerModal() {
                     value: item.querySelector('.contact-method-value').textContent
                 };
             });
-            
+
             return contact;
         });
     }
-    
+
     // Negociações
     function getDeals() {
         const dealsContainer = bookmakerModal.querySelector('#deals-container');
         if (!dealsContainer) return { perGeography: false, general: null, byGeography: [] };
-        
+
         const perGeography = dealsContainer.querySelector('.per-geography-toggle input').checked;
-        
+
         // Dados gerais
         let general = null;
         const generalSection = dealsContainer.querySelector('.general-deal-section');
@@ -266,11 +265,11 @@ function handleBookmakerModal() {
                 }
             };
         }
-        
+
         // Dados por geografia
         const byGeography = [];
         const geographyItems = dealsContainer.querySelectorAll('.geography-deal-item');
-        
+
         geographyItems.forEach(item => {
             byGeography.push({
                 geography: {
@@ -284,21 +283,21 @@ function handleBookmakerModal() {
                 }
             });
         });
-        
+
         return {
             perGeography,
             general,
             byGeography
         };
     }
-    
+
     // Faturamento
     function getBilling() {
         const billingContainer = bookmakerModal.querySelector('#billing-container');
         if (!billingContainer) return { perGeography: false, general: null, byGeography: [] };
-        
+
         const perGeography = billingContainer.querySelector('.per-geography-billing-toggle input').checked;
-        
+
         // Dados gerais
         let general = null;
         const generalSection = billingContainer.querySelector('.general-billing-section');
@@ -310,11 +309,11 @@ function handleBookmakerModal() {
                 taxId: generalSection.querySelector('input[name="general-billing-tax-id"]').value || ''
             };
         }
-        
+
         // Dados por geografia
         const byGeography = [];
         const geographyItems = billingContainer.querySelectorAll('.geography-billing-item');
-        
+
         geographyItems.forEach(item => {
             byGeography.push({
                 geography: {
@@ -327,19 +326,19 @@ function handleBookmakerModal() {
                 taxId: item.querySelector('input[name$="-billing-tax-id"]').value || ''
             });
         });
-        
+
         return {
             perGeography,
             general,
             byGeography
         };
     }
-    
+
     // URLs por geografia
     function getGeographyUrls() {
         const urlContainer = bookmakerModal.querySelector('#url-geographies-container');
         if (!urlContainer) return [];
-        
+
         const geographyFields = urlContainer.querySelectorAll('.geography-url-field');
         return Array.from(geographyFields).map(field => {
             return {
@@ -352,11 +351,11 @@ function handleBookmakerModal() {
             };
         });
     }
-    
+
     // Função auxiliar para obter itens selecionados de um container
     function getSelectedItemsFromContainer(container) {
         if (!container) return [];
-        
+
         const selectedItems = container.querySelectorAll('.selected-item');
         return Array.from(selectedItems).map(item => {
             return {
@@ -370,7 +369,7 @@ function handleBookmakerModal() {
 // Função para fechar uma modal
 function closeModal(modal) {
     if (!modal) return;
-    
+
     // Se tiver classe Bootstrap
     if (typeof bootstrap !== 'undefined') {
         const bsModal = bootstrap.Modal.getInstance(modal);
@@ -379,11 +378,11 @@ function closeModal(modal) {
             return;
         }
     }
-    
+
     // Método alternativo
     modal.style.display = 'none';
     document.body.classList.remove('modal-open');
-    
+
     // Remover backdrop se existir
     const backdrop = document.querySelector('.modal-backdrop');
     if (backdrop) {

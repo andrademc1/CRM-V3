@@ -25,7 +25,15 @@ const StorageManager = {
     getItem: function(key, defaultValue = []) {
         try {
             const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : defaultValue;
+            if (!data) return defaultValue;
+            
+            try {
+                return JSON.parse(data);
+            } catch (jsonError) {
+                console.error(`Erro ao fazer parse JSON de ${key}:`, jsonError);
+                localStorage.removeItem(key); // Remove dados inválidos
+                return defaultValue;
+            }
         } catch (error) {
             console.error(`Erro ao recuperar dados de ${key}:`, error);
             return defaultValue;
