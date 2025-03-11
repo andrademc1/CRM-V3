@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -10,11 +11,11 @@
         .bookmaker-container {
             padding: 20px;
         }
-
+        
         .bookmaker-header {
             margin-bottom: 25px;
         }
-
+        
         .bookmaker-panel {
             background-color: #fff;
             border-radius: 5px;
@@ -22,7 +23,7 @@
             padding: 20px;
             margin-bottom: 20px;
         }
-
+        
         .btn {
             display: inline-block;
             padding: 8px 16px;
@@ -34,43 +35,43 @@
             text-decoration: none;
             font-size: 14px;
         }
-
+        
         .btn:hover {
             background-color: #0069d9;
         }
-
+        
         .bookmaker-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
-
+        
         .bookmaker-table th, 
         .bookmaker-table td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #e0e0e0;
         }
-
+        
         .bookmaker-table th {
             background-color: #f8f9fa;
             font-weight: 600;
         }
-
+        
         .action-buttons {
             display: flex;
             gap: 8px;
         }
-
+        
         .action-buttons .btn {
             padding: 5px 10px;
             font-size: 12px;
         }
-
+        
         .btn-edit {
             background-color: #ffc107;
         }
-
+        
         .btn-delete {
             background-color: #dc3545;
         }
@@ -105,25 +106,25 @@
                 </ul>
             </nav>
         </aside>
-
+        
         <main class="content">
             <header class="content-header">
                 <h2 id="section-title">Bookmaker Manager</h2>
             </header>
-
+            
             <div class="bookmaker-container">
                 <div class="bookmaker-panel">
                     <div class="bookmaker-header">
                         <h3>Gerenciar Bookmakers</h3>
                         <p>Adicione, edite ou remova bookmakers no sistema.</p>
                     </div>
-
+                    
                     <div class="bookmaker-actions" style="margin-bottom: 20px;">
                         <button class="btn" id="addOwner" style="margin-right: 10px;">Add Owner</button>
                         <button class="btn" id="addGroup" style="margin-right: 10px;">Add Group</button>
                         <button class="btn" id="addBookmaker">Add Bookmaker</button>
                     </div>
-
+                    
                     <table class="bookmaker-table">
                         <thead>
                             <tr>
@@ -171,7 +172,7 @@
             </div>
         </main>
     </div>
-
+    
     <!-- Owner Modal -->
     <div id="ownerModal" class="modal">
         <div class="modal-content">
@@ -184,7 +185,7 @@
                     <div class="tab active" data-tab="owner-settings">Owner Settings</div>
                     <div class="tab" data-tab="owner-billing">Owner Billing Details</div>
                 </div>
-
+                
                 <div class="tab-content active" id="owner-settings">
                     <div class="form-group">
                         <label for="owner-status">Owner Status</label>
@@ -204,13 +205,13 @@
                         <div id="logo-preview" style="margin-top: 10px;"></div>
                     </div>
                 </div>
-
+                
                 <div class="tab-content" id="owner-billing">
                     <div class="form-check">
                         <input type="checkbox" id="apply-billing" class="form-control" style="width: auto;">
                         <label for="apply-billing">Apply Billing Details by Owner?</label>
                     </div>
-
+                    
                     <div id="billing-details" style="display: none;">
                         <div class="form-group">
                             <label for="billing-name">Name</label>
@@ -280,7 +281,7 @@
                     <div class="tab" data-tab="group-billing">Group Billing Settings</div>
                     <div class="tab" data-tab="group-deal">Group Deal Settings</div>
                 </div>
-
+                
                 <!-- Group Settings Tab -->
                 <div class="tab-content active" id="group-settings">
                     <div class="form-group">
@@ -309,14 +310,14 @@
                         <input type="url" id="group-affiliate-url" class="form-control" placeholder="Enter group affiliate URL">
                     </div>
                 </div>
-
+                
                 <!-- Group Account Settings Tab -->
                 <div class="tab-content" id="group-account">
                     <div class="form-check">
                         <input type="checkbox" id="apply-account" class="form-check-input">
                         <label for="apply-account">Apply Account Settings by Group?</label>
                     </div>
-
+                    
                     <div id="account-details" style="display: none;">
                         <div class="form-group">
                             <label for="account-owner">Owner</label>
@@ -343,14 +344,14 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- Group Billing Settings Tab -->
                 <div class="tab-content" id="group-billing">
                     <div class="form-check">
                         <input type="checkbox" id="apply-group-billing" class="form-check-input">
                         <label for="apply-group-billing">Apply Billing Settings by Group?</label>
                     </div>
-
+                    
                     <div id="group-billing-details" style="display: none;">
                         <div class="form-group">
                             <label for="group-billing-name">Name</label>
@@ -398,14 +399,14 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- Group Deal Settings Tab -->
                 <div class="tab-content" id="group-deal">
                     <div class="form-check">
                         <input type="checkbox" id="apply-deal" class="form-check-input">
                         <label for="apply-deal">Apply Deal Settings by Group?</label>
                     </div>
-
+                    
                     <div id="deal-details" style="display: none;">
                         <div class="form-group">
                             <label for="deal-type">Deal Type</label>
@@ -441,9 +442,8 @@
             <div class="modal-body">
                 <div class="tabs">
                     <div class="tab active" data-tab="bookmaker-settings">Bookmaker Settings</div>
-                    <div class="tab" data-tab="bookmaker-account">Bookmaker Account Settings</div>
                 </div>
-
+                
                 <!-- Bookmaker Settings Tab -->
                 <div class="tab-content active" id="bookmaker-settings">
                     <div class="form-group">
@@ -485,60 +485,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Bookmaker Account Settings Tab -->
-                <div class="tab-content" id="bookmaker-account">
-                    <div class="form-check">
-                        <input type="checkbox" id="auto-fill-account" class="form-check-input">
-                        <label for="auto-fill-account">Auto-fill with Group Account data</label>
-                    </div>
-
-                    <button id="add-account-btn" class="btn" style="margin: 15px 0;">Add Account</button>
-
-                    <div id="accounts-container">
-                        <!-- Accounts will be added here dynamically -->
-                    </div>
-
-                    <div id="account-form" style="display: none;">
-                        <div class="form-group">
-                            <label for="account-owner">Owner</label>
-                            <select id="account-owner" class="form-control">
-                                <option value="">Select an owner</option>
-                                <!-- Owners will be populated dynamically -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="account-status">Account Status</label>
-                            <select id="account-status" class="form-control">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="suspended">Suspended</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="account-username">Username/Email</label>
-                            <input type="text" id="account-username" class="form-control" placeholder="Enter username or email">
-                        </div>
-                        <div class="form-group">
-                            <label for="account-password">Password</label>
-                            <input type="password" id="account-password" class="form-control" placeholder="Enter password">
-                        </div>
-                        <div class="form-group">
-                            <label for="account-geographies">Associated Geographies</label>
-                            <div class="country-selector">
-                                <input type="text" id="account-geography-search" class="country-search" placeholder="Search previously selected countries">
-                                <div id="account-geography-list" class="geography-list"></div>
-                            </div>
-                            <div class="selected-geographies" id="account-selected-geographies">
-                                <!-- Selected countries will appear here -->
-                            </div>
-                        </div>
-                        <div class="account-form-buttons" style="margin-top: 15px;">
-                            <button id="save-account-btn" class="btn">Save Account</button>
-                            <button id="cancel-account-btn" class="btn" style="background-color: #6c757d; margin-left: 10px;">Cancel</button>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn" style="background-color: #6c757d;">Cancel</button>
@@ -550,7 +496,7 @@
     <link rel="stylesheet" href="owner-modal.css">
     <link rel="stylesheet" href="group-modal.css">
     <link rel="stylesheet" href="bookmaker-modal.css">
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Get country data from countries.js
@@ -563,7 +509,7 @@
             let bookmakersData = [];
             // Array para armazenar geographies selecionadas
             let selectedGeographies = [];
-
+            
             // Try to import countries first
             // Load the countries.js file as a regular script
             const countriesScript = document.createElement('script');
@@ -584,7 +530,7 @@
                 fetchCountries();
             };
             document.head.appendChild(countriesScript);
-
+            
             function fetchCountries() {
                 // Fallback method to get countries
                 fetch('./countries.js')
@@ -608,17 +554,17 @@
                     })
                     .catch(error => console.error("Error fetching countries:", error));
             }
-
+            
             // OWNER MODAL FUNCTIONALITY
             const ownerModal = document.getElementById('ownerModal');
             const ownerCloseBtn = ownerModal.querySelector('.modal-close');
             const ownerCancelBtn = ownerModal.querySelector('.modal-footer .btn:first-child');
-
+            
             // Open owner modal when Add Owner button is clicked
             document.getElementById('addOwner').addEventListener('click', function() {
                 ownerModal.classList.add('active');
             });
-
+            
             // Close modal when close button or cancel is clicked
             ownerCloseBtn.addEventListener('click', function() {
                 closeOwnerModal();
@@ -626,54 +572,54 @@
             ownerCancelBtn.addEventListener('click', function() {
                 closeOwnerModal();
             });
-
+            
             function closeOwnerModal() {
                 ownerModal.classList.remove('active');
                 resetOwnerForm();
             }
-
+            
             // Toggle billing details based on checkbox
             const applyBillingCheckbox = document.getElementById('apply-billing');
             const billingDetailsSection = document.getElementById('billing-details');
-
+            
             applyBillingCheckbox.addEventListener('change', function() {
                 billingDetailsSection.style.display = this.checked ? 'block' : 'none';
             });
-
+            
             // Logo preview functionality for owner
             const ownerLogoInput = document.getElementById('owner-logo');
             const logoPreview = document.getElementById('logo-preview');
-
+            
             ownerLogoInput.addEventListener('change', function(e) {
                 if (e.target.files.length > 0) {
                     const file = e.target.files[0];
                     const reader = new FileReader();
-
+                    
                     reader.onload = function(e) {
                         logoPreview.innerHTML = `
                             <img src="${e.target.result}" style="max-width: 100%; max-height: 150px;">
                             <button type="button" id="remove-logo" style="display: block; margin-top: 5px;" class="btn btn-sm btn-delete">Remove</button>
                         `;
-
+                        
                         document.getElementById('remove-logo').addEventListener('click', function() {
                             ownerLogoInput.value = '';
                             logoPreview.innerHTML = '';
                         });
                     };
-
+                    
                     reader.readAsDataURL(file);
                 }
             });
-
+            
             // Function to initialize both country selectors (owner and group)
             function initCountrySelectors() {
                 // Initialize owner country selector
                 initCountrySelector('country-search', 'country-list', 'selected-country', 'selected-flag', 'selected-name');
-
+                
                 // Initialize group country selector
                 initCountrySelector('group-country-search', 'group-country-list', 'group-selected-country', 'group-selected-flag', 'group-selected-name');
             }
-
+            
             // Country selector functionality (reusable)
             function initCountrySelector(searchId, listId, selectedId, flagId, nameId) {
                 const countrySearch = document.getElementById(searchId);
@@ -682,20 +628,20 @@
                 const selectedFlag = document.getElementById(flagId);
                 const selectedName = document.getElementById(nameId);
                 const countryRemove = selectedCountry.querySelector('.country-remove');
-
+                
                 if (!countrySearch || !countryList || !selectedCountry) {
                     console.error(`One of the country selector elements not found: ${searchId}, ${listId}, ${selectedId}`);
                     return;
                 }
-
+                
                 // Populate country list
                 function renderCountryList(filter = '') {
                     countryList.innerHTML = '';
-
+                    
                     const filteredCountries = filter 
                         ? countriesData.filter(c => c.name.toLowerCase().includes(filter.toLowerCase())) 
                         : countriesData;
-
+                    
                     filteredCountries.forEach(country => {
                         const item = document.createElement('div');
                         item.className = 'country-item';
@@ -703,7 +649,7 @@
                             <span class="country-flag">${country.flag}</span>
                             <span>${country.name}</span>
                         `;
-
+                        
                         item.addEventListener('click', function() {
                             // Set selected country
                             selectedFlag.textContent = country.flag;
@@ -711,44 +657,44 @@
                             selectedCountry.style.display = 'flex';
                             countrySearch.value = '';
                             countryList.classList.remove('active');
-
+                            
                             // Store the country data
                             selectedCountry.dataset.code = country.code;
                         });
-
+                        
                         countryList.appendChild(item);
                     });
                 }
-
+                
                 // Show country list on focus
                 countrySearch.addEventListener('focus', function() {
                     countryList.classList.add('active');
                     renderCountryList();
                 });
-
+                
                 // Filter countries on search
                 countrySearch.addEventListener('input', function() {
                     renderCountryList(this.value);
                     countryList.classList.add('active');
                 });
-
+                
                 // Remove selected country
                 countryRemove.addEventListener('click', function() {
                     selectedCountry.style.display = 'none';
                     delete selectedCountry.dataset.code;
                 });
-
+                
                 // Close country list when clicking outside
                 document.addEventListener('click', function(e) {
                     if (!e.target.closest('.country-selector')) {
                         countryList.classList.remove('active');
                     }
                 });
-
+                
                 // Initial render
                 renderCountryList();
             }
-
+            
             // Save owner
             document.getElementById('save-owner').addEventListener('click', function() {
                 const ownerId = Date.now().toString(); // Generate a unique ID
@@ -759,7 +705,7 @@
                     // Logo handling would typically involve uploading the file to a server
                     applyBilling: document.getElementById('apply-billing').checked
                 };
-
+                
                 if (ownerData.applyBilling) {
                     ownerData.billing = {
                         name: document.getElementById('billing-name').value,
@@ -772,54 +718,54 @@
                         country: document.getElementById('selected-country').dataset.code
                     };
                 }
-
+                
                 // Add to owners array
                 ownersData.push(ownerData);
-
+                
                 // Update owner dropdown in group modal
                 updateOwnerDropdown();
-
+                
                 console.log('Owner data:', ownerData);
                 alert('Owner added successfully!');
                 closeOwnerModal();
             });
-
+            
             function resetOwnerForm() {
                 // Reset form fields
                 document.getElementById('owner-status').value = 'active';
                 document.getElementById('owner-name').value = '';
                 document.getElementById('owner-logo').value = '';
                 document.getElementById('logo-preview').innerHTML = '';
-
+                
                 document.getElementById('apply-billing').checked = false;
                 document.getElementById('billing-details').style.display = 'none';
-
+                
                 document.getElementById('billing-name').value = '';
                 document.getElementById('billing-vat').value = '';
-                document.getElementById('billingaddress1').value = '';
+                document.getElementById('billing-address1').value = '';
                 document.getElementById('billing-address2').value = '';
                 document.getElementById('billing-city').value = '';
                 document.getElementById('billing-state').value = '';
                 document.getElementById('billing-zipcode').value = '';
-
+                
                 document.getElementById('country-search').value = '';
                 document.getElementById('selected-country').style.display = 'none';
                 delete document.getElementById('selected-country').dataset.code;
-
+                
                 // Reset to first tab
                 ownerModal.querySelector('.tab[data-tab="owner-settings"]').click();
             }
-
+            
             // Update the owner dropdown in the group modal
             function updateOwnerDropdown() {
                 const ownerDropdown = document.getElementById('account-owner');
                 if (!ownerDropdown) return;
-
+                
                 // Clear current options except the first one
                 while (ownerDropdown.options.length > 1) {
                     ownerDropdown.remove(1);
                 }
-
+                
                 // Add owners to dropdown
                 ownersData.forEach(owner => {
                     const option = document.createElement('option');
@@ -828,20 +774,20 @@
                     ownerDropdown.appendChild(option);
                 });
             }
-
+            
             // GROUP MODAL FUNCTIONALITY
             const groupModal = document.getElementById('groupModal');
             const groupCloseBtn = groupModal.querySelector('.modal-close');
             const groupCancelBtn = groupModal.querySelector('.modal-footer .btn:first-child');
             const groupSaveBtn = document.getElementById('save-group');
-
+            
             // Open group modal when Add Group button is clicked
             document.getElementById('addGroup').addEventListener('click', function() {
                 groupModal.classList.add('active');
                 // Update owner dropdown when opening modal
                 updateOwnerDropdown();
             });
-
+            
             // Close modal when close button or cancel is clicked
             groupCloseBtn.addEventListener('click', function() {
                 closeGroupModal();
@@ -849,86 +795,86 @@
             groupCancelBtn.addEventListener('click', function() {
                 closeGroupModal();
             });
-
+            
             function closeGroupModal() {
                 groupModal.classList.remove('active');
                 resetGroupForm();
             }
-
+            
             // Tab functionality for all modals
             const tabsContainers = document.querySelectorAll('.tabs');
-
+            
             tabsContainers.forEach(container => {
                 const tabs = container.querySelectorAll('.tab');
                 // Find the parent modal
                 const modal = container.closest('.modal');
                 // Get all tab contents in this modal
                 const tabContents = modal.querySelectorAll('.tab-content');
-
+                
                 tabs.forEach(tab => {
                     tab.addEventListener('click', function() {
                         const target = this.getAttribute('data-tab');
-
+                        
                         // Remove active class from all tabs and contents within this modal
                         tabs.forEach(t => t.classList.remove('active'));
                         tabContents.forEach(content => content.classList.remove('active'));
-
+                        
                         // Add active class to clicked tab and corresponding content
                         this.classList.add('active');
                         modal.querySelector(`#${target}`).classList.add('active');
                     });
                 });
             });
-
+            
             // Logo preview functionality for group
             const groupLogoInput = document.getElementById('group-logo');
             const groupLogoPreview = document.getElementById('group-logo-preview');
-
+            
             groupLogoInput.addEventListener('change', function(e) {
                 if (e.target.files.length > 0) {
                     const file = e.target.files[0];
                     const reader = new FileReader();
-
+                    
                     reader.onload = function(e) {
                         groupLogoPreview.innerHTML = `
                             <img src="${e.target.result}" style="max-width: 100%; max-height: 150px;">
                             <button type="button" id="remove-group-logo" style="display: block; margin-top: 5px;" class="btn btn-sm btn-delete">Remove</button>
                         `;
-
+                        
                         document.getElementById('remove-group-logo').addEventListener('click', function() {
                             groupLogoInput.value = '';
                             groupLogoPreview.innerHTML = '';
                         });
                     };
-
+                    
                     reader.readAsDataURL(file);
                 }
             });
-
+            
             // Toggle account details
             const applyAccountCheckbox = document.getElementById('apply-account');
             const accountDetailsSection = document.getElementById('account-details');
-
+            
             applyAccountCheckbox.addEventListener('change', function() {
                 accountDetailsSection.style.display = this.checked ? 'block' : 'none';
             });
-
+            
             // Toggle group billing details
             const applyGroupBillingCheckbox = document.getElementById('apply-group-billing');
             const groupBillingDetailsSection = document.getElementById('group-billing-details');
-
+            
             applyGroupBillingCheckbox.addEventListener('change', function() {
                 groupBillingDetailsSection.style.display = this.checked ? 'block' : 'none';
             });
-
+            
             // Toggle deal details
             const applyDealCheckbox = document.getElementById('apply-deal');
             const dealDetailsSection = document.getElementById('deal-details');
-
+            
             applyDealCheckbox.addEventListener('change', function() {
                 dealDetailsSection.style.display = this.checked ? 'block' : 'none';
             });
-
+            
             // Save group
             groupSaveBtn.addEventListener('click', function() {
                 const groupId = Date.now().toString(); // Generate a unique ID
@@ -939,7 +885,7 @@
                     url: document.getElementById('group-url').value,
                     affiliateUrl: document.getElementById('group-affiliate-url').value
                 };
-
+                
                 // Check if account settings are enabled
                 if (document.getElementById('apply-account').checked) {
                     groupData.account = {
@@ -949,7 +895,7 @@
                         password: document.getElementById('account-password').value
                     };
                 }
-
+                
                 // Check if billing settings are enabled
                 if (document.getElementById('apply-group-billing').checked) {
                     groupData.billing = {
@@ -963,7 +909,7 @@
                         country: document.getElementById('group-selected-country').dataset.code
                     };
                 }
-
+                
                 // Check if deal settings are enabled
                 if (document.getElementById('apply-deal').checked) {
                     groupData.deal = {
@@ -971,18 +917,18 @@
                         description: document.getElementById('deal-description').value
                     };
                 }
-
+                
                 // Add to groups array
                 groupsData.push(groupData);
-
+                
                 // Update group dropdown in bookmaker modal
                 updateGroupDropdown();
-
+                
                 console.log('Group data:', groupData);
                 alert('Group added successfully!');
                 closeGroupModal();
             });
-
+            
             function resetGroupForm() {
                 // Reset Group Settings tab
                 document.getElementById('group-status').value = 'active';
@@ -991,7 +937,7 @@
                 document.getElementById('group-logo-preview').innerHTML = '';
                 document.getElementById('group-url').value = '';
                 document.getElementById('group-affiliate-url').value = '';
-
+                
                 // Reset Group Account Settings tab
                 document.getElementById('apply-account').checked = false;
                 document.getElementById('account-details').style.display = 'none';
@@ -999,7 +945,7 @@
                 document.getElementById('account-status').value = 'active';
                 document.getElementById('account-username').value = '';
                 document.getElementById('account-password').value = '';
-
+                
                 // Reset Group Billing Settings tab
                 document.getElementById('apply-group-billing').checked = false;
                 document.getElementById('group-billing-details').style.display = 'none';
@@ -1013,27 +959,27 @@
                 document.getElementById('group-country-search').value = '';
                 document.getElementById('group-selected-country').style.display = 'none';
                 delete document.getElementById('group-selected-country').dataset.code;
-
+                
                 // Reset Group Deal Settings tab
                 document.getElementById('apply-deal').checked = false;
                 document.getElementById('deal-details').style.display = 'none';
                 document.getElementById('deal-type').value = 'revshare';
                 document.getElementById('deal-description').value = '';
-
+                
                 // Reset to first tab
                 groupModal.querySelector('.tab[data-tab="group-settings"]').click();
             }
-
+            
             // Update the group dropdown in the bookmaker modal
             function updateGroupDropdown() {
                 const groupDropdown = document.getElementById('bookmaker-group');
                 if (!groupDropdown) return;
-
+                
                 // Clear current options except the first one
                 while (groupDropdown.options.length > 1) {
                     groupDropdown.remove(1);
                 }
-
+                
                 // Add groups to dropdown
                 groupsData.forEach(group => {
                     const option = document.createElement('option');
@@ -1042,20 +988,20 @@
                     groupDropdown.appendChild(option);
                 });
             }
-
+            
             // BOOKMAKER MODAL FUNCTIONALITY
             const bookmakerModal = document.getElementById('bookmakerModal');
             const bookmakerCloseBtn = bookmakerModal.querySelector('.modal-close');
             const bookmakerCancelBtn = bookmakerModal.querySelector('.modal-footer .btn:first-child');
             const bookmakerSaveBtn = document.getElementById('save-bookmaker');
-
+            
             // Open bookmaker modal when Add Bookmaker button is clicked
             document.getElementById('addBookmaker').addEventListener('click', function() {
                 bookmakerModal.classList.add('active');
                 // Update group dropdown when opening modal
                 updateGroupDropdown();
             });
-
+            
             // Close modal when close button or cancel is clicked
             bookmakerCloseBtn.addEventListener('click', function() {
                 closeBookmakerModal();
@@ -1063,99 +1009,99 @@
             bookmakerCancelBtn.addEventListener('click', function() {
                 closeBookmakerModal();
             });
-
+            
             function closeBookmakerModal() {
                 bookmakerModal.classList.remove('active');
                 resetBookmakerForm();
             }
-
+            
             // Logo preview functionality for bookmaker
             const bookmakerLogoInput = document.getElementById('bookmaker-logo');
             const bookmakerLogoPreview = document.getElementById('bookmaker-logo-preview');
-
+            
             bookmakerLogoInput.addEventListener('change', function(e) {
                 if (e.target.files.length > 0) {
                     const file = e.target.files[0];
                     const reader = new FileReader();
-
+                    
                     reader.onload = function(e) {
                         bookmakerLogoPreview.innerHTML = `
                             <img src="${e.target.result}" style="max-width: 100%; max-height: 150px;">
                             <button type="button" id="remove-bookmaker-logo" style="display: block; margin-top: 5px;" class="btn btn-sm btn-delete">Remove</button>
                         `;
-
+                        
                         document.getElementById('remove-bookmaker-logo').addEventListener('click', function() {
                             bookmakerLogoInput.value = '';
                             bookmakerLogoPreview.innerHTML = '';
                         });
                     };
-
+                    
                     reader.readAsDataURL(file);
                 }
             });
-
+            
             // Initialize geography selector for multiple country selection
             function initGeographySelector() {
                 const geographySearch = document.getElementById('bookmaker-geography-search');
                 const geographyList = document.getElementById('bookmaker-geography-list');
                 const selectedGeographiesContainer = document.getElementById('selected-geographies');
-
+                
                 if (!geographySearch || !geographyList || !selectedGeographiesContainer) {
                     console.error("Geography selector elements not found");
                     return;
                 }
-
+                
                 // Populate country list for multiple selection
                 function renderGeographyList(filter = '') {
                     geographyList.innerHTML = '';
-
+                    
                     const filteredCountries = filter 
                         ? countriesData.filter(c => c.name.toLowerCase().includes(filter.toLowerCase())) 
                         : countriesData;
-
+                    
                     filteredCountries.forEach(country => {
                         // Skip if already selected
                         if (selectedGeographies.some(selected => selected.code === country.code)) {
                             return;
                         }
-
+                        
                         const item = document.createElement('div');
                         item.className = 'geography-item';
                         item.innerHTML = `
                             <span class="country-flag">${country.flag}</span>
                             <span>${country.name}</span>
                         `;
-
+                        
                         item.addEventListener('click', function() {
                             // Add to selected geographies
                             addGeography(country);
-
+                            
                             // Clear search and hide list
                             geographySearch.value = '';
                             geographyList.classList.remove('active');
-
+                            
                             // Re-render geography list to exclude selected items
                             renderGeographyList();
                         });
-
+                        
                         geographyList.appendChild(item);
                     });
                 }
-
+                
                 // Add a country to selected geographies
                 function addGeography(country) {
                     // Check if already selected
                     if (selectedGeographies.some(selected => selected.code === country.code)) {
                         return;
                     }
-
+                    
                     // Add to selected array
                     selectedGeographies.push(country);
-
+                    
                     // Add to UI
                     renderSelectedGeographies();
                 }
-
+                
                 // Remove a country from selected geographies
                 function removeGeography(countryCode) {
                     selectedGeographies = selectedGeographies.filter(country => country.code !== countryCode);
@@ -1163,16 +1109,16 @@
                     // Re-render geography list since a country was removed
                     renderGeographyList(geographySearch.value);
                 }
-
+                
                 // Render selected geographies in the UI
                 function renderSelectedGeographies() {
                     selectedGeographiesContainer.innerHTML = '';
-
+                    
                     if (selectedGeographies.length === 0) {
                         selectedGeographiesContainer.innerHTML = '<i>No countries selected</i>';
                         return;
                     }
-
+                    
                     selectedGeographies.forEach(country => {
                         const tag = document.createElement('div');
                         tag.className = 'geography-tag';
@@ -1182,370 +1128,39 @@
                             <span>${country.name}</span>
                             <span class="remove-geography">×</span>
                         `;
-
+                        
                         tag.querySelector('.remove-geography').addEventListener('click', function() {
                             removeGeography(country.code);
                         });
-
+                        
                         selectedGeographiesContainer.appendChild(tag);
                     });
                 }
-
+                
                 // Show geography list on focus
                 geographySearch.addEventListener('focus', function() {
                     geographyList.classList.add('active');
                     renderGeographyList();
                 });
-
+                
                 // Filter countries on search
                 geographySearch.addEventListener('input', function() {
                     renderGeographyList(this.value);
                     geographyList.classList.add('active');
                 });
-
+                
                 // Close geography list when clicking outside
                 document.addEventListener('click', function(e) {
                     if (!e.target.closest('.country-selector')) {
                         geographyList.classList.remove('active');
                     }
                 });
-
+                
                 // Initial render
                 renderSelectedGeographies();
                 renderGeographyList();
             }
-
-            // Array para armazenar as contas do bookmaker atual
-            let bookmakerAccounts = [];
-            // Array para armazenar geografias selecionadas para a conta atual
-            let accountSelectedGeographies = [];
-            // Variável para armazenar o ID da conta sendo editada (se houver)
-            let editingAccountId = null;
-
-            // Adiciona ou atualiza a interface com a lista de contas
-            function updateAccountsList() {
-                const accountsContainer = document.getElementById('accounts-container');
-                accountsContainer.innerHTML = '';
-
-                if (bookmakerAccounts.length === 0) {
-                    accountsContainer.innerHTML = '<p><i>No accounts added yet</i></p>';
-                    return;
-                }
-
-                bookmakerAccounts.forEach((account, index) => {
-                    const accountItem = document.createElement('div');
-                    accountItem.className = 'account-item';
-                    accountItem.style.border = '1px solid #e0e0e0';
-                    accountItem.style.borderRadius = '4px';
-                    accountItem.style.padding = '10px';
-                    accountItem.style.marginBottom = '10px';
-
-                    accountItem.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h4 style="margin: 0;">${account.username}</h4>
-                            <div>
-                                <button class="btn btn-edit edit-account-btn" data-id="${account.id}">Edit</button>
-                                <button class="btn btn-delete delete-account-btn" data-id="${account.id}">Delete</button>
-                            </div>
-                        </div>
-                        <p><strong>Owner:</strong> ${account.ownerName}</p>
-                        <p><strong>Status:</strong> ${account.status}</p>
-                        <p><strong>Associated Geographies:</strong> ${account.geographies.length} countries</p>
-                    `;
-
-                    accountsContainer.appendChild(accountItem);
-                });
-
-                // Adicionar event listeners para os botões de editar e excluir
-                document.querySelectorAll('.edit-account-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const accountId = this.getAttribute('data-id');
-                        editAccount(accountId);
-                    });
-                });
-
-                document.querySelectorAll('.delete-account-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const accountId = this.getAttribute('data-id');
-                        deleteAccount(accountId);
-                    });
-                });
-            }
-
-            // Função para editar uma conta existente
-            function editAccount(accountId) {
-                const account = bookmakerAccounts.find(acc => acc.id === accountId);
-                if (!account) return;
-
-                // Definir o ID da conta sendo editada
-                editingAccountId = accountId;
-
-                // Preencher o formulário com os dados da conta
-                document.getElementById('account-owner').value = account.owner;
-                document.getElementById('account-status').value = account.status;
-                document.getElementById('account-username').value = account.username;
-                document.getElementById('account-password').value = account.password;
-
-                // Carregar as geografias associadas à conta
-                accountSelectedGeographies = [...account.geographies];
-                renderAccountSelectedGeographies();
-
-                // Mostrar o formulário
-                document.getElementById('account-form').style.display = 'block';
-                document.getElementById('add-account-btn').style.display = 'none';
-            }
-
-            // Função para excluir uma conta
-            function deleteAccount(accountId) {
-                if (confirm('Are you sure you want to delete this account?')) {
-                    bookmakerAccounts = bookmakerAccounts.filter(acc => acc.id !== accountId);
-                    updateAccountsList();
-                }
-            }
-
-            // Inicializar o seletor de geografias para a conta
-            function initAccountGeographySelector() {
-                const geographySearch = document.getElementById('account-geography-search');
-                const geographyList = document.getElementById('account-geography-list');
-
-                // Função para renderizar a lista de países disponíveis
-                function renderAccountGeographyList(filter = '') {
-                    geographyList.innerHTML = '';
-
-                    // Filtrar apenas os países que já foram selecionados na aba Bookmaker Settings
-                    const availableGeographies = selectedGeographies.filter(country => 
-                        !accountSelectedGeographies.some(selected => selected.code === country.code) &&
-                        (!filter || country.name.toLowerCase().includes(filter.toLowerCase()))
-                    );
-
-                    if (availableGeographies.length === 0) {
-                        geographyList.innerHTML = '<div class="geography-item"><i>No more countries available</i></div>';
-                        return;
-                    }
-
-                    availableGeographies.forEach(country => {
-                        const item = document.createElement('div');
-                        item.className = 'geography-item';
-                        item.innerHTML = `
-                            <span class="country-flag">${country.flag}</span>
-                            <span>${country.name}</span>
-                        `;
-
-                        item.addEventListener('click', function() {
-                            // Adicionar à lista de geografias selecionadas para a conta
-                            addGeographyToAccount(country);
-
-                            // Limpar busca e esconder lista
-                            geographySearch.value = '';
-                            geographyList.classList.remove('active');
-
-                            // Re-renderizar lista de países disponíveis
-                            renderAccountGeographyList();
-                        });
-
-                        geographyList.appendChild(item);
-                    });
-                }
-
-                // Adicionar país à lista de geografias da conta
-                function addGeographyToAccount(country) {
-                    // Verificar se já está selecionado
-                    if (accountSelectedGeographies.some(selected => selected.code === country.code)) {
-                        return;
-                    }
-
-                    // Adicionar ao array
-                    accountSelectedGeographies.push(country);
-
-                    // Atualizar UI
-                    renderAccountSelectedGeographies();
-                }
-
-                // Renderizar países selecionados para a conta
-                function renderAccountSelectedGeographies() {
-                    const container = document.getElementById('account-selected-geographies');
-                    if (!container) {
-                        console.error("Account selected geographies container not found");
-                        return;
-                    }
-                    container.innerHTML = '';
-
-                    if (accountSelectedGeographies.length === 0) {
-                        container.innerHTML = '<i>No countries selected</i>';
-                        return;
-                    }
-
-                    accountSelectedGeographies.forEach(country => {
-                        const tag = document.createElement('div');
-                        tag.className = 'geography-tag';
-                        tag.dataset.code = country.code;
-                        tag.innerHTML = `
-                            <span class="country-flag">${country.flag}</span>
-                            <span>${country.name}</span>
-                            <span class="remove-geography">×</span>
-                        `;
-
-                        tag.querySelector('.remove-geography').addEventListener('click', function() {
-                            removeGeographyFromAccount(country.code);
-                        });
-
-                        container.appendChild(tag);
-                    });
-                }
-
-                // Remover país da lista de geografias da conta
-                function removeGeographyFromAccount(countryCode) {
-                    accountSelectedGeographies = accountSelectedGeographies.filter(country => country.code !== countryCode);
-                    renderAccountSelectedGeographies();
-                    renderAccountGeographyList(geographySearch.value);
-                }
-
-                // Mostrar lista de países ao focar no campo de busca
-                geographySearch.addEventListener('focus', function() {
-                    geographyList.classList.add('active');
-                    renderAccountGeographyList();
-                });
-
-                // Filtrar países ao digitar
-                geographySearch.addEventListener('input', function() {
-                    renderAccountGeographyList(this.value);
-                    geographyList.classList.add('active');
-                });
-
-                // Fechar lista ao clicar fora
-                document.addEventListener('click', function(e) {
-                    if (!e.target.closest('#account-geography-search') && !e.target.closest('#account-geography-list')) {
-                        geographyList.classList.remove('active');
-                    }
-                });
-
-                // Inicializar
-                renderAccountSelectedGeographies();
-            }
-
-            // Inicializar gerenciamento de contas
-            function initBookmakerAccounts() {
-                // Inicializar seletor de geografias para a conta
-                initAccountGeographySelector();
-
-                // Auto-preencher com dados do grupo
-                document.getElementById('auto-fill-account').addEventListener('change', function() {
-                    if (!this.checked) return;
-
-                    const groupId = document.getElementById('bookmaker-group').value;
-                    if (!groupId) {
-                        alert('Please select a group first');
-                        this.checked = false;
-                        return;
-                    }
-
-                    const group = groupsData.find(g => g.id === groupId);
-                    if (!group || !group.account) {
-                        alert('Selected group has no account information');
-                        this.checked = false;
-                        return;
-                    }
-
-                    // Preencher formulário com dados do grupo
-                    document.getElementById('account-owner').value = group.account.owner || '';
-                    document.getElementById('account-status').value = group.account.status || 'active';
-                    document.getElementById('account-username').value = group.account.username || '';
-                    document.getElementById('account-password').value = group.account.password || '';
-
-                    // Não auto-preencher geografias, como solicitado
-                });
-
-                // Botão para adicionar nova conta
-                document.getElementById('add-account-btn').addEventListener('click', function() {
-                    // Limpar formulário
-                    document.getElementById('account-owner').value = '';
-                    document.getElementById('account-status').value = 'active';
-                    document.getElementById('account-username').value = '';
-                    document.getElementById('account-password').value = '';
-                    accountSelectedGeographies = [];
-                    renderAccountSelectedGeographies();
-
-                    // Resetar ID de edição
-                    editingAccountId = null;
-
-                    // Mostrar formulário
-                    document.getElementById('account-form').style.display = 'block';
-                    this.style.display = 'none';
-                });
-
-                // Botão para salvar conta
-                document.getElementById('save-account-btn').addEventListener('click', function() {
-                    // Validar campos obrigatórios
-                    const owner = document.getElementById('account-owner').value;
-                    const status = document.getElementById('account-status').value;
-                    const username = document.getElementById('account-username').value;
-                    const password = document.getElementById('account-password').value;
-
-                    if (!owner || !username || !password) {
-                        alert('Please fill in all required fields');
-                        return;
-                    }
-
-                    if (accountSelectedGeographies.length === 0) {
-                        alert('Please select at least one geography');
-                        return;
-                    }
-
-                    // Obter nome do owner selecionado
-                    const ownerObj = ownersData.find(o => o.id === owner);
-                    const ownerName = ownerObj ? ownerObj.name : 'Unknown';
-
-                    // Criar objeto da conta
-                    const accountData = {
-                        id: editingAccountId || Date.now().toString(),
-                        owner,
-                        ownerName,
-                        status,
-                        username,
-                        password,
-                        geographies: [...accountSelectedGeographies]
-                    };
-
-                    // Adicionar ou atualizar a conta
-                    if (editingAccountId) {
-                        // Atualizar conta existente
-                        const index = bookmakerAccounts.findIndex(acc => acc.id === editingAccountId);
-                        if (index !== -1) {
-                            bookmakerAccounts[index] = accountData;
-                        }
-                        editingAccountId = null;
-                    } else {
-                        // Adicionar nova conta
-                        bookmakerAccounts.push(accountData);
-                    }
-
-                    // Atualizar lista de contas
-                    updateAccountsList();
-
-                    // Esconder formulário e mostrar botão de adicionar
-                    document.getElementById('account-form').style.display = 'none';
-                    document.getElementById('add-account-btn').style.display = 'block';
-                });
-
-                // Botão para cancelar adição de conta
-                document.getElementById('cancel-account-btn').addEventListener('click', function() {
-                    // Esconder formulário e mostrar botão de adicionar
-                    document.getElementById('account-form').style.display = 'none';
-                    document.getElementById('add-account-btn').style.display = 'block';
-                    editingAccountId = null;
-                });
-
-                // Inicializar lista de contas
-                updateAccountsList();
-            }
-
-            // Inicializar quando a modal for aberta
-            document.getElementById('addBookmaker').addEventListener('click', function() {
-                // Este código já está sendo executado no handler existente
-                // Vamos adicionar a inicialização das contas
-                setTimeout(initBookmakerAccounts, 100);
-            });
-
+            
             // Save bookmaker
             bookmakerSaveBtn.addEventListener('click', function() {
                 const bookmakerId = Date.now().toString(); // Generate a unique ID
@@ -1559,21 +1174,20 @@
                         code: country.code,
                         name: country.name,
                         flag: country.flag
-                    })),
-                    accounts: bookmakerAccounts
+                    }))
                 };
-
+                
                 // Add to bookmakers array
                 bookmakersData.push(bookmakerData);
-
+                
                 console.log('Bookmaker data:', bookmakerData);
                 alert('Bookmaker added successfully!');
                 closeBookmakerModal();
-
+                
                 // Optionally, add the new bookmaker to the table
                 addBookmakerToTable(bookmakerData);
             });
-
+            
             function resetBookmakerForm() {
                 // Reset Bookmaker Settings fields
                 document.getElementById('bookmaker-group').selectedIndex = 0;
@@ -1582,43 +1196,21 @@
                 document.getElementById('bookmaker-logo').value = '';
                 document.getElementById('bookmaker-logo-preview').innerHTML = '';
                 document.getElementById('bookmaker-affiliate-url').value = '';
-
+                
                 // Clear selected geographies
                 selectedGeographies = [];
                 document.getElementById('selected-geographies').innerHTML = '<i>No countries selected</i>';
-
+                
                 // Clear geography search
                 document.getElementById('bookmaker-geography-search').value = '';
                 document.getElementById('bookmaker-geography-list').classList.remove('active');
-
-                // Clear bookmaker accounts
-                bookmakerAccounts = [];
-                accountSelectedGeographies = [];
-                editingAccountId = null;
-
-                // Reset account form
-                if (document.getElementById('account-form')) {
-                    document.getElementById('account-form').style.display = 'none';
-                }
-
-                if (document.getElementById('add-account-btn')) {
-                    document.getElementById('add-account-btn').style.display = 'block';
-                }
-
-                if (document.getElementById('accounts-container')) {
-                    document.getElementById('accounts-container').innerHTML = '<p><i>No accounts added yet</i></p>';
-                }
-
-                if (document.getElementById('auto-fill-account')) {
-                    document.getElementById('auto-fill-account').checked = false;
-                }
             }
-
+            
             // Add a new bookmaker to the table
             function addBookmakerToTable(bookmaker) {
                 const table = document.querySelector('.bookmaker-table tbody');
                 if (!table) return;
-
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${bookmaker.id}</td>
@@ -1630,12 +1222,12 @@
                         <button class="btn btn-delete">Excluir</button>
                     </td>
                 `;
-
+                
                 // Add event listeners for the new buttons
                 row.querySelector('.btn-edit').addEventListener('click', function() {
                     alert(`Editando bookmaker com ID: ${bookmaker.id}`);
                 });
-
+                
                 row.querySelector('.btn-delete').addEventListener('click', function() {
                     if (confirm(`Tem certeza que deseja excluir o bookmaker "${bookmaker.name}"?`)) {
                         row.remove();
@@ -1643,10 +1235,10 @@
                         alert(`Bookmaker "${bookmaker.name}" excluído.`);
                     }
                 });
-
+                
                 table.appendChild(row);
             }
-
+            
             // Configurar listeners para botões de edição existentes
             document.querySelectorAll('.btn-edit').forEach(button => {
                 button.addEventListener('click', function() {
@@ -1655,14 +1247,14 @@
                     alert(`Editando bookmaker com ID: ${id}`);
                 });
             });
-
+            
             // Configurar listeners para botões de exclusão existentes
             document.querySelectorAll('.btn-delete').forEach(button => {
                 button.addEventListener('click', function() {
                     const row = this.closest('tr');
                     const id = row.cells[0].textContent;
                     const name = row.cells[1].textContent;
-
+                    
                     if (confirm(`Tem certeza que deseja excluir o bookmaker "${name}"?`)) {
                         row.remove();
                         bookmakersData = bookmakersData.filter(b => b.id !== id);
