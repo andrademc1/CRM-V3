@@ -67,8 +67,30 @@ function handleOwnerFormSubmit(event) {
   closeOwnerModal();
 }
 
+// Função para mudar entre as abas
+function changeTab(tabName) {
+  // Ocultar todas as abas e remover classe ativa
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  // Mostrar a aba selecionada e adicionar classe ativa
+  if (tabName === 'settings') {
+    document.getElementById('settingsTab').classList.add('active');
+    document.querySelector('.tab:nth-child(1)').classList.add('active');
+  } else if (tabName === 'billing') {
+    document.getElementById('billingTab').classList.add('active');
+    document.querySelector('.tab:nth-child(2)').classList.add('active');
+  }
+}
+
 // Exportar funções para uso em outros arquivos
 window.openOwnerModal = openOwnerModal;
 window.closeOwnerModal = closeOwnerModal;
 window.toggleBillingDetails = toggleBillingDetails;
 window.handleOwnerFormSubmit = handleOwnerFormSubmit;
+window.changeTab = changeTab;
