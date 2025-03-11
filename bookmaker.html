@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmaker Manager - CRM System</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos específicos para a página de Bookmaker */
+        .bookmaker-container {
+            padding: 20px;
+        }
+        
+        .bookmaker-header {
+            margin-bottom: 25px;
+        }
+        
+        .bookmaker-panel {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background-color: #0069d9;
+        }
+        
+        .bookmaker-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .bookmaker-table th, 
+        .bookmaker-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .bookmaker-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-buttons .btn {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .btn-edit {
+            background-color: #ffc107;
+        }
+        
+        .btn-delete {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>CRM</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="index.html" data-section="homepage">
+                            <span class="icon">🏠</span>
+                            <span>Homepage</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="bookmaker.html" data-section="bookmaker">
+                            <span class="icon">📚</span>
+                            <span>Bookmaker Manager</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="user">
+                            <span class="icon">👤</span>
+                            <span>User Manager</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="content">
+            <header class="content-header">
+                <h2 id="section-title">Bookmaker Manager</h2>
+            </header>
+            
+            <div class="bookmaker-container">
+                <div class="bookmaker-panel">
+                    <div class="bookmaker-header">
+                        <h3>Gerenciar Bookmakers</h3>
+                        <p>Adicione, edite ou remova bookmakers no sistema.</p>
+                    </div>
+                    
+                    <button class="btn" id="addBookmaker">Adicionar Novo Bookmaker</button>
+                    
+                    <table class="bookmaker-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>URL</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Bookmaker A</td>
+                                <td>https://bookmakera.com</td>
+                                <td>Ativo</td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-edit">Editar</button>
+                                    <button class="btn btn-delete">Excluir</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Bookmaker B</td>
+                                <td>https://bookmakerb.com</td>
+                                <td>Ativo</td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-edit">Editar</button>
+                                    <button class="btn btn-delete">Excluir</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Bookmaker C</td>
+                                <td>https://bookmaker.com</td>
+                                <td>Inativo</td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-edit">Editar</button>
+                                    <button class="btn btn-delete">Excluir</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Funções para o gerenciamento de bookmakers
+            document.getElementById('addBookmaker').addEventListener('click', function() {
+                alert('Formulário para adicionar novo bookmaker seria exibido aqui.');
+                // Em uma implementação real, abriria um modal com um formulário
+            });
+            
+            // Configurar listeners para botões de edição
+            document.querySelectorAll('.btn-edit').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const id = row.cells[0].textContent;
+                    alert(`Editando bookmaker com ID: ${id}`);
+                });
+            });
+            
+            // Configurar listeners para botões de exclusão
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const id = row.cells[0].textContent;
+                    const name = row.cells[1].textContent;
+                    
+                    if (confirm(`Tem certeza que deseja excluir o bookmaker "${name}"?`)) {
+                        alert(`Bookmaker "${name}" seria excluído em uma implementação real.`);
+                        // Em uma implementação real, enviaria requisição para o servidor
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
