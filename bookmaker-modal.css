@@ -131,7 +131,13 @@
 }
 
 .per-geography-billing-toggle:checked ~ .general-billing-section,
-.per-geography-billing-toggle:checked ~ .auto-fill-buttons {
+.per-geography-billing-toggle:checked ~ .auto-fill-buttons,
+.billing-card.per-geography-mode .auto-fill-buttons:not([data-geography-code]) {
+    display: none !important;
+}
+
+/* Força os botões gerais a ficarem ocultos quando o modo por geografia está ativo */
+.per-geography-billing-checkbox:checked ~ .auto-fill-buttons {
     display: none !important;
 }
 
