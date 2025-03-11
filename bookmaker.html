@@ -1129,16 +1129,20 @@
         <link rel="stylesheet" href="group-modal.css" />
         <link rel="stylesheet" href="bookmaker-modal.css" />
 
+        <script src="database.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
+                // Inicialize o banco de dados
+                window.DB.init();
+                
                 // Get country data from countries.js
                 let countriesData = [];
-                // Array para armazenar owners registrados
-                let ownersData = [];
-                // Array para armazenar groups registrados
-                let groupsData = [];
-                // Array para armazenar bookmakers registrados
-                let bookmakersData = [];
+                // Array para armazenar owners registrados - carregar do localStorage
+                let ownersData = window.DB.owners.get();
+                // Array para armazenar groups registrados - carregar do localStorage
+                let groupsData = window.DB.groups.get();
+                // Array para armazenar bookmakers registrados - carregar do localStorage
+                let bookmakersData = window.DB.bookmakers.get();
                 // Array para armazenar geographies selecionadas
                 let selectedGeographies = [];
 
@@ -1427,6 +1431,9 @@
 
                         // Add to owners array
                         ownersData.push(ownerData);
+                        
+                        // Salvar no banco de dados local
+                        window.DB.owners.save(ownersData);
 
                         // Update owner dropdown in group modal
                         updateOwnerDropdown();
@@ -1693,6 +1700,9 @@
 
                     // Add to groups array
                     groupsData.push(groupData);
+                    
+                    // Salvar no banco de dados local
+                    window.DB.groups.save(groupsData);
 
                     // Update group dropdown in bookmaker modal
                     updateGroupDropdown();
@@ -3766,6 +3776,9 @@
 
                     // Add to bookmakers array
                     bookmakersData.push(bookmakerData);
+                    
+                    // Salvar no banco de dados local
+                    window.DB.bookmakers.save(bookmakersData);
 
                     console.log("Bookmaker data:", bookmakerData);
                     alert("Bookmaker added successfully!");
@@ -5465,6 +5478,8 @@
                             bookmakersData = bookmakersData.filter(
                                 (b) => b.id !== id,
                             );
+                            // Atualizar o localStorage
+                            window.DB.bookmakers.save(bookmakersData);
                             alert(`Bookmaker "${name}" excluído.`);
                         }
                     });

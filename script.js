@@ -1,5 +1,10 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializa o banco de dados local
+    if(window.DB) {
+        window.DB.init();
+    }
+    
     // Get all navigation links
     const navLinks = document.querySelectorAll('.sidebar-nav li a');
     const sectionTitle = document.getElementById('section-title');
