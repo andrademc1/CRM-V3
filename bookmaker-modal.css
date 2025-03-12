@@ -315,3 +315,19 @@
 .per-geography-billing-toggle {
     margin: 10px 0;
 }
+
+.account-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+.remove-account-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
