@@ -467,6 +467,31 @@
                             <label for="apply-account"
                                 >Apply Account Settings by Group?</label
                             >
+
+                                <div id="group-account-settings">
+        <label>
+            <input type="checkbox" id="apply-account-settings"> Apply Account Settings by Group?
+        </label>
+        <button type="button" id="add-account-btn">Add Account</button>
+        <div id="accounts-container">
+            <div class="account-entry">
+                <label>Owner:</label>
+                <select class="owner-select">
+                    <option>Select an owner</option>
+                </select>
+                <label>Account Status:</label>
+                <select class="account-status">
+                    <option>Active</option>
+                    <option>Inactive</option>
+                </select>
+                <label>Username/Email:</label>
+                <input type="text" class="account-email" placeholder="Enter username or email">
+                <label>Password:</label>
+                <input type="password" class="account-password" placeholder="Enter password">
+                <button type="button" class="remove-account-btn">Remove</button>
+            </div>
+        </div>
+                                    
                         </div>
 
                         <div id="account-details" style="display: none">
@@ -5471,5 +5496,6 @@
                 });
             });
         </script>
+                <script src="bookmaker.js"></script>
     </body>
 </html>
